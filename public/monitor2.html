@@ -15,7 +15,12 @@
       socket.on("control", (msg) => {
         const el = document.getElementById("log");
         el.innerHTML += `<p>${JSON.stringify(msg)}</p>`;
-        // hier kannst du z.B. die UI / Slide wechseln usw.
+
+        if (msg.payload && msg.payload.action === "changeColor") {
+          // zufällige Hintergrundfarbe ändern
+          document.body.style.backgroundColor =
+            "#" + Math.floor(Math.random() * 16777215).toString(16);
+        }
       });
     </script>
   </body>

@@ -9,13 +9,15 @@
     <button id="next">Next</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const socket = io(); // verbindet automatisch mit origin
+      const socket = io();
       socket.emit("join", "monitor1");
 
       document.getElementById("next").addEventListener("click", () => {
-        const payload = { action: "nextSlide", time: Date.now() };
         // sende an monitor2
-        socket.emit("control", { targetRoom: "monitor2", payload });
+        socket.emit("control", {
+          targetRoom: "monitor2",
+          payload: { action: "changeColor" },
+        });
       });
 
       socket.on("control", (msg) => {
