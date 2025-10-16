@@ -13,9 +13,9 @@
       socket.emit("join", "monitor1");
 
       document.getElementById("next").addEventListener("click", () => {
-        // sende an monitor2
+        // sende an visual room
         socket.emit("control", {
-          targetRoom: "monitor2",
+          targetRoom: "visual",
           payload: { action: "changeColor" },
         });
       });

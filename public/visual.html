@@ -32,7 +32,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
-      socket.emit("join", "monitor2");
+      socket.emit("join", "visual");
 
       socket.on("control", (msg) => {
         const el = document.getElementById("log");
