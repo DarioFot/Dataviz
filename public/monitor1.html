@@ -13,7 +13,7 @@
       socket.emit("join", "monitor1");
 
       document.getElementById("next").addEventListener("click", () => {
-        // sende an visual
+        // sende an visual room
         socket.emit("control", {
           targetRoom: "visual",
           payload: { action: "changeColor" },
