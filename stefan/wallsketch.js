@@ -8,7 +8,7 @@ let selectedIndicator = null;
 let inputField;
 
 function preload() {
-  rawData = loadJSON("data/embeddings-full.json");
+  rawData = loadJSON("/stefan/data/embeddings-full.json");
 }
 
 function setup() {
