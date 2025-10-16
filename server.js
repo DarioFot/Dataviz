@@ -20,10 +20,10 @@ app.use("/stefan", express.static(path.join(__dirname, "stefan")));
 
 app.get("/", (req, res) => res.redirect("/monitor1"));
 app.get("/monitor1", (req, res) =>
-  res.sendFile(path.join(__dirname, "public", "visual.html"))
+  res.sendFile(path.join(__dirname, "public", "monitor1.html"))
 );
 app.get("/monitor2", (req, res) =>
-  res.sendFile(path.join(__dirname, "public", "monitor2.html"))
+  res.sendFile(path.join(__dirname, "public", "visual.html"))
 );
 
 io.on("connection", (socket) => {
