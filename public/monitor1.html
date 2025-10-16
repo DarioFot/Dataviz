@@ -10,6 +10,7 @@
       <label for="search">Search (send to visual): </label>
       <input id="search" type="text" placeholder="type to search..." />
     </div>
+    <button id="next">Next</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
@@ -17,7 +18,6 @@
 
       document.getElementById("next").addEventListener("click", () => {
         // sende an visual room
-        // sende an visual
         socket.emit("control", {
           targetRoom: "visual",
           payload: { action: "changeColor" },
