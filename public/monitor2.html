@@ -1,12 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monitor 2</title>
+    <link rel="stylesheet" type="text/css" href="/stefan/style.css" />
+    <script src="/stefan/libraries/p5.min.js"></script>
+    <script src="/stefan/libraries/p5.sound.min.js"></script>
   </head>
   <body>
-    <h1>Monitor 2 (Visual)</h1>
-    <div id="log"></div>
+    <div id="panel"></div>
+    <div id="canvasContainer"></div>
+    <div id="contentContainer">Content</div>
+
+    <div
+      id="log"
+      style="
+        position: fixed;
+        bottom: 8px;
+        left: 8px;
+        background: rgba(0, 0, 0, 0.4);
+        color: #fff;
+        padding: 6px 8px;
+        font: 12px/1.2 monospace;
+        max-width: 40vw;
+        max-height: 30vh;
+        overflow: auto;
+      "
+    ></div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
@@ -14,14 +36,19 @@
 
       socket.on("control", (msg) => {
         const el = document.getElementById("log");
-        el.innerHTML += `<p>${JSON.stringify(msg)}</p>`;
+        el.innerHTML += `<div>${new Date().toLocaleTimeString()} ${JSON.stringify(
+          msg
+        )}</div>`;
 
-        if (msg.payload && msg.payload.action === "changeColor") {
-          // zufällige Hintergrundfarbe ändern
-          document.body.style.backgroundColor =
-            "#" + Math.floor(Math.random() * 16777215).toString(16);
+        // Example control hook: forward actions into the sketch via DOM or globals if needed.
+        if (window.handleControlFromSocket) {
+          try {
+            window.handleControlFromSocket(msg);
+          } catch (_) {}
         }
       });
     </script>
+
+    <script src="/stefan/wallsketch.js"></script>
   </body>
 </html>

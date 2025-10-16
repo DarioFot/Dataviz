@@ -15,6 +15,8 @@ const io = new Server(server, {
 });
 
 app.use(express.static(path.join(__dirname, "public")));
+// Serve Stefan assets (HTML is not served here; only static files for sketch usage)
+app.use("/stefan", express.static(path.join(__dirname, "stefan")));
 
 app.get("/", (req, res) => res.redirect("/monitor1"));
 app.get("/monitor1", (req, res) =>
