@@ -6,7 +6,10 @@
   </head>
   <body>
     <h1>Monitor 1 Test (controller)</h1>
-    <button id="next">Next</button>
+    <div style="margin: 8px 0">
+      <label for="search">Search (send to visual): </label>
+      <input id="search" type="text" placeholder="type to search..." />
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
@@ -14,9 +17,20 @@
 
       document.getElementById("next").addEventListener("click", () => {
         // sende an visual room
+        // sende an visual
         socket.emit("control", {
           targetRoom: "visual",
           payload: { action: "changeColor" },
+        });
+      });
+
+      // send live search queries to visual
+      const searchEl = document.getElementById("search");
+      searchEl.addEventListener("input", () => {
+        const query = searchEl.value || "";
+        socket.emit("control", {
+          targetRoom: "visual",
+          payload: { action: "searchQuery", query },
         });
       });
 
