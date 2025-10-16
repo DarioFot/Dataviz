@@ -4,6 +4,7 @@ let filteredArray;
 let embeddings = [];
 let closest5 = [];
 let selectedIndicator = null;
+let firstCommunityLabelIndices = new Set();
 
 let inputField;
 
@@ -19,6 +20,16 @@ function setup() {
   console.log("DataArray: ", dataArray);
   filteredArray = dataArray;
   embeddings = dataArray.map((d) => d.embedding);
+
+  // Compute first occurrence index per Community for labeling
+  const seenCommunityToIndex = {};
+  for (let i = 0; i < dataArray.length; i++) {
+    const communityName = dataArray[i]["Community"];
+    if (communityName && seenCommunityToIndex[communityName] === undefined) {
+      seenCommunityToIndex[communityName] = i;
+      firstCommunityLabelIndices.add(i);
+    }
+  }
 
   let canvas = createCanvas(1200, 800);
   canvas.parent("canvasContainer");
@@ -54,6 +65,16 @@ function draw() {
     } else {
       fill(30);
       ellipse(x, y, 5, 5);
+    }
+
+    // Label only the first dot of each community
+    if (firstCommunityLabelIndices.has(i)) {
+      noStroke();
+      fill(0);
+      textSize(10);
+      textAlign(LEFT, BOTTOM);
+      const label = dataArray[i]["Community"] || "";
+      text(label, x + 8, y - 6);
     }
   }
 
