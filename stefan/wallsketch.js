@@ -161,3 +161,14 @@ function indexToXY(index, cols, margin, spacing) {
   const y = margin + floor(index / cols) * spacing;
   return { x, y };
 }
+
+window.handleControlFromSocket = function(msg) {
+  if (!msg || !msg.payload) return;
+  if (msg.payload.action === "searchQuery") {
+    const query = (msg.payload.query || "").toString();
+    if (inputField && typeof inputField.value === "function") {
+      inputField.value(query);
+      handleInput();
+    }
+  }
+};
