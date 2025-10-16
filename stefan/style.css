@@ -1,0 +1,38 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  display: block;
+}
+
+#panel {
+  position: relative;
+  margin: 20px 0 10px 50px;
+}
+
+input {
+  width: 300px;
+  box-sizing: border-box; /* so padding/border don't overflow */
+  padding: 8px;
+  font-size: 16px;
+}
+
+#canvasContainer {
+  border: solid thin red;
+  padding: 10px;
+}
+
+#contentContainer {
+  border: solid thin blue;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.item {
+  border: solid thin black;
+  padding: 5px;
+  width: 300px;
+}
