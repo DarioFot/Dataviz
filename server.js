@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Serve Stefan assets (HTML is not served here; only static files for sketch usage)
 app.use("/stefan", express.static(path.join(__dirname, "stefan")));
 // Serve Petra assets for monitor1
-app.use("/Petra", express.static(path.join(__dirname, "Petra"))); 
+app.use("/Petra", express.static(path.join(__dirname, "Petra")));
 // Serve shared libraries at /libraries
 app.use("/libraries", express.static(path.join(__dirname, "libraries")));
 
