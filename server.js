@@ -19,6 +19,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/stefan", express.static(path.join(__dirname, "stefan")));
 // Serve Petra assets for monitor1
 app.use("/Petra", express.static(path.join(__dirname, "Petra")));
+// Serve shared libraries at /libraries
+app.use("/libraries", express.static(path.join(__dirname, "libraries")));
 
 app.get("/", (req, res) => res.redirect("/monitor1"));
 app.get("/monitor1", (req, res) =>
