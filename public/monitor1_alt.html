@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Sketch</title>
+    <title>monitor 1</title>
 
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="style_controller.css" />
     <script src="/libraries/p5.min.js"></script>
     <script src="/libraries/p5.sound.min.js"></script>
   </head>
@@ -26,10 +26,28 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
+      const socket = io();
+      socket.emit("join", "visual");
+
+      socket.on("control", (msg) => {
+        const el = document.getElementById("log");
+        el.innerHTML += `<div>${new Date().toLocaleTimeString()} ${JSON.stringify(
+          msg
+        )}</div>`;
+
+        // Example control hook: forward actions into the sketch via DOM or globals if needed.
+        if (window.handleControlFromSocket) {
+          try {
+            window.handleControlFromSocket(msg);
+          } catch (_) {}
+        }
+      });
+    </script>
+    <script>
       // expose socket globally for sketch.js to use
       window.socket = io();
       window.socket.emit("join", "monitor1");
     </script>
-    <script src="sketch.js"></script>
+    <script src="sketch_controller.js"></script>
   </body>
 </html>
