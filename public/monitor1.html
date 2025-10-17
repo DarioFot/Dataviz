@@ -1,42 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Monitor 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Sketch</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="/libraries/p5.min.js"></script>
+    <script src="/libraries/p5.sound.min.js"></script>
   </head>
+
   <body>
-    <h1>Monitor 1 Test (controller)</h1>
-    <div style="margin: 8px 0">
-      <label for="search">Search (send to visual): </label>
-      <input id="search" type="text" placeholder="type to search..." />
+    <div id="topbar">
+      <div id="panel"></div>
+      <div id="hamburger">&#9776;</div>
+      <div id="filterMenu" class="hidden">
+        <label><input type="checkbox" value="youth" checked /> Youth</label>
+        <label><input type="checkbox" value="men" checked /> Men</label>
+        <label><input type="checkbox" value="women" checked /> Women</label>
+      </div>
     </div>
-    <button id="next">Next</button>
+    <div id="canvasContainer"></div>
+    <div id="contentContainer">Content</div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const socket = io();
-      socket.emit("join", "monitor1");
-
-      document.getElementById("next").addEventListener("click", () => {
-        // sende an visual room
-        socket.emit("control", {
-          targetRoom: "visual",
-          payload: { action: "changeColor" },
-        });
-      });
-
-      // send live search queries to visual
-      const searchEl = document.getElementById("search");
-      searchEl.addEventListener("input", () => {
-        const query = searchEl.value || "";
-        socket.emit("control", {
-          targetRoom: "visual",
-          payload: { action: "searchQuery", query },
-        });
-      });
-
-      socket.on("control", (msg) => {
-        console.log("Eingehender control:", msg);
-      });
+      // expose socket globally for sketch.js to use
+      window.socket = io();
+      window.socket.emit("join", "monitor1");
     </script>
+    <script src="sketch.js"></script>
   </body>
 </html>
