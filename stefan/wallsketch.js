@@ -182,13 +182,23 @@ function indexToXY(index, cols, margin, spacing) {
   const y = margin + floor(index / cols) * spacing;
   return { x, y };
 }
-
-window.handleControlFromSocket = function(msg) {
+// KOMMUNIKATION ZWISCHEN PAGES
+// Diese Funktion reagiert auf Nachrichten, die über den WebSocket empfangen werden
+window.handleControlFromSocket = function (msg) {
+  // Wenn die Nachricht leer ist oder kein Payload enthält, passiert nichts
   if (!msg || !msg.payload) return;
+
+  // Wenn die Aktion im Payload "searchQuery" ist...
   if (msg.payload.action === "searchQuery") {
+    // Holt den Suchbegriff aus der Nachricht und wandelt ihn in einen String um
     const query = (msg.payload.query || "").toString();
+
+    // Prüft, ob das Eingabefeld existiert und ob es eine Funktion namens value hat
     if (inputField && typeof inputField.value === "function") {
+      // Setzt den Wert des Eingabefelds auf die empfangene Suchanfrage
       inputField.value(query);
+
+      // Führt handleInput() aus, um z. B. Filter anzuwenden und die Suchanfrage zu senden
       handleInput();
     }
   }

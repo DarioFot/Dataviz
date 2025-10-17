@@ -1,49 +1,72 @@
-const express = require("express");
-const http = require("http");
-const path = require("path");
-const { Server } = require("socket.io");
+// Lädt benötigte Module
+const express = require("express"); // Express wird genutzt, um einen Webserver zu erstellen
+const http = require("http"); // HTTP-Modul dient zum Erstellen des Servers
+const path = require("path"); // Path hilft beim Umgang mit Dateipfaden
+const { Server } = require("socket.io"); // Socket.IO ermöglicht Echtzeit-Kommunikation
 
+// Erstellt eine neue Express-Anwendung
 const app = express();
+
+// Erstellt einen HTTP-Server basierend auf der Express-App
 const server = http.createServer(app);
 
-// In Entwicklung: origin '*' OK. Produktion: setze CORS auf deine Render-Domain.
+// Richtet einen Socket.IO-Server mit CORS-Einstellungen ein
 const io = new Server(server, {
   cors: {
+    // Erlaubt Verbindungen nur von einer bestimmten URL (z. B. von Render)
     origin: process.env.CORS_ORIGIN || "https://dataviz-quyb.onrender.com",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST"], // Zulässige Methoden
   },
 });
 
+// Statische Dateien aus verschiedenen Ordnern werden bereitgestellt:
+
+// Dateien aus dem "public"-Ordner werden öffentlich bereitgestellt (z. B. HTML-Dateien)
 app.use(express.static(path.join(__dirname, "public")));
-// Serve Stefan assets (HTML is not served here; only static files for sketch usage)
+
+// Dateien aus dem "stefan"-Ordner sind unter "/stefan" erreichbar (nur Assets, kein HTML)
 app.use("/stefan", express.static(path.join(__dirname, "stefan")));
-// Serve Petra assets for monitor1
+
+// Dateien aus dem "Petra"-Ordner sind unter "/Petra" verfügbar
 app.use("/Petra", express.static(path.join(__dirname, "Petra")));
-// Serve shared libraries at /libraries
+
+// Gemeinsame Bibliotheken sind unter "/libraries" verfügbar
 app.use("/libraries", express.static(path.join(__dirname, "libraries")));
 
+// Weiterleitung von "/" zur Hauptanzeige "monitor1"
 app.get("/", (req, res) => res.redirect("/monitor1"));
+
+// Gibt die HTML-Datei für Monitor 1 zurück
 app.get("/monitor1", (req, res) =>
   res.sendFile(path.join(__dirname, "public", "monitor1.html"))
 );
+
+// Gibt die HTML-Datei für Monitor 2 zurück
 app.get("/monitor2", (req, res) =>
   res.sendFile(path.join(__dirname, "public", "visual.html"))
 );
 
+// Socket.IO-Verbindungen werden hier behandelt
 io.on("connection", (socket) => {
+  // Gibt aus, wenn ein neuer Client verbunden ist
   console.log("socket connected", socket.id);
 
+  // Behandelt das Beitreten eines Clients zu einem bestimmten Raum
   socket.on("join", (room) => {
-    socket.join(room);
-    console.log(`${socket.id} joined ${room}`);
+    socket.join(room); // Der Client tritt dem Raum bei
+    console.log(`${socket.id} joined ${room}`); // Log-Ausgabe zur Kontrolle
   });
 
+  // Behandelt "control"-Nachrichten von einem Client an einen bestimmten Raum
   socket.on("control", ({ targetRoom, payload }) => {
+    // Sendet die Nachricht an alle Clients im Zielraum
     io.to(targetRoom).emit("control", { from: socket.id, payload });
   });
 
+  // Gibt aus, wenn ein Client die Verbindung trennt
   socket.on("disconnect", () => console.log("socket disconnected", socket.id));
 });
 
+// Startet den Server auf dem angegebenen Port (Standard: 3000)
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Listening on ${PORT}`));

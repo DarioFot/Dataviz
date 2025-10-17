@@ -2,7 +2,7 @@ let dataArray = [];
 let filteredArray = [];
 let selectedIndicator = null;
 
-let activeFocusGroups = new Set(['youth', 'men', 'women']); // Standard: alle aktiv
+let activeFocusGroups = new Set(["youth", "men", "women"]); // Standard: alle aktiv
 let inputField;
 let listContainer;
 let itemHeight = 70;
@@ -33,17 +33,19 @@ function setup() {
   });
 
   // Hamburger-Menü
-  const hamburger = select('#hamburger');
-  const filterMenu = select('#filterMenu');
-  hamburger.mousePressed(() => filterMenu.toggleClass('hidden'));
+  const hamburger = select("#hamburger");
+  const filterMenu = select("#filterMenu");
+  hamburger.mousePressed(() => filterMenu.toggleClass("hidden"));
 
-  document.querySelectorAll('#filterMenu input[type="checkbox"]').forEach(cb => {
-    cb.addEventListener('change', () => {
-      if (cb.checked) activeFocusGroups.add(cb.value);
-      else activeFocusGroups.delete(cb.value);
-      applyFilters();
+  document
+    .querySelectorAll('#filterMenu input[type="checkbox"]')
+    .forEach((cb) => {
+      cb.addEventListener("change", () => {
+        if (cb.checked) activeFocusGroups.add(cb.value);
+        else activeFocusGroups.delete(cb.value);
+        applyFilters();
+      });
     });
-  });
 
   renderList();
 }
@@ -53,7 +55,7 @@ function renderList() {
   listContainer.html(""); // alte Items löschen
   let query = inputField.value().toLowerCase();
 
-  filteredArray.forEach(item => {
+  filteredArray.forEach((item) => {
     let fullText = item["Indicator English"] || "No Title";
 
     // Hauptcontainer
@@ -63,7 +65,7 @@ function renderList() {
     itemDiv.style("line-height", itemHeight + "px");
 
     // --- Wörter splitten und anzeigen ---
-    fullText.split(/\s+/).forEach(w => {
+    fullText.split(/\s+/).forEach((w) => {
       let spanDiv = createSpan(w + " ").parent(itemDiv);
       spanDiv.class("clickable-word");
       spanDiv.style("margin", "0 2px");
@@ -82,7 +84,7 @@ function renderList() {
         handleInput();
 
         // selectedIndicator setzen
-        let found = dataArray.find(d => d["Indicator English"] === fullText);
+        let found = dataArray.find((d) => d["Indicator English"] === fullText);
         if (found) {
           selectedIndicator = found;
           let index = filteredArray.indexOf(found);
@@ -103,31 +105,43 @@ function updateSelectedIndicator() {
   selectedIndicator = filteredArray[index];
 
   let children = listContainer.elt.children;
-  for (let i = 0; i < children.length; i++) children[i].classList.remove("selected-item");
+  for (let i = 0; i < children.length; i++)
+    children[i].classList.remove("selected-item");
   if (children[index]) children[index].classList.add("selected-item");
 
   if (selectedIndicator) showClosestIndicators(selectedIndicator);
 }
 
-// --- HANDLE INPUT / FILTER ---
+// KOMMUNIKATION ZWISCHEN PAGES
 function handleInput() {
+  // Wendet Filter auf die Eingabe an (z. B. zur Anzeige oder Suche)
   applyFilters();
-  // emit live query to visual room via websocket
+
+  // Versucht, eine Live-Anfrage über WebSocket an den „visual“-Raum zu senden
   try {
+    // Prüft, ob eine WebSocket-Verbindung existiert
     if (window.socket) {
+      // Holt den Wert aus dem Eingabefeld, wandelt ihn in Kleinbuchstaben um
       const query = (inputField.value() || "").toLowerCase();
-      window.socket.emit('control', {
-        targetRoom: 'visual',
-        payload: { action: 'searchQuery', query }
+
+      // Sendet eine Nachricht über den Socket mit dem Suchbegriff
+      window.socket.emit("control", {
+        targetRoom: "visual", // Zielraum für die Nachricht
+        payload: {
+          action: "searchQuery", // Aktion: Suchanfrage senden
+          query, // Der eigentliche Suchbegriff
+        },
       });
     }
-  } catch (e) {}
+  } catch (e) {
+    // Fehler werden ignoriert (z. B. wenn keine Verbindung besteht)
+  }
 }
 
 function applyFilters() {
   let query = inputField.value().toLowerCase();
 
-  filteredArray = dataArray.filter(item => {
+  filteredArray = dataArray.filter((item) => {
     let focus = (item["Focus Group"] || "").toLowerCase();
     let indicator = (item["Indicator English"] || "").toLowerCase();
     let matchesFocus = activeFocusGroups.has(focus);
@@ -142,7 +156,9 @@ function applyFilters() {
 // --- COSINE SIMILARITY ---
 function cosineSim(vecA, vecB) {
   if (!vecA || !vecB || vecA.length !== vecB.length) return 0;
-  let dot = 0, magA = 0, magB = 0;
+  let dot = 0,
+    magA = 0,
+    magB = 0;
   for (let i = 0; i < vecA.length; i++) {
     dot += vecA[i] * vecB[i];
     magA += vecA[i] * vecA[i];
@@ -159,19 +175,26 @@ function showClosestIndicators(currentItem) {
   let currentEmbedding = currentItem.embedding;
   if (!currentEmbedding) return;
 
-  let sims = dataArray.map(item => ({ item, sim: cosineSim(currentEmbedding, item.embedding || []) }));
+  let sims = dataArray.map((item) => ({
+    item,
+    sim: cosineSim(currentEmbedding, item.embedding || []),
+  }));
   sims.sort((a, b) => b.sim - a.sim);
-  let closest = sims.filter(s => s.item !== currentItem).slice(0, 5);
+  let closest = sims.filter((s) => s.item !== currentItem).slice(0, 5);
 
-  closest.forEach(s => {
+  closest.forEach((s) => {
     let item = s.item;
     let newDiv = createDiv().parent(container);
     newDiv.class("item");
 
     let title = item["Indicator English"] || "No Title";
-    let words = title.split(/\s+/).map(w =>
-      `<span class="clickable-word" data-word="${w}" data-id="${title}">${w}</span>`
-    ).join(" ");
+    let words = title
+      .split(/\s+/)
+      .map(
+        (w) =>
+          `<span class="clickable-word" data-word="${w}" data-id="${title}">${w}</span>`
+      )
+      .join(" ");
 
     newDiv.html(`
       <h3>${words}</h3>
@@ -181,7 +204,7 @@ function showClosestIndicators(currentItem) {
     `);
   });
 
-  document.querySelectorAll(".clickable-word").forEach(el => {
+  document.querySelectorAll(".clickable-word").forEach((el) => {
     el.addEventListener("click", () => {
       let clickedWord = el.getAttribute("data-word");
       let indicatorTitle = el.getAttribute("data-id");
@@ -189,7 +212,9 @@ function showClosestIndicators(currentItem) {
       inputField.value(clickedWord.toLowerCase());
       handleInput();
 
-      let found = dataArray.find(d => d["Indicator English"] === indicatorTitle);
+      let found = dataArray.find(
+        (d) => d["Indicator English"] === indicatorTitle
+      );
       if (found) {
         selectedIndicator = found;
         let index = filteredArray.indexOf(found);
@@ -200,5 +225,9 @@ function showClosestIndicators(currentItem) {
 }
 
 // --- UTILITY ---
-function constrain(val, min, max) { return Math.min(Math.max(val, min), max); }
-function windowResized() { listContainer.style("height", "600px"); }
+function constrain(val, min, max) {
+  return Math.min(Math.max(val, min), max);
+}
+function windowResized() {
+  listContainer.style("height", "600px");
+}
