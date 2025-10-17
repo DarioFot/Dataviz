@@ -112,6 +112,16 @@ function updateSelectedIndicator() {
 // --- HANDLE INPUT / FILTER ---
 function handleInput() {
   applyFilters();
+  // emit live query to visual room via websocket
+  try {
+    if (window.socket) {
+      const query = (inputField.value() || "").toLowerCase();
+      window.socket.emit('control', {
+        targetRoom: 'visual',
+        payload: { action: 'searchQuery', query }
+      });
+    }
+  } catch (e) {}
 }
 
 function applyFilters() {

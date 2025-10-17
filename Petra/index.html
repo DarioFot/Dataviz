@@ -7,8 +7,8 @@
     <title>Sketch</title>
 
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <script src="libraries/p5.min.js"></script>
-    <script src="libraries/p5.sound.min.js"></script>
+    <script src="/libraries/p5.min.js"></script>
+    <script src="/libraries/p5.sound.min.js"></script>
   </head>
 
   <body>
@@ -24,6 +24,12 @@
     <div id="canvasContainer"></div>
     <div id="contentContainer">Content</div>
 
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      // expose socket globally for sketch.js to use
+      window.socket = io();
+      window.socket.emit('join', 'monitor1');
+    </script>
     <script src="sketch.js"></script>
   </body>
 </html>
