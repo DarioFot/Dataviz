@@ -9,7 +9,7 @@ let itemHeight = 70;
 
 // --- JSON-Daten laden ---
 function preload() {
-  rawData = loadJSON("data/clustered.json");
+  rawData = loadJSON("/Petra/data/clustered.json");
 }
 
 // --- SETUP ---
