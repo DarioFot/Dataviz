@@ -5,6 +5,22 @@ let embeddings = [];
 let closest5 = [];
 let selectedIndicator = null;
 let firstCommunityLabelIndices = new Set();
+const communityNames = {
+  bijeliBrijegLT: "Bijeli Brijeg",
+  bijeliBrijegP: "Bijeli Brijeg",
+  blagajLT: "Blagaj",
+  blagajP: "Blagaj",
+  cernicaLT: "Cernica",
+  cernicaP: "Cernica",
+  cimLT: "Cim",
+  cimP: "Cim",
+  podhumLT: "Podhum",
+  podhumP: "Podhum",
+  potociLT: "Potoci",
+  potociP: "Potoci",
+  zalikLT: "Zalik",
+  zalikP: "Zalik",
+};
 
 let inputField;
 
@@ -24,9 +40,13 @@ function setup() {
   // Compute first occurrence index per Community for labeling
   const seenCommunityToIndex = {};
   for (let i = 0; i < dataArray.length; i++) {
-    const communityName = dataArray[i]["Community"];
-    if (communityName && seenCommunityToIndex[communityName] === undefined) {
-      seenCommunityToIndex[communityName] = i;
+    const rawCommunity = dataArray[i]["Community"];
+    if (!rawCommunity) continue;
+
+    const normalizedCommunity = rawCommunity.replace(/(LT|P)$/i, "");
+
+    if (seenCommunityToIndex[normalizedCommunity] === undefined) {
+      seenCommunityToIndex[normalizedCommunity] = i;
       firstCommunityLabelIndices.add(i);
     }
   }
@@ -50,8 +70,30 @@ function draw() {
   const cols = 60;
   const spacing = (width - margin * 2) / cols;
 
+  // let drawIndexOffset = 0;
+
   for (let i = 0; i < dataArray.length; i++) {
-    const { x, y } = indexToXY(i, cols, margin, spacing);
+    const rawLabel = dataArray[i]["Community"];
+    const label = communityNames[rawLabel] || rawLabel;
+
+    // Label only the first dot of each community
+    if (firstCommunityLabelIndices.has(i) || i === 0) {
+      const { x: labelX, y: labelY } = indexToXY(
+        i + getOffsetUpTo(i - 1, spacing),
+        cols,
+        margin,
+        spacing
+      );
+      noStroke();
+      fill(0);
+      textSize(10);
+      textStyle(BOLD);
+      textAlign(LEFT, CENTER);
+      text(label, labelX - 3, labelY);
+    }
+
+    const adjustedIndex = i + getOffsetUpTo(i, spacing);
+    const { x, y } = indexToXY(adjustedIndex, cols, margin, spacing);
 
     if (filteredArray.length > 0 && dataArray[i] === selectedIndicator) {
       fill(255, 0, 0);
@@ -66,25 +108,25 @@ function draw() {
       fill(30);
       ellipse(x, y, 5, 5);
     }
-
-    // Label only the first dot of each community
-    if (firstCommunityLabelIndices.has(i)) {
-      noStroke();
-      fill(0);
-      textSize(10);
-      textAlign(LEFT, BOTTOM);
-      const label = dataArray[i]["Community"] || "";
-      text(label, x + 8, y - 6);
-    }
   }
 
   if (selectedIndicator && closest5.length > 0) {
     const selectedIndex = dataArray.indexOf(selectedIndicator);
     if (selectedIndex !== -1) {
-      const sel = indexToXY(selectedIndex, cols, margin, spacing);
+      const sel = indexToXY(
+        selectedIndex + getOffsetUpTo(selectedIndex, spacing),
+        cols,
+        margin,
+        spacing
+      );
 
       for (let targetIdx of closest5) {
-        const tgt = indexToXY(targetIdx, cols, margin, spacing);
+        const tgt = indexToXY(
+          targetIdx + getOffsetUpTo(targetIdx, spacing),
+          cols,
+          margin,
+          spacing
+        );
 
         stroke(0);
         strokeWeight(3);
@@ -203,3 +245,16 @@ window.handleControlFromSocket = function (msg) {
     }
   }
 };
+
+function getOffsetUpTo(index, spacing) {
+  let offset = 0;
+  for (let i = 0; i <= index; i++) {
+    if (firstCommunityLabelIndices.has(i) || i === 0) {
+      const rawLabel = dataArray[i]["Community"];
+      const label = communityNames[rawLabel] || rawLabel;
+      const w = textWidth(label);
+      offset += ceil((w * 1.1) / spacing); // same padding as dots
+    }
+  }
+  return offset;
+}
