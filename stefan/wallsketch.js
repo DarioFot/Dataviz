@@ -234,6 +234,7 @@ window.handleControlFromSocket = function (msg) {
   if (msg.payload.action === "searchQuery") {
     // Holt den Suchbegriff aus der Nachricht und wandelt ihn in einen String um
     const query = (msg.payload.query || "").toString();
+    const receivedIndicator = msg.payload.selectedIndicator;
 
     // Prüft, ob das Eingabefeld existiert und ob es eine Funktion namens value hat
     if (inputField && typeof inputField.value === "function") {
@@ -242,6 +243,11 @@ window.handleControlFromSocket = function (msg) {
 
       // Führt handleInput() aus, um z. B. Filter anzuwenden und die Suchanfrage zu senden
       handleInput();
+    }
+
+    if (receivedIndicator) {
+      selectedIndicator = receivedIndicator;
+      console.log("Selected indicator updated:", selectedIndicator);
     }
   }
 };
