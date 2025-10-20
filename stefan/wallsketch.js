@@ -162,10 +162,10 @@ function handleInput() {
       let index = dataArray.indexOf(selectedIndicator);
       closest5 = findFiveClosest(index);
 
-      console.log("EMOJI: ", selectedIndicator["Indicator English"]);
-      for (let idx of closest5) {
-        console.log(" →", dataArray[idx]["Indicator English"]);
-      }
+      // console.log("EMOJI: ", selectedIndicator["Indicator English"]);
+      // for (let idx of closest5) {
+      //   console.log(" →", dataArray[idx]["Indicator English"]);
+      // }
     }
 
     appendItems();
