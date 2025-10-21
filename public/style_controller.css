@@ -160,8 +160,9 @@ body,
 #contentContainer {
   border-top: 1px solid #ccc;
   display: flex;
-  gap: 12px;
-  padding: 10px;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0px;
   box-sizing: border-box;
   width: 90%; /* bündig mit Scrollbereich */
   margin: 0 auto;
@@ -169,10 +170,13 @@ body,
 
 .item {
   flex: 1;
-  max-width: 20%;
+  max-width: 70%; /*Breite eines closest Indicators*/
+  margin: 0px auto; 
   border: thin solid #555;
-  padding: 16px;
-  font-size: 34px;
+  text-align: center;
+  padding: 0px 10px;
+  line-height: 0.5;
+  font-size: 24px;
   background: #f9f9f9;
   box-sizing: border-box;
 }
