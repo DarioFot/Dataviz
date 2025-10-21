@@ -33,7 +33,7 @@ function setup() {
     const name = item["Indicator English"];
     return name && name.trim() !== "" && name.trim().toLowerCase() !== "null";
   });
-  console.log("DataArray: ", dataArray);
+  console.log("DataArrayTest: ", dataArray);
   filteredArray = dataArray;
   embeddings = dataArray.map((d) => d.embedding);
 
