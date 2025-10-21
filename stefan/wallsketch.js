@@ -237,9 +237,12 @@ window.handleControlFromSocket = function (msg) {
 
   // Wenn die Aktion im Payload "selectedIndicator" ist...
   if (msg.payload.action === "selectedIndicator") {
-    // Setzt den ausgewählten Indikator für die Canvas-Darstellung
-    selectedIndicator = msg.payload.indicator;
-    console.log("Selected indicator updated:", selectedIndicator);
+    // Finde den Indikator basierend auf dem "Indicator English" Text
+    const indicatorEnglish = msg.payload.indicatorEnglish;
+    console.log("Received indicatorEnglish:", indicatorEnglish);
+    
+    selectedIndicator = dataArray.find(item => item["Indicator English"] === indicatorEnglish);
+    console.log("Found selectedIndicator:", selectedIndicator);
     console.log("DataArray length:", dataArray.length);
     console.log("Embeddings length:", embeddings.length);
     
@@ -253,6 +256,8 @@ window.handleControlFromSocket = function (msg) {
       } else {
         console.log("ERROR: selectedIndicator not found in dataArray");
       }
+    } else {
+      console.log("ERROR: No indicator found with text:", indicatorEnglish);
     }
     // Der Canvas wird automatisch in der draw() Funktion neu gezeichnet
   }

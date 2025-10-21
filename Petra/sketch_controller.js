@@ -398,12 +398,13 @@ function handleInput() {
 function sendSelectedToVisual(indicator) {
   try {
     if (window.socket && indicator) {
-      console.log("Sending selectedIndicator to visual:", indicator);
+      const indicatorEnglish = indicator["Indicator English"];
+      console.log("Sending selectedIndicator to visual:", indicatorEnglish);
       window.socket.emit("control", {
         targetRoom: "visual",
         payload: {
           action: "selectedIndicator",
-          indicator: indicator
+          indicatorEnglish: indicatorEnglish
         },
       });
     } else {
