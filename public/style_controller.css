@@ -4,135 +4,199 @@ body {
   padding: 0;
   height: 100%;
   font-family: sans-serif;
+  background-color: #fff;
 }
 
-/* --- GRAUER BALKEN MIT SUCHFELD --- */
+/* Topbar */
 #topbar {
   width: 100%;
-  background-color: #e0e0e0;
-  padding: 10px 10px;
-  box-sizing: border-box;
+  background: #ffffff;
+  padding: 10px 0;
   display: flex;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: center; /* Zentriert Inhalt horizontal */
   position: sticky;
   top: 0;
   z-index: 10;
   border-bottom: 1px solid #ccc;
 }
 
+/* Panel – gleiche Breite wie der Inhalt der Liste darunter */
 #panel {
-  flex: 1;
-  margin-right: 20px;
+  position: relative;
+  width: 90%; /* exakt so breit wie der Inhalt der Scroll-Liste */
+  display: flex;
+  justify-content: center;
 }
 
-input {
+/* --- Suchfeld final, mittig über der Liste --- */
+#panel input[type="text"] {
   width: 100%;
-  padding: 10px;
+  max-width: 600px; /* feste Maximalbreite */
+  padding: 10px 50px 10px 20px; /* Platz für Icon rechts */
   font-size: 34px;
   border: 1px solid #aaa;
-  border-radius: 6px;
+  border-radius: 0;
+  background-color: #fff;
+  outline: none;
+  color: #000;
+  text-align: center;
+  box-sizing: border-box;
 }
 
-/* --- SCROLL-CONTAINER --- */
+/* Lupe-Icon – exakt am rechten Innenrand des Input-Felds */
+#panel::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: calc(
+    (100% - 600px) / 2 + 20px
+  ); /* Icon bündig mit rechtem Rand des Inputfelds */
+  width: 26px;
+  height: 26px;
+  background-image: url("pictures/suche.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Container-Hintergründe */
+body,
+#canvasContainer {
+  background-color: #fff !important;
+}
+
 #canvasContainer {
   width: 100%;
-  border: none;
-  padding: 0;
-  margin: 0;
-  height: 600px;
-  overflow-y: auto;
 }
 
-/* --- Scroll Items --- */
-.scroll-item {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 70px;
+/* Scroll-Bereich */
+#scrollWrapper {
+  width: 90%; /* identisch mit Suchfeldbreite */
+  margin: 0 auto; /* zentriert */
+  height: 600px;
+  overflow-y: scroll;
+  position: relative;
+  border-bottom: 1px solid #ccc;
+  background: white;
+}
+
+#innerContainer {
+  position: relative;
   width: 100%;
+}
+
+/* scroll item */
+.scroll-item {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-bottom: 1px solid #eee;
   box-sizing: border-box;
-  cursor: default;
-  padding: 0 10px;
-  font-size: 40px;
+  padding: 8px 0;
+  background: white;
 }
 
-.scroll-item span {
+/* inner line layout (3 columns) */
+.line-container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 50px;
+  width: 90%;
+  line-height: 1.2;
+  margin: 0 auto;
+}
+
+.left-part {
+  text-align: right;
+}
+
+.center-part {
+  text-align: center;
   cursor: pointer;
-  white-space: nowrap;
-  margin: 0 4px;
 }
 
+.right-part {
+  text-align: left;
+}
+
+/* Standard-Schriftgröße */
+.left-part,
+.center-part,
+.right-part {
+  white-space: normal;
+  word-break: break-word;
+  font-size: 36px;
+}
+
+/* highlight selected row */
 .selected-item {
-  background-color: #fafa80; /* hellgelb für ausgewähltes Item */
+  background-color: #fafa80;
   transition: background-color 0.2s;
 }
 
-/* --- INHALTSLISTE UNTEN (Closest Indicators) --- */
+/* bottom area */
 #contentContainer {
   border-top: 1px solid #ccc;
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  gap: 12px;
   padding: 10px;
-  width: 100%;
   box-sizing: border-box;
+  width: 90%; /* bündig mit Scrollbereich */
+  margin: 0 auto;
 }
 
 .item {
   flex: 1;
   max-width: 20%;
-  border: solid thin #555;
+  border: thin solid #555;
   padding: 16px;
-  font-size: 40px;
-  line-height: 1.4;
+  font-size: 34px;
+  background: #f9f9f9;
   box-sizing: border-box;
-  background-color: #f9f9f9;
-  transition: background-color 0.2s;
 }
 
 .item:hover {
-  background-color: #f1f1f1;
+  background: #f1f1f1;
 }
 
+/* klickbare Wörter */
 .clickable-word {
   cursor: pointer;
-  color: #0077cc;
-  transition: color 0.2s, background-color 0.2s;
+  color: #000000;
+  transition: color 0.15s;
 }
 
 .clickable-word:hover {
   color: #004c99;
-  background-color: #e0f0ff;
+  background: #e0f0ff;
 }
 
-/* --- Hamburger oben rechts --- */
+/* hamburger + filter menu */
 #hamburger {
   font-size: 48px;
   cursor: pointer;
   padding: 10px 20px;
   user-select: none;
-  transition: background-color 0.2s;
+  position: absolute;
+  right: 20px;
 }
 
-#hamburger:hover {
-  background-color: #d0d0d0;
-}
-
-/* --- Filtermenü (erscheint bei Klick auf Hamburger) --- */
 #filterMenu {
   position: absolute;
   top: 70px;
   right: 20px;
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #aaa;
+  padding: 12px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   z-index: 20;
   font-size: 24px;
 }
@@ -152,15 +216,106 @@ input {
   transform: scale(1.6);
 }
 
-/* --- Responsive Textgröße --- */
+/* responsive */
 @media (max-width: 1200px) {
-  .scroll-item, .item {
-    font-size: 32px;
+  .scroll-item,
+  .item {
+    font-size: 28px;
+  }
+
+  #panel input[type="text"] {
+    max-width: 450px;
+  }
+
+  #panel::after {
+    right: calc((100% - 450px) / 2 + 20px);
   }
 }
 
 @media (max-width: 800px) {
-  .scroll-item, .item {
-    font-size: 28px;
+  .scroll-item,
+  .item {
+    font-size: 24px;
+  }
+
+  #panel input[type="text"] {
+    max-width: 350px;
+  }
+
+  #panel::after {
+    right: calc((100% - 350px) / 2 + 20px);
+  }
+}
+
+/* ✅ NEUE STYLING-ANPASSUNGEN */
+
+/* Standardfarbe für alle Indikatoren */
+.scroll-item .left-part,
+.scroll-item .center-part,
+.scroll-item .right-part {
+  color: #333;
+  font-weight: normal;
+}
+
+/* Wenn Suchwort fett markiert ist */
+.center-part span[style*="font-weight:bold"] {
+  color: black;
+  font-weight: bold;
+}
+
+/* Closest Indicators unten */
+#contentContainer .item h3 {
+  color: #222;
+  font-weight: normal;
+}
+
+#contentContainer .item h3:hover {
+  color: #000;
+}
+
+/* --- DETAILS-BEREICH (oben über Scrollliste) --- */
+
+#detailsContainer {
+  width: 90%;
+  margin: 20px auto 0 auto;
+  text-align: center;
+}
+
+#detailsContent {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 10px;
+  font-size: 28px;
+  color: #000;
+}
+
+/* Jede Spalte */
+.detail-block {
+  flex: 1;
+  min-width: 220px;
+}
+
+.detail-title {
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.detail-value {
+  background-color: #fff799; /* hellgelb wie in der Skizze */
+  padding: 10px 16px;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 24px;
+}
+
+/* Responsive Verhalten */
+@media (max-width: 900px) {
+  #detailsContent {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
   }
 }

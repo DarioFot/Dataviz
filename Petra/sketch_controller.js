@@ -1,123 +1,368 @@
 let dataArray = [];
 let filteredArray = [];
-let selectedIndicator = null;
+let rawData;
 
-let activeFocusGroups = new Set(["youth", "men", "women"]); // Standard: alle aktiv
 let inputField;
-let listContainer;
-let itemHeight = 70;
+let selectedIndicator = null;
+let activeFocusGroups = new Set(['youth', 'men', 'women']);
 
-// --- JSON-Daten laden ---
+let wrapper;
+let inner;
+let itemHeight = 70; // Basiswert (mindestens)
+let buffer = 4;
+let lastRenderKey = "";
+let lineHeights = new Map(); // speichert Höhe jeder Zeile
+
+// --- load JSON ---
 function preload() {
   rawData = loadJSON("/Petra/data/clustered.json");
 }
 
-// --- SETUP ---
+// --- setup ---
 function setup() {
+  noCanvas();
   dataArray = Object.values(rawData);
-  filteredArray = dataArray;
+  filteredArray = dataArray.slice();
 
-  // Input-Feld
+  // input
   inputField = createInput();
   inputField.parent("panel");
-  inputField.input(handleInput);
+  inputField.input(onInputChange);
 
-  // Scrollbarer Container
-  listContainer = createDiv();
-  listContainer.parent("canvasContainer");
-  listContainer.style("height", "600px");
-  listContainer.style("overflow-y", "auto");
+  // outer wrapper
+  wrapper = createDiv().parent("canvasContainer");
+  wrapper.id("scrollWrapper");
+  wrapper.style("height", "600px");
+  wrapper.style("overflow-y", "auto");
+  wrapper.style("position", "relative");
 
-  listContainer.elt.addEventListener("scroll", () => {
+  // inner virtual container
+  inner = createDiv().parent(wrapper);
+  inner.id("innerContainer");
+  inner.style("position", "relative");
+  inner.style("width", "100%");
+
+  // filter menu handlers
+  const hamburger = select('#hamburger');
+  const filterMenu = select('#filterMenu');
+  hamburger.mousePressed(() => filterMenu.toggleClass('hidden'));
+
+  document.querySelectorAll('#filterMenu input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      if (cb.checked) activeFocusGroups.add(cb.value);
+      else activeFocusGroups.delete(cb.value);
+      applyFilters();
+    });
+  });
+
+  // scroll handler
+  wrapper.elt.addEventListener('scroll', () => {
+    renderVisible();
     updateSelectedIndicator();
   });
 
-  // Hamburger-Menü
-  const hamburger = select("#hamburger");
-  const filterMenu = select("#filterMenu");
-  hamburger.mousePressed(() => filterMenu.toggleClass("hidden"));
-
-  document
-    .querySelectorAll('#filterMenu input[type="checkbox"]')
-    .forEach((cb) => {
-      cb.addEventListener("change", () => {
-        if (cb.checked) activeFocusGroups.add(cb.value);
-        else activeFocusGroups.delete(cb.value);
-        applyFilters();
-      });
-    });
-
-  renderList();
+  // initial render
+  applyFilters();
 }
 
-// --- RENDER LIST ITEMS ---
-function renderList() {
-  listContainer.html(""); // alte Items löschen
-  let query = inputField.value().toLowerCase();
+// --- input change ---
+function onInputChange() {
+  applyFilters();
+}
 
-  filteredArray.forEach((item) => {
-    let fullText = item["Indicator English"] || "No Title";
+// --- apply filters ---
+function applyFilters() {
+  const q = (inputField.value() || "").toLowerCase();
 
-    // Hauptcontainer
-    let itemDiv = createDiv().parent(listContainer);
-    itemDiv.class("scroll-item");
-    itemDiv.style("height", itemHeight + "px");
-    itemDiv.style("line-height", itemHeight + "px");
+  filteredArray = dataArray.filter(item => {
+    let focus = (item["Focus Group"] || "").toLowerCase();
+    let indicator = (item["Indicator English"] || "").toLowerCase();
+    const matchesFocus = activeFocusGroups.has(focus);
 
-    // --- Wörter splitten und anzeigen ---
-    fullText.split(/\s+/).forEach((w) => {
-      let spanDiv = createSpan(w + " ").parent(itemDiv);
-      spanDiv.class("clickable-word");
-      spanDiv.style("margin", "0 2px");
-      spanDiv.style("white-space", "nowrap");
+    // Ganze-Wort-Filterung
+    const words = indicator.match(/\b\w+\b/g) || [];
+    const matchesQuery = q === "" || words.some(w => w.toLowerCase() === q);
 
-      // Fett-Markierung für Suchwort
-      if (query.length >= 3 && w.toLowerCase().includes(query)) {
-        spanDiv.style("font-weight", "bold");
-      } else {
-        spanDiv.style("font-weight", "normal");
-      }
-
-      // Klick auf Wort
-      spanDiv.mousePressed(() => {
-        inputField.value(w.toLowerCase());
-        handleInput();
-
-        // selectedIndicator setzen
-        let found = dataArray.find((d) => d["Indicator English"] === fullText);
-        if (found) {
-          selectedIndicator = found;
-          let index = filteredArray.indexOf(found);
-          if (index !== -1) listContainer.elt.scrollTop = index * itemHeight;
-        }
-      });
-    });
+    return matchesFocus && matchesQuery;
   });
 
-  updateSelectedIndicator();
+  wrapper.elt.scrollTop = 0;
+  lastRenderKey = "";
+  selectedIndicator = filteredArray[0] || null;
+  renderVisible();
+  showClosestIndicators(selectedIndicator);
 }
 
-// --- UPDATE selectedIndicator UND HIGHLIGHT ---
+// --- render only visible items ---
+function renderVisible() {
+  const scrollTop = wrapper.elt.scrollTop;
+  const viewH = wrapper.elt.clientHeight;
+  const totalItems = filteredArray.length;
+
+  const start = Math.max(0, Math.floor(scrollTop / itemHeight) - buffer);
+  const end = Math.min(totalItems - 1, Math.ceil((scrollTop + viewH) / itemHeight) + buffer);
+
+  const key = `${start}:${end}:${(inputField.value()||"").toLowerCase()}:${filteredArray.length}:${selectedIndicator ? selectedIndicator["Indicator English"] : ""}`;
+  if (key === lastRenderKey) return;
+  lastRenderKey = key;
+
+  inner.html("");
+  lineHeights.clear();
+
+  const q = (inputField.value() || "").toLowerCase();
+
+  // Erst bauen, um Höhe zu messen
+  for (let i = start; i <= end; i++) {
+    const item = filteredArray[i];
+    const text = item["Indicator English"] || "No Title";
+
+    const itemDiv = createDiv().parent(inner);
+    itemDiv.class("scroll-item");
+    if (selectedIndicator && selectedIndicator["Indicator English"] === item["Indicator English"]) {
+      itemDiv.addClass("selected-item");
+    }
+
+    buildThreePart(itemDiv, text, q, item);
+
+    // Nach DOM-Erstellung Höhe messen
+    const h = Math.max(itemDiv.elt.scrollHeight, itemHeight);
+    lineHeights.set(i, h);
+  }
+
+  // Gesamthöhe berechnen
+  let totalHeight = 0;
+  for (let i = 0; i < totalItems; i++) {
+    totalHeight += lineHeights.get(i) || itemHeight;
+  }
+  inner.style("height", totalHeight + "px");
+
+  // Positionierung der sichtbaren Zeilen
+  let currentY = 0;
+  for (let i = 0; i < totalItems; i++) {
+    const h = lineHeights.get(i) || itemHeight;
+    if (i >= start && i <= end) {
+      const div = inner.elt.children[i - start];
+      div.style.top = currentY + "px";
+      div.style.height = h + "px";
+    }
+    currentY += h;
+  }
+}
+
+// --- build text line (angepasst: zentriert, wenn keine Suche aktiv) ---
+function buildThreePart(container, fullText, query, item) {
+  container.html("");
+  const q = (query || "").trim().toLowerCase();
+
+  const tokens = fullText.match(/\b\w+\b[.,!?;:]?|\S+/g) || [];
+
+  // --- FALL 1: Keine Suche aktiv → einfacher zentrierter Text ---
+  if (q === "") {
+    const line = createDiv().parent(container);
+    line.class("line-container");
+    line.style("grid-template-columns", "1fr");
+    line.style("justify-items", "center");
+
+    const centerDiv = createDiv().parent(line).class("center-part");
+    centerDiv.style("text-align", "center");
+
+    for (const tok of tokens) {
+      const m = tok.match(/^(\w+)([.,!?;:]*)$/);
+      const wordPart = m ? m[1] : tok;
+      const punct = m ? m[2] : "";
+
+      const wordSpan = createSpan(wordPart).parent(centerDiv).class("clickable-word");
+      wordSpan.style("cursor", "pointer");
+
+      if (punct) createSpan(punct).parent(centerDiv);
+      createSpan(" ").parent(centerDiv);
+
+      // Klick auf Wort → Suche starten
+      wordSpan.mousePressed(() => {
+        inputField.value(wordPart.toLowerCase());
+        selectedIndicator = item;
+        applyFilters();
+        const idx = filteredArray.indexOf(item);
+        if (idx !== -1) {
+          setTimeout(() => { wrapper.elt.scrollTop = idx * itemHeight; }, 0);
+        }
+      });
+    }
+    return;
+  }
+
+  // --- FALL 2: Suche aktiv → bisherige Logik mit drei Teilen ---
+  let matchIdx = -1;
+  for (let k = 0; k < tokens.length; k++) {
+    const cleanWord = tokens[k].replace(/[.,!?;:]+$/, "").toLowerCase();
+    if (cleanWord === q) { matchIdx = k; break; }
+  }
+
+  let leftTokens, centerToken, rightTokens;
+  if (matchIdx >= 0) {
+    leftTokens = tokens.slice(0, matchIdx);
+    centerToken = tokens[matchIdx];
+    rightTokens = tokens.slice(matchIdx + 1);
+  } else {
+    leftTokens = tokens;
+    centerToken = null;
+    rightTokens = [];
+  }
+
+  const line = createDiv().parent(container);
+  line.class("line-container");
+
+  function appendWordSpans(parent, tokenArray, makeBold = false) {
+    for (const tok of tokenArray) {
+      const m = tok.match(/^(\w+)([.,!?;:]*)$/);
+      const wordPart = m ? m[1] : tok;
+      const punct = m ? m[2] : "";
+
+      const wordSpan = createSpan(wordPart).parent(parent).class("clickable-word");
+      wordSpan.style("cursor", "pointer");
+      if (makeBold) wordSpan.style("font-weight", "bold");
+
+      if (punct) createSpan(punct).parent(parent);
+      createSpan(" ").parent(parent);
+
+      wordSpan.mousePressed(() => {
+        inputField.value(wordPart.toLowerCase());
+        selectedIndicator = item;
+        applyFilters();
+        const idx = filteredArray.indexOf(item);
+        if (idx !== -1) {
+          setTimeout(() => { wrapper.elt.scrollTop = idx * itemHeight; }, 0);
+        }
+      });
+    }
+  }
+
+  // Left
+  const leftDiv = createDiv().parent(line).class("left-part");
+  appendWordSpans(leftDiv, leftTokens, false);
+
+  // Center (fett bei Treffer)
+  const centerDiv = createDiv().parent(line).class("center-part");
+  if (centerToken) appendWordSpans(centerDiv, [centerToken], true);
+
+  // Right
+  const rightDiv = createDiv().parent(line).class("right-part");
+  appendWordSpans(rightDiv, rightTokens, false);
+}
+
+// --- update selectedIndicator ---
 function updateSelectedIndicator() {
-  let scrollTop = listContainer.elt.scrollTop;
-  let index = Math.floor(scrollTop / itemHeight);
-  index = constrain(index, 0, filteredArray.length - 1);
-  selectedIndicator = filteredArray[index];
+  const scrollTop = wrapper.elt.scrollTop;
+  let idx = 0;
+  let cumulative = 0;
+  for (let i = 0; i < filteredArray.length; i++) {
+    const h = lineHeights.get(i) || itemHeight;
+    if (scrollTop < cumulative + h) { idx = i; break; }
+    cumulative += h;
+  }
 
-  let children = listContainer.elt.children;
-  for (let i = 0; i < children.length; i++)
-    children[i].classList.remove("selected-item");
-  if (children[index]) children[index].classList.add("selected-item");
+  const newSelected = filteredArray[idx] || null;
+  if (!selectedIndicator || (newSelected && selectedIndicator["Indicator English"] !== newSelected["Indicator English"])) {
+    selectedIndicator = newSelected;
+    showClosestIndicators(selectedIndicator);
+  }
 
-  if (selectedIndicator) showClosestIndicators(selectedIndicator);
+  const children = inner.elt.children;
+  for (let i = 0; i < children.length; i++) children[i].classList.remove("selected-item");
+  const visibleIdx = idx - Math.max(0, Math.floor(scrollTop / itemHeight) - buffer);
+  if (children[visibleIdx]) children[visibleIdx].classList.add("selected-item");
+}
+
+// --- cosine similarity ---
+function cosineSim(a, b) {
+  if (!a || !b || a.length !== b.length) return 0;
+  let dot = 0, ma = 0, mb = 0;
+  for (let i = 0; i < a.length; i++) { dot += a[i]*b[i]; ma += a[i]*a[i]; mb += b[i]*b[i]; }
+  return dot / (Math.sqrt(ma)*Math.sqrt(mb));
+}
+
+// --- show closest indicators ---
+function showClosestIndicators(curr) {
+  const container = select("#contentContainer");
+  container.html("");
+  if (!curr || !curr.embedding) return;
+
+  let sims = dataArray.map(it => ({it, sim: cosineSim(curr.embedding, it.embedding || [])}));
+  sims.sort((x,y) => y.sim - x.sim);
+  let closest = sims.filter(s => s.it["Indicator English"] !== curr["Indicator English"]).slice(0,5);
+
+  for (let s of closest) {
+    const item = s.it;
+    let d = createDiv().parent(container).class("item");
+    let title = item["Indicator English"] || "No Title";
+    let wordsHtml = title.split(/\s+/).map(w => `<span class="clickable-word" data-word="${w}" data-id="${item["Indicator English"]}">${w}</span>`).join(" ");
+    d.html(`<h3>${wordsHtml}</h3>`);
+    showDetails(curr);
+  }
+
+  document.querySelectorAll("#contentContainer .clickable-word").forEach(el => {
+    el.onclick = () => {
+      let w = el.getAttribute("data-word") || "";
+      const id = el.getAttribute("data-id");
+      w = w.replace(/[.,!?;:]+$/, "").toLowerCase(); // Satzzeichen entfernen
+      inputField.value(w);
+      applyFilters();
+      const found = dataArray.find(d => d["Indicator English"] === id);
+      if (found) {
+        selectedIndicator = found;
+        const idx = filteredArray.indexOf(found);
+        if (idx !== -1) wrapper.elt.scrollTop = idx * itemHeight;
+      }
+    };
+  });
+}
+
+function constrain(v, a, b) { return Math.min(Math.max(v, a), b); }
+function windowResized() { wrapper.style("height", "600px"); }
+
+function showDetails(indicator) {
+  const container = select("#detailsContent");
+  if (!container) return;
+  container.html(""); // leeren, bevor neu gefüllt wird
+
+  if (!indicator) {
+    container.html("Select an entry to see more information here.");
+    return;
+  }
+
+  // Werte aus dem JSON holen
+  const speaker = indicator["Focus Group"] || "N/A";
+  const community = indicator["Community"] || "N/A";
+  const dim1 = indicator["Dimension 1"] || "";
+  const dim2 = indicator["Dimension 2"] || "";
+
+  // HTML-Struktur aufbauen (ohne CSS zu ändern!)
+  const html = `
+    <div id="detailsContent">
+      <div class="detail-block">
+        <div class="detail-title">Speaker</div>
+        <div class="detail-value">${speaker}</div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-title">Community</div>
+        <div class="detail-value">${community}</div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-title">Categories</div>
+        <div class="detail-value">${[dim1, dim2].filter(Boolean).join(" & ") || "N/A"}</div>
+      </div>
+    </div>
+  `;
+
+  container.html(html);
 }
 
 // KOMMUNIKATION ZWISCHEN PAGES
 function handleInput() {
-  // Wendet Filter auf die Eingabe an (z. B. zur Anzeige oder Suche)
+  // Wendet Filter auf die Eingabe an (z. B. zur Anzeige oder Suche)
   applyFilters();
 
-  // Versucht, eine Live-Anfrage über WebSocket an den „visual“-Raum zu senden
+  // Versucht, eine Live-Anfrage über WebSocket an den „visual"-Raum zu senden
   try {
     // Prüft, ob eine WebSocket-Verbindung existiert
     if (window.socket) {
@@ -130,105 +375,10 @@ function handleInput() {
         payload: {
           action: "searchQuery", // Aktion: Suchanfrage senden
           query, // Der eigentliche Suchbegriff
-          // selectedIndicator: current,
         },
       });
     }
   } catch (e) {
-    // Fehler werden ignoriert (z. B. wenn keine Verbindung besteht)
+    // Fehler werden ignoriert (z. B. wenn keine Verbindung besteht)
   }
-}
-
-function applyFilters() {
-  let query = inputField.value().toLowerCase();
-
-  filteredArray = dataArray.filter((item) => {
-    let focus = (item["Focus Group"] || "").toLowerCase();
-    let indicator = (item["Indicator English"] || "").toLowerCase();
-    let matchesFocus = activeFocusGroups.has(focus);
-    let matchesQuery = query.length < 3 || indicator.includes(query);
-    return matchesFocus && matchesQuery;
-  });
-
-  renderList();
-  listContainer.elt.scrollTop = 0;
-}
-
-// --- COSINE SIMILARITY ---
-function cosineSim(vecA, vecB) {
-  if (!vecA || !vecB || vecA.length !== vecB.length) return 0;
-  let dot = 0,
-    magA = 0,
-    magB = 0;
-  for (let i = 0; i < vecA.length; i++) {
-    dot += vecA[i] * vecB[i];
-    magA += vecA[i] * vecA[i];
-    magB += vecB[i] * vecB[i];
-  }
-  return dot / (Math.sqrt(magA) * Math.sqrt(magB));
-}
-
-// --- SHOW CLOSEST INDICATORS ---
-function showClosestIndicators(currentItem) {
-  const container = select("#contentContainer");
-  container.html("");
-
-  let currentEmbedding = currentItem.embedding;
-  if (!currentEmbedding) return;
-
-  let sims = dataArray.map((item) => ({
-    item,
-    sim: cosineSim(currentEmbedding, item.embedding || []),
-  }));
-  sims.sort((a, b) => b.sim - a.sim);
-  let closest = sims.filter((s) => s.item !== currentItem).slice(0, 5);
-
-  closest.forEach((s) => {
-    let item = s.item;
-    let newDiv = createDiv().parent(container);
-    newDiv.class("item");
-
-    let title = item["Indicator English"] || "No Title";
-    let words = title
-      .split(/\s+/)
-      .map(
-        (w) =>
-          `<span class="clickable-word" data-word="${w}" data-id="${title}">${w}</span>`
-      )
-      .join(" ");
-
-    newDiv.html(`
-      <h3>${words}</h3>
-      <p>Similarity: ${nf(s.sim, 1, 3)}</p>
-      <p>Community: ${item["Community"] || "N/A"}</p>
-      <p>Dimension: ${item["Dimension 1"] || "N/A"}</p>
-    `);
-  });
-
-  document.querySelectorAll(".clickable-word").forEach((el) => {
-    el.addEventListener("click", () => {
-      let clickedWord = el.getAttribute("data-word");
-      let indicatorTitle = el.getAttribute("data-id");
-
-      inputField.value(clickedWord.toLowerCase());
-      handleInput();
-
-      let found = dataArray.find(
-        (d) => d["Indicator English"] === indicatorTitle
-      );
-      if (found) {
-        selectedIndicator = found;
-        let index = filteredArray.indexOf(found);
-        if (index !== -1) listContainer.elt.scrollTop = index * itemHeight;
-      }
-    });
-  });
-}
-
-// --- UTILITY ---
-function constrain(val, min, max) {
-  return Math.min(Math.max(val, min), max);
-}
-function windowResized() {
-  listContainer.style("height", "600px");
 }
