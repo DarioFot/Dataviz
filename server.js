@@ -33,6 +33,9 @@ app.use("/Petra", express.static(path.join(__dirname, "Petra")));
 // Gemeinsame Bibliotheken sind unter "/libraries" verfügbar
 app.use("/libraries", express.static(path.join(__dirname, "libraries")));
 
+// Dateien aus dem "fonts"-Ordner sind unter "/fonts" verfügbar
+app.use("/fonts", express.static(path.join(__dirname, "fonts")));
+
 // Weiterleitung von "/" zur Hauptanzeige "monitor1"
 app.get("/", (req, res) => res.redirect("/monitor1"));
 
