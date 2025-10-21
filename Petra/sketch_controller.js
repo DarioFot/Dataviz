@@ -182,7 +182,7 @@ function buildThreePart(container, fullText, query, item) {
       wordSpan.mousePressed(() => {
         inputField.value(wordPart.toLowerCase());
         selectedIndicator = item;
-        applyFilters();
+        handleInput(); // This will apply filters AND send to visual
         const idx = filteredArray.indexOf(item);
         if (idx !== -1) {
           setTimeout(() => { wrapper.elt.scrollTop = idx * itemHeight; }, 0);
@@ -229,7 +229,7 @@ function buildThreePart(container, fullText, query, item) {
       wordSpan.mousePressed(() => {
         inputField.value(wordPart.toLowerCase());
         selectedIndicator = item;
-        applyFilters();
+        handleInput(); // This will apply filters AND send to visual
         const idx = filteredArray.indexOf(item);
         if (idx !== -1) {
           setTimeout(() => { wrapper.elt.scrollTop = idx * itemHeight; }, 0);
