@@ -94,6 +94,8 @@ function applyFilters() {
   selectedIndicator = filteredArray[0] || null;
   renderVisible();
   showClosestIndicators(selectedIndicator);
+  // Send selected indicator to visual for canvas redraw
+  sendSelectedToVisual(selectedIndicator);
 }
 
 // --- render only visible items ---
@@ -268,6 +270,8 @@ function updateSelectedIndicator() {
   if (!selectedIndicator || (newSelected && selectedIndicator["Indicator English"] !== newSelected["Indicator English"])) {
     selectedIndicator = newSelected;
     showClosestIndicators(selectedIndicator);
+    // Send selected indicator to visual for canvas redraw
+    sendSelectedToVisual(selectedIndicator);
   }
 
   const children = inner.elt.children;
@@ -383,5 +387,22 @@ function handleInput() {
     }
   } catch (e) {
     // Fehler werden ignoriert (z. B. wenn keine Verbindung besteht)
+  }
+}
+
+// Send selected indicator to visual for canvas redraw
+function sendSelectedToVisual(indicator) {
+  try {
+    if (window.socket && indicator) {
+      window.socket.emit("control", {
+        targetRoom: "visual",
+        payload: {
+          action: "selectedIndicator",
+          indicator: indicator
+        },
+      });
+    }
+  } catch (e) {
+    // Fehler werden ignoriert
   }
 }

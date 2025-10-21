@@ -245,10 +245,14 @@ window.handleControlFromSocket = function (msg) {
       handleInput();
     }
 
-    // if (receivedIndicator) {
-    //   selectedIndicator = receivedIndicator;
-    //   console.log("Selected indicator updated:", selectedIndicator);
-    // }
+  }
+
+  // Wenn die Aktion im Payload "selectedIndicator" ist...
+  if (msg.payload.action === "selectedIndicator") {
+    // Setzt den ausgewählten Indikator für die Canvas-Darstellung
+    selectedIndicator = msg.payload.indicator;
+    console.log("Selected indicator updated:", selectedIndicator);
+    // Der Canvas wird automatisch in der draw() Funktion neu gezeichnet
   }
 };
 
