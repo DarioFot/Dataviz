@@ -245,10 +245,10 @@ window.handleControlFromSocket = function (msg) {
       handleInput();
     }
 
-    if (receivedIndicator) {
-      selectedIndicator = receivedIndicator;
-      console.log("Selected indicator updated:", selectedIndicator);
-    }
+    // if (receivedIndicator) {
+    //   selectedIndicator = receivedIndicator;
+    //   console.log("Selected indicator updated:", selectedIndicator);
+    // }
   }
 };
 

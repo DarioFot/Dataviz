@@ -130,7 +130,7 @@ function handleInput() {
         payload: {
           action: "searchQuery", // Aktion: Suchanfrage senden
           query, // Der eigentliche Suchbegriff
-          selectedIndicator: current,
+          // selectedIndicator: current,
         },
       });
     }
