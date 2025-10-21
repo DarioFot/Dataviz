@@ -49,11 +49,11 @@ function setup() {
 
   document.querySelectorAll('#filterMenu input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', () => {
-      if (cb.checked) activeFocusGroups.add(cb.value);
-      else activeFocusGroups.delete(cb.value);
-      applyFilters();
+        if (cb.checked) activeFocusGroups.add(cb.value);
+        else activeFocusGroups.delete(cb.value);
+        applyFilters();
+      });
     });
-  });
 
   // scroll handler
   wrapper.elt.addEventListener('scroll', () => {
@@ -204,7 +204,7 @@ function buildThreePart(container, fullText, query, item) {
     leftTokens = tokens.slice(0, matchIdx);
     centerToken = tokens[matchIdx];
     rightTokens = tokens.slice(matchIdx + 1);
-  } else {
+      } else {
     leftTokens = tokens;
     centerToken = null;
     rightTokens = [];
@@ -307,7 +307,7 @@ function showClosestIndicators(curr) {
       const id = el.getAttribute("data-id");
       w = w.replace(/[.,!?;:]+$/, "").toLowerCase(); // Satzzeichen entfernen
       inputField.value(w);
-      applyFilters();
+      handleInput(); // This will apply filters AND send to visual
       const found = dataArray.find(d => d["Indicator English"] === id);
       if (found) {
         selectedIndicator = found;
