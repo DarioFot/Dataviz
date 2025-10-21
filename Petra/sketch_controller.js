@@ -15,7 +15,7 @@ let lineHeights = new Map(); // speichert Höhe jeder Zeile
 
 // --- load JSON ---
 function preload() {
-  rawData = loadJSON("/Petra/data/clustered.json");
+  rawData = loadJSON("/stefan/data/embeddings-full.json");
 }
 
 //Testkommentar
@@ -23,7 +23,11 @@ function preload() {
 // --- setup ---
 function setup() {
   noCanvas();
-  dataArray = Object.values(rawData);
+  // Filter data like in Visual to ensure same structure
+  dataArray = Object.values(rawData).filter((item) => {
+    const name = item["Indicator English"];
+    return name && name.trim() !== "" && name.trim().toLowerCase() !== "null";
+  });
   filteredArray = dataArray.slice();
 
   // input
