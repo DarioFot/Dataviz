@@ -8,6 +8,7 @@ body {
 canvas {
   display: block;
   color: blue;
+  flex-direction: column;
 }
 
 .indicator {
