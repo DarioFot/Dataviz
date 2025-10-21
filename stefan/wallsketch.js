@@ -143,33 +143,22 @@ function draw() {
 }
 
 function handleInput() {
+  // Only update input field value, don't change selectedIndicator or drawing
+  // The drawing is now based on the communicated selectedIndicator from Monitor1
   let query = inputField.value().toLowerCase().trim();
-
+  
+  // Keep filteredArray for display purposes but don't change selectedIndicator
   if (query === "") {
     filteredArray = dataArray;
-    selectedIndicator = null;
-    closest5 = [];
   } else {
     filteredArray = dataArray.filter((item) => {
       let indicator = item["Indicator English"]?.toLowerCase() || "";
       let regex = new RegExp(`\\b${query}\\b`, "i");
       return regex.test(indicator);
     });
-
-    selectedIndicator = filteredArray.length > 0 ? filteredArray[0] : null;
-
-    if (selectedIndicator) {
-      let index = dataArray.indexOf(selectedIndicator);
-      closest5 = findFiveClosest(index);
-
-      // console.log("EMOJI: ", selectedIndicator["Indicator English"]);
-      // for (let idx of closest5) {
-      //   console.log(" →", dataArray[idx]["Indicator English"]);
-      // }
-    }
-
-    appendItems();
   }
+
+  appendItems();
 }
 
 function appendItems() {
@@ -251,6 +240,15 @@ window.handleControlFromSocket = function (msg) {
     // Setzt den ausgewählten Indikator für die Canvas-Darstellung
     selectedIndicator = msg.payload.indicator;
     console.log("Selected indicator updated:", selectedIndicator);
+    
+    // Calculate closest 5 indicators for drawing connections
+    if (selectedIndicator) {
+      let index = dataArray.indexOf(selectedIndicator);
+      if (index !== -1) {
+        closest5 = findFiveClosest(index);
+        console.log("Closest 5 calculated:", closest5);
+      }
+    }
     // Der Canvas wird automatisch in der draw() Funktion neu gezeichnet
   }
 };
