@@ -67,7 +67,8 @@ function setup() {
 
 // --- input change ---
 function onInputChange() {
-  applyFilters();
+  // Use shared handler to also emit query over websocket
+  handleInput();
 }
 
 // --- apply filters ---
