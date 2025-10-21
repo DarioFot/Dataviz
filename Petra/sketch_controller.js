@@ -18,6 +18,8 @@ function preload() {
   rawData = loadJSON("/Petra/data/clustered.json");
 }
 
+//Testkommentar
+
 // --- setup ---
 function setup() {
   noCanvas();
