@@ -1,13 +1,13 @@
 @font-face {
-  font-family: 'Suisse International';
-  src: url('/fonts/SuisseIntl-Thin.otf');
+  font-family: "Suisse International";
+  src: url("/fonts/SuisseIntl-Thin.otf");
   font-weight: 100;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Suisse International';
-  src: url('/fonts/SuisseIntl-Light.otf');
+  font-family: "Suisse International";
+  src: url("/fonts/SuisseIntl-Light.otf");
   font-weight: 300;
   font-style: normal;
 }
@@ -17,10 +17,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: 'Suisse International', sans-serif;
+  font-family: "Suisse International", sans-serif;
   font-weight: 300;
   background-color: #fff;
-}
-
-.contentContainer {
 }
