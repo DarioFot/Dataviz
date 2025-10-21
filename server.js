@@ -13,7 +13,7 @@ const server = http.createServer(app);
 // Richtet einen Socket.IO-Server mit CORS-Einstellungen ein
 const io = new Server(server, {
   cors: {
-    // Erlaubt Verbindungen nur von einer bestimmten URL (z. B. von Rennder)
+    // Erlaubt Verbindungen nur von einer bestimmten RL (z. B. von Rennder)
     origin: process.env.CORS_ORIGIN || "https://dataviz-quyb.onrender.com",
     methods: ["GET", "POST"], // Zulässige Methoden
   },
