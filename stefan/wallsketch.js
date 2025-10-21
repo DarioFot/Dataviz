@@ -240,13 +240,18 @@ window.handleControlFromSocket = function (msg) {
     // Setzt den ausgewählten Indikator für die Canvas-Darstellung
     selectedIndicator = msg.payload.indicator;
     console.log("Selected indicator updated:", selectedIndicator);
+    console.log("DataArray length:", dataArray.length);
+    console.log("Embeddings length:", embeddings.length);
     
     // Calculate closest 5 indicators for drawing connections
     if (selectedIndicator) {
       let index = dataArray.indexOf(selectedIndicator);
+      console.log("Found index:", index);
       if (index !== -1) {
         closest5 = findFiveClosest(index);
         console.log("Closest 5 calculated:", closest5);
+      } else {
+        console.log("ERROR: selectedIndicator not found in dataArray");
       }
     }
     // Der Canvas wird automatisch in der draw() Funktion neu gezeichnet

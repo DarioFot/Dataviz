@@ -398,6 +398,7 @@ function handleInput() {
 function sendSelectedToVisual(indicator) {
   try {
     if (window.socket && indicator) {
+      console.log("Sending selectedIndicator to visual:", indicator);
       window.socket.emit("control", {
         targetRoom: "visual",
         payload: {
@@ -405,8 +406,10 @@ function sendSelectedToVisual(indicator) {
           indicator: indicator
         },
       });
+    } else {
+      console.log("Cannot send - socket:", !!window.socket, "indicator:", !!indicator);
     }
   } catch (e) {
-    // Fehler werden ignoriert
+    console.log("Error sending selectedIndicator:", e);
   }
 }
