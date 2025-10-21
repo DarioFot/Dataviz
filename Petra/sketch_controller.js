@@ -94,7 +94,7 @@ function applyFilters() {
   selectedIndicator = filteredArray[0] || null;
   renderVisible();
   showClosestIndicators(selectedIndicator);
-  // Send selected indicator to visual for canvas redraw
+  // Send selected indicator to visual for canvas drawing
   sendSelectedToVisual(selectedIndicator);
 }
 
@@ -270,7 +270,7 @@ function updateSelectedIndicator() {
   if (!selectedIndicator || (newSelected && selectedIndicator["Indicator English"] !== newSelected["Indicator English"])) {
     selectedIndicator = newSelected;
     showClosestIndicators(selectedIndicator);
-    // Send selected indicator to visual for canvas redraw
+    // Send selected indicator to visual for canvas drawing
     sendSelectedToVisual(selectedIndicator);
   }
 
@@ -390,7 +390,7 @@ function handleInput() {
   }
 }
 
-// Send selected indicator to visual for canvas redraw
+// Send selected indicator to visual for canvas drawing
 function sendSelectedToVisual(indicator) {
   try {
     if (window.socket && indicator) {

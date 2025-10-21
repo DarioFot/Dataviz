@@ -244,7 +244,6 @@ window.handleControlFromSocket = function (msg) {
       // Führt handleInput() aus, um z. B. Filter anzuwenden und die Suchanfrage zu senden
       handleInput();
     }
-
   }
 
   // Wenn die Aktion im Payload "selectedIndicator" ist...
