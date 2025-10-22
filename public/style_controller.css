@@ -3,21 +3,24 @@
   --black: #292929;
   --white: #dfdfdf;
   --light-blue: #e0f0ff;
+  --grey: #6f6f6f;
 }
 
 @font-face {
   font-family: "Suisse International";
-  src: url("/fonts/SuisseIntl-Thin.otf");
-  font-weight: 100;
-  font-style: normal;
+  src: url("/fonts/SuisseIntl-Bold.otf");
+  font-weight: 700;
+  font-style: bold;
 }
 
 @font-face {
   font-family: "Suisse International";
-  src: url("/fonts/SuisseIntl-Light.otf");
-  font-weight: 300;
-  font-style: normal;
+  src: url("/fonts/SuisseIntl-Medium.otf");
+  font-weight: 500;
+  font-style: medium;
 }
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap");
 
 html,
 body {
@@ -25,14 +28,14 @@ body {
   padding: 0;
   height: 100%;
   font-family: "Suisse International", sans-serif;
-  font-weight: 300;
+  font-weight: 500;
   background-color: var(--white);
 }
 
 /* Topbar */
 #topbar {
   width: 100%;
-  padding: 10px 0;
+  padding: 2rem;
   display: flex;
   align-items: center;
   justify-content: center; /* Zentriert Inhalt horizontal */
@@ -53,34 +56,21 @@ body {
 /* --- Suchfeld final, mittig über der Liste --- */
 #panel input[type="text"] {
   width: 100%;
-  max-width: 600px; /* feste Maximalbreite */
-  padding: 10px 50px 10px 20px; /* Platz für Icon rechts */
-  font-size: 34px;
-  border: 1px solid #aaa;
+  max-width: 300px; /* feste Maximalbreite */
+  padding-top: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 0.6rem;
+  padding-left: 1rem;
+  border: 2px solid var(--blue);
   border-radius: 0;
   outline: none;
-  color: var(--black);
-  text-align: center;
+  color: var(--blue);
+  text-align: left;
   box-sizing: border-box;
   text-transform: uppercase;
-}
-
-/* Lupe-Icon – exakt am rechten Innenrand des Input-Felds */
-#panel::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: calc(
-    (100% - 600px) / 2 + 20px
-  ); /* Icon bündig mit rechtem Rand des Inputfelds */
-  width: 26px;
-  height: 26px;
-  background-image: url("pictures/suche.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0.6;
-  pointer-events: none;
+  font-family: "Suisse International";
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 /* Container-Hintergründe */
@@ -117,9 +107,9 @@ body,
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #eee;
   box-sizing: border-box;
-  padding: 8px 0;
+  padding: 1rem 0;
+  color: var(--grey);
   background: var(--white);
 }
 
@@ -153,14 +143,16 @@ body,
 .right-part {
   white-space: normal;
   word-break: break-word;
-  font-size: 36px;
+  font-size: 1.5rem;
   text-transform: uppercase;
+  line-height: 2rem;
 }
 
 /* highlight selected row */
 .selected-item {
   background-color: var(--blue);
   transition: background-color 0.2s;
+  color: var(--black);
 }
 
 /* bottom area */
@@ -183,7 +175,7 @@ body,
   text-align: center;
   padding: 0px 10px;
   line-height: 0.5;
-  font-size: 24px;
+  font-size: 1rem;
   background: #f9f9f9;
   box-sizing: border-box;
 }
@@ -279,29 +271,49 @@ body,
 .scroll-item .left-part,
 .scroll-item .center-part,
 .scroll-item .right-part {
-  color: #333;
-  font-weight: normal;
+  font-weight: medium;
 }
 
 /* Wenn Suchwort fett markiert ist */
 .center-part span[style*="font-weight:bold"] {
-  color: black;
-  font-weight: bold;
-}
-
-/* Closest Indicators unten */
-#contentContainer .item h3 {
-  color: #222;
-  font-weight: normal;
+  font-family: "Suisse Int'l", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.05rem;
   text-transform: uppercase;
+  color: var(--black);
 }
 
-#contentContainer .item h3:hover {
-  color: #000;
+#innerContainer,
+#innerContainer * {
+  color: var(--grey);
+}
+
+/* Selektiertes Item */
+.scroll-item.selected-item,
+.scroll-item.selected-item * {
+  color: var(--black) !important;
+}
+
+/* Hover für Klickbare Wörter */
+.clickable-word:hover {
+  color: var(--blue) !important; /* höher priorisiert, überschreibt Grau */
+  background: transparent;
+}
+
+/* Wenn Suchwort fett markiert ist */
+.center-part span[style*="font-weight:bold"] {
+  font-family: "Suisse Int'l", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  color: var(--black);
 }
 
 /* --- DETAILS-BEREICH (oben über Scrollliste) --- */
-
 #detailsContainer {
   width: 90%;
   margin: 20px auto 0 auto;
@@ -315,7 +327,7 @@ body,
   gap: 40px;
   margin-top: 10px;
   font-size: 28px;
-  color: #000;
+  color: var(--black);
 }
 
 /* Jede Spalte */
