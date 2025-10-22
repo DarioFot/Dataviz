@@ -12,7 +12,8 @@ let itemHeight = 70; // Basiswert (mindestens)
 let buffer = 4;
 let lastRenderKey = "";
 let lineHeights = new Map(); // speichert Höhe jeder Zeile
-let topPadding = 0; // NEU: Platz über den ersten Einträgen
+let topPadding = 0; // Platz über den ersten Einträgen
+let bottomPadding = 0; // Platz unter den letzten Einträgen
 
 // --- load JSON ---
 function preload() {
@@ -104,7 +105,11 @@ function applyFilters() {
   // --- NEU: Start in der Mitte ---
   const visibleCount = Math.floor(wrapper.elt.clientHeight / itemHeight);
   const midIndex = Math.floor(visibleCount / 2);
+
+  // Gleicher Abstand oben und unten, damit erstes und letztes Item mittig erscheinen können
   topPadding = midIndex * itemHeight;
+  bottomPadding = midIndex * itemHeight;
+
   wrapper.elt.scrollTop = 0;
   renderVisible();
 
@@ -115,7 +120,7 @@ function applyFilters() {
 
 // --- render only visible items ---
 function renderVisible() {
-  const scrollTop = wrapper.elt.scrollTop - topPadding; // NEU
+  const scrollTop = wrapper.elt.scrollTop - topPadding;
   const viewH = wrapper.elt.clientHeight;
   const totalItems = filteredArray.length;
 
@@ -162,7 +167,7 @@ function renderVisible() {
   for (let i = 0; i < totalItems; i++) {
     totalHeight += lineHeights.get(i) || itemHeight;
   }
-  inner.style("height", totalHeight + topPadding + "px"); // NEU
+  inner.style("height", totalHeight + topPadding + bottomPadding + "px"); //NEU
 
   // Positionierung der sichtbaren Zeilen
   let currentY = 0;
@@ -263,31 +268,31 @@ function buildThreePart(container, fullText, query, item) {
       createSpan(" ").parent(parent);
 
       wordSpan.mousePressed(() => {
-  const word = wordPart.toLowerCase();
-  inputField.value(word);
+        const word = wordPart.toLowerCase();
+        inputField.value(word);
 
-  // 1️⃣ Filter anwenden
-  handleInput();
+        // 1️⃣ Filter anwenden
+        handleInput();
 
-  // 2️⃣ Gespeichertes Item (aus dem Klick) nach dem Filtern ganz oben platzieren
-  const idx = filteredArray.findIndex(
-    (d) => d["Indicator English"] === item["Indicator English"]
-  );
+        // 2️⃣ Gespeichertes Item (aus dem Klick) nach dem Filtern ganz oben platzieren
+        const idx = filteredArray.findIndex(
+          (d) => d["Indicator English"] === item["Indicator English"]
+        );
 
-  if (idx > 0) {
-    const [clickedItem] = filteredArray.splice(idx, 1);
-    filteredArray.unshift(clickedItem);
-  }
+        if (idx > 0) {
+          const [clickedItem] = filteredArray.splice(idx, 1);
+          filteredArray.unshift(clickedItem);
+        }
 
-  // 3️⃣ Geklicktes Item bleibt als aktiv markiert
-  selectedIndicator = filteredArray[0] || null;
+        // 3️⃣ Geklicktes Item bleibt als aktiv markiert
+        selectedIndicator = filteredArray[0] || null;
 
-  // 4️⃣ Scroll wieder auf Anfang (oben), dann rendern
-  wrapper.elt.scrollTop = 0;
-  renderVisible();
-  showClosestIndicators(selectedIndicator);
-  sendSelectedToVisual(selectedIndicator);
-});
+        // 4️⃣ Scroll wieder auf Anfang (oben), dann rendern
+        wrapper.elt.scrollTop = 0;
+        renderVisible();
+        showClosestIndicators(selectedIndicator);
+        sendSelectedToVisual(selectedIndicator);
+      });
     }
   }
 
@@ -306,22 +311,32 @@ function buildThreePart(container, fullText, query, item) {
 
 // --- update selectedIndicator ---
 function updateSelectedIndicator() {
-  const scrollTop = wrapper.elt.scrollTop - topPadding;
-const viewH = wrapper.elt.clientHeight;
+  const scrollTop = Math.max(0, wrapper.elt.scrollTop - topPadding);
+  const viewH = wrapper.elt.clientHeight;
+  const totalHeight =
+    [...lineHeights.values()].reduce((a, b) => a + (b || itemHeight), 0) +
+    topPadding +
+    bottomPadding;
 
-// 🟦 NEU: Statt oberster Zeile jetzt Mitte als Referenz
-const midPoint = scrollTop + viewH / 2;
+  // Mitte des sichtbaren Bereichs berechnen
+  const midPoint = scrollTop + viewH / 2;
 
-let idx = 0;
-let cumulative = 0;
-for (let i = 0; i < filteredArray.length; i++) {
-  const h = lineHeights.get(i) || itemHeight;
-  if (midPoint < cumulative + h) {
-    idx = i;
-    break;
+  // Sicherstellen, dass midPoint nicht über den Bereich hinausgeht
+  const clampedMidPoint = Math.min(
+    midPoint,
+    totalHeight - bottomPadding - itemHeight
+  );
+
+  let idx = 0;
+  let cumulative = 0;
+  for (let i = 0; i < filteredArray.length; i++) {
+    const h = lineHeights.get(i) || itemHeight;
+    if (clampedMidPoint < cumulative + h) {
+      idx = i;
+      break;
+    }
+    cumulative += h;
   }
-  cumulative += h;
-}
 
   const newSelected = filteredArray[idx] || null;
   if (
@@ -388,41 +403,40 @@ function showClosestIndicators(curr) {
     showDetails(curr);
   }
 
-document
-  .querySelectorAll("#contentContainer .clickable-word")
-  .forEach((el) => {
-    el.onclick = () => {
-      let w = el.getAttribute("data-word") || "";
-      const id = el.getAttribute("data-id");
-      w = w.replace(/[.,!?;:]+$/, "").toLowerCase();
+  document
+    .querySelectorAll("#contentContainer .clickable-word")
+    .forEach((el) => {
+      el.onclick = () => {
+        let w = el.getAttribute("data-word") || "";
+        const id = el.getAttribute("data-id");
+        w = w.replace(/[.,!?;:]+$/, "").toLowerCase();
 
-      // 1) Suchwort setzen + filtern
-      inputField.value(w);
-      handleInput(); // setzt filteredArray neu
+        // 1) Suchwort setzen + filtern
+        inputField.value(w);
+        handleInput(); // setzt filteredArray neu
 
-      // 2) Den geklickten Indikator im neuen filteredArray suchen …
-      const idx = filteredArray.findIndex(
-        (d) => d["Indicator English"] === id
-      );
+        // 2) Den geklickten Indikator im neuen filteredArray suchen …
+        const idx = filteredArray.findIndex(
+          (d) => d["Indicator English"] === id
+        );
 
-      // … und an Position 0 schieben (falls vorhanden)
-      if (idx > 0) {
-        const [clickedItem] = filteredArray.splice(idx, 1);
-        filteredArray.unshift(clickedItem);
-      }
+        // … und an Position 0 schieben (falls vorhanden)
+        if (idx > 0) {
+          const [clickedItem] = filteredArray.splice(idx, 1);
+          filteredArray.unshift(clickedItem);
+        }
 
-      // 3) Ausgewähltes Item setzen (immer das erste der neuen Liste)
-      selectedIndicator = filteredArray[0] || null;
+        // 3) Ausgewähltes Item setzen (immer das erste der neuen Liste)
+        selectedIndicator = filteredArray[0] || null;
 
-      // 4) Scroll auf Anfang + neu rendern + senden
-      wrapper.elt.scrollTop = 0;
-      renderVisible();
-      showClosestIndicators(selectedIndicator);
-      sendSelectedToVisual(selectedIndicator);
-    };
-  });
+        // 4) Scroll auf Anfang + neu rendern + senden
+        wrapper.elt.scrollTop = 0;
+        renderVisible();
+        showClosestIndicators(selectedIndicator);
+        sendSelectedToVisual(selectedIndicator);
+      };
+    });
 }
-
 
 function constrain(v, a, b) {
   return Math.min(Math.max(v, a), b);
