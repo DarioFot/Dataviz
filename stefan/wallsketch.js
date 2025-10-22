@@ -95,7 +95,7 @@ function draw() {
     const adjustedIndex = i + getOffsetUpTo(i, spacing);
     const { x, y } = indexToXY(adjustedIndex, cols, margin, spacing);
 
-    strokeWeight(1.5);
+    strokeWeight(2);
 
     //selectedPoint – pointIncludesQuery – noPointSelected
     if (filteredArray.length > 0 && dataArray[i] === selectedIndicator) {
@@ -133,16 +133,17 @@ function draw() {
           spacing
         );
 
-        stroke(0);
-        strokeWeight(3);
+        stroke(21, 138, 242);
+        strokeWeight(2);
         line(sel.x, sel.y, tgt.x, tgt.y);
-        noFill();
-        ellipse(tgt.x, tgt.y, 12, 12);
+        // noFill();
+        // ellipse(tgt.x, tgt.y, 9, 9);
       }
 
-      noStroke();
-      fill(255, 0, 0);
-      ellipse(sel.x, sel.y, 12, 12);
+      //selectedPoint nochmals zeichnen
+      // noStroke();
+      // fill(21, 138, 242);
+      // ellipse(sel.x, sel.y, 9, 9);
     }
   }
 }
