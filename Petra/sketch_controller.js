@@ -263,16 +263,31 @@ function buildThreePart(container, fullText, query, item) {
       createSpan(" ").parent(parent);
 
       wordSpan.mousePressed(() => {
-        inputField.value(wordPart.toLowerCase());
-        selectedIndicator = item;
-        handleInput(); // This will apply filters AND send to visual
-        const idx = filteredArray.indexOf(item);
-        if (idx !== -1) {
-          setTimeout(() => {
-            wrapper.elt.scrollTop = idx * itemHeight;
-          }, 0);
-        }
-      });
+  const word = wordPart.toLowerCase();
+  inputField.value(word);
+
+  // 1️⃣ Filter anwenden
+  handleInput();
+
+  // 2️⃣ Gespeichertes Item (aus dem Klick) nach dem Filtern ganz oben platzieren
+  const idx = filteredArray.findIndex(
+    (d) => d["Indicator English"] === item["Indicator English"]
+  );
+
+  if (idx > 0) {
+    const [clickedItem] = filteredArray.splice(idx, 1);
+    filteredArray.unshift(clickedItem);
+  }
+
+  // 3️⃣ Geklicktes Item bleibt als aktiv markiert
+  selectedIndicator = filteredArray[0] || null;
+
+  // 4️⃣ Scroll wieder auf Anfang (oben), dann rendern
+  wrapper.elt.scrollTop = 0;
+  renderVisible();
+  showClosestIndicators(selectedIndicator);
+  sendSelectedToVisual(selectedIndicator);
+});
     }
   }
 
