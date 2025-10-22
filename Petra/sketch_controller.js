@@ -12,13 +12,12 @@ let itemHeight = 70; // Basiswert (mindestens)
 let buffer = 4;
 let lastRenderKey = "";
 let lineHeights = new Map(); // speichert Höhe jeder Zeile
+let topPadding = 0; // NEU: Platz über den ersten Einträgen
 
 // --- load JSON ---
 function preload() {
   rawData = loadJSON("/stefan/data/embeddings-full.json");
 }
-
-//Testkommentar
 
 // --- setup ---
 function setup() {
@@ -98,7 +97,17 @@ function applyFilters() {
   wrapper.elt.scrollTop = 0;
   lastRenderKey = "";
   selectedIndicator = filteredArray[0] || null;
+
+  // Erstes Rendern
   renderVisible();
+
+  // --- NEU: Start in der Mitte ---
+  const visibleCount = Math.floor(wrapper.elt.clientHeight / itemHeight);
+  const midIndex = Math.floor(visibleCount / 2);
+  topPadding = midIndex * itemHeight;
+  wrapper.elt.scrollTop = 0;
+  renderVisible();
+
   showClosestIndicators(selectedIndicator);
   // Send selected indicator to visual for canvas drawing
   sendSelectedToVisual(selectedIndicator);
@@ -106,7 +115,7 @@ function applyFilters() {
 
 // --- render only visible items ---
 function renderVisible() {
-  const scrollTop = wrapper.elt.scrollTop;
+  const scrollTop = wrapper.elt.scrollTop - topPadding; // NEU
   const viewH = wrapper.elt.clientHeight;
   const totalItems = filteredArray.length;
 
@@ -153,7 +162,7 @@ function renderVisible() {
   for (let i = 0; i < totalItems; i++) {
     totalHeight += lineHeights.get(i) || itemHeight;
   }
-  inner.style("height", totalHeight + "px");
+  inner.style("height", totalHeight + topPadding + "px"); // NEU
 
   // Positionierung der sichtbaren Zeilen
   let currentY = 0;
@@ -161,7 +170,7 @@ function renderVisible() {
     const h = lineHeights.get(i) || itemHeight;
     if (i >= start && i <= end) {
       const div = inner.elt.children[i - start];
-      div.style.top = currentY + "px";
+      div.style.top = currentY + topPadding + "px"; // NEU
       div.style.height = h + "px";
     }
     currentY += h;
@@ -282,17 +291,22 @@ function buildThreePart(container, fullText, query, item) {
 
 // --- update selectedIndicator ---
 function updateSelectedIndicator() {
-  const scrollTop = wrapper.elt.scrollTop;
-  let idx = 0;
-  let cumulative = 0;
-  for (let i = 0; i < filteredArray.length; i++) {
-    const h = lineHeights.get(i) || itemHeight;
-    if (scrollTop < cumulative + h) {
-      idx = i;
-      break;
-    }
-    cumulative += h;
+  const scrollTop = wrapper.elt.scrollTop - topPadding;
+const viewH = wrapper.elt.clientHeight;
+
+// 🟦 NEU: Statt oberster Zeile jetzt Mitte als Referenz
+const midPoint = scrollTop + viewH / 2;
+
+let idx = 0;
+let cumulative = 0;
+for (let i = 0; i < filteredArray.length; i++) {
+  const h = lineHeights.get(i) || itemHeight;
+  if (midPoint < cumulative + h) {
+    idx = i;
+    break;
   }
+  cumulative += h;
+}
 
   const newSelected = filteredArray[idx] || null;
   if (
