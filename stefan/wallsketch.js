@@ -100,17 +100,16 @@ function draw() {
     //selectedPoint – pointIncludesQuery – noPointSelected
     if (filteredArray.length > 0 && dataArray[i] === selectedIndicator) {
       fill(21, 138, 242);
-      ellipse(x, y, 9, 9);
+      ellipse(x, y, 12, 12);
     } else if (
       dataArray.length > filteredArray.length &&
       filteredArray.includes(dataArray[i])
     ) {
-      noFill();
+      fill(255);
       stroke(21, 138, 242);
       ellipse(x, y, 9, 9);
     } else {
       noStroke();
-      fill(255);
       ellipse(x, y, 9, 9);
     }
   }
@@ -134,10 +133,10 @@ function draw() {
         );
 
         stroke(21, 138, 242);
-        strokeWeight(2);
         line(sel.x, sel.y, tgt.x, tgt.y);
-        // noFill();
-        // ellipse(tgt.x, tgt.y, 9, 9);
+        fill("#dfdfdf");
+        stroke("#292929");
+        ellipse(tgt.x, tgt.y, 12, 12);
       }
 
       //selectedPoint nochmals zeichnen
