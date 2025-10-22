@@ -1,13 +1,20 @@
+:root {
+  --blue: #138af2;
+  --black: #292929;
+  --white: #dfdfdf;
+  --light-blue: #e0f0ff;
+}
+
 @font-face {
-  font-family: 'Suisse International';
-  src: url('/fonts/SuisseIntl-Thin.otf');
+  font-family: "Suisse International";
+  src: url("/fonts/SuisseIntl-Thin.otf");
   font-weight: 100;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Suisse International';
-  src: url('/fonts/SuisseIntl-Light.otf');
+  font-family: "Suisse International";
+  src: url("/fonts/SuisseIntl-Light.otf");
   font-weight: 300;
   font-style: normal;
 }
@@ -17,15 +24,14 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: 'Suisse International', sans-serif;
+  font-family: "Suisse International", sans-serif;
   font-weight: 300;
-  background-color: #fff;
+  background-color: var(--white);
 }
 
 /* Topbar */
 #topbar {
   width: 100%;
-  background: #ffffff;
   padding: 10px 0;
   display: flex;
   align-items: center;
@@ -52,11 +58,11 @@ body {
   font-size: 34px;
   border: 1px solid #aaa;
   border-radius: 0;
-  background-color: #fff;
   outline: none;
-  color: #000;
+  color: var(--black);
   text-align: center;
   box-sizing: border-box;
+  text-transform: uppercase;
 }
 
 /* Lupe-Icon – exakt am rechten Innenrand des Input-Felds */
@@ -80,7 +86,7 @@ body {
 /* Container-Hintergründe */
 body,
 #canvasContainer {
-  background-color: #fff !important;
+  background-color: var(--white) !important;
 }
 
 #canvasContainer {
@@ -95,7 +101,7 @@ body,
   overflow-y: scroll;
   position: relative;
   border-bottom: 1px solid #ccc;
-  background: white;
+  background: var(--white);
 }
 
 #innerContainer {
@@ -114,7 +120,7 @@ body,
   border-bottom: 1px solid #eee;
   box-sizing: border-box;
   padding: 8px 0;
-  background: white;
+  background: var(--white);
 }
 
 /* inner line layout (3 columns) */
@@ -148,11 +154,12 @@ body,
   white-space: normal;
   word-break: break-word;
   font-size: 36px;
+  text-transform: uppercase;
 }
 
 /* highlight selected row */
 .selected-item {
-  background-color: #fafa80;
+  background-color: var(--blue);
   transition: background-color 0.2s;
 }
 
@@ -171,7 +178,7 @@ body,
 .item {
   flex: 1;
   max-width: 70%; /*Breite eines closest Indicators*/
-  margin: 0px auto; 
+  margin: 0px auto;
   border: thin solid #555;
   text-align: center;
   padding: 0px 10px;
@@ -188,13 +195,13 @@ body,
 /* klickbare Wörter */
 .clickable-word {
   cursor: pointer;
-  color: #000000;
+  color: var(--black);
   transition: color 0.15s;
 }
 
 .clickable-word:hover {
-  color: #004c99;
-  background: #e0f0ff;
+  color: var(--blue);
+  background: transparent;
 }
 
 /* hamburger + filter menu */
@@ -286,6 +293,7 @@ body,
 #contentContainer .item h3 {
   color: #222;
   font-weight: normal;
+  text-transform: uppercase;
 }
 
 #contentContainer .item h3:hover {
@@ -323,7 +331,7 @@ body,
 }
 
 .detail-value {
-  background-color: #fff799; /* hellgelb wie in der Skizze */
+  background-color: var(--blue);
   padding: 10px 16px;
   border-radius: 4px;
   display: inline-block;

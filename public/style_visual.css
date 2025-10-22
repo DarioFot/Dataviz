@@ -1,3 +1,9 @@
+:root {
+  --blue: #138af2;
+  --black: #292929;
+  --white: #dfdfdf;
+}
+
 @font-face {
   font-family: "Suisse International";
   src: url("/fonts/SuisseIntl-Thin.otf");
