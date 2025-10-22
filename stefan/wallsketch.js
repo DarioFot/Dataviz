@@ -5,6 +5,7 @@ let embeddings = [];
 let closest5 = [];
 let selectedIndicator = null;
 let firstCommunityLabelIndices = new Set();
+
 const communityNames = {
   bijeliBrijegLT: "Bijeli Brijeg",
   bijeliBrijegP: "Bijeli Brijeg",
@@ -33,7 +34,7 @@ function setup() {
     const name = item["Indicator English"];
     return name && name.trim() !== "" && name.trim().toLowerCase() !== "null";
   });
-  console.log("DataArrayTest: ", dataArray);
+  console.log("DataArray20.14.21: ", dataArray);
   filteredArray = dataArray;
   embeddings = dataArray.map((d) => d.embedding);
 
@@ -63,7 +64,6 @@ function setup() {
 
 function draw() {
   background(220);
-  fill(30);
   noStroke();
 
   const margin = 50;
@@ -105,11 +105,12 @@ function draw() {
       dataArray.length > filteredArray.length &&
       filteredArray.includes(dataArray[i])
     ) {
-      fill(255);
+      fill(240);
       stroke(21, 138, 242);
       ellipse(x, y, 9, 9);
     } else {
       noStroke();
+      fill(255);
       ellipse(x, y, 9, 9);
     }
   }
@@ -132,17 +133,18 @@ function draw() {
           spacing
         );
 
-        stroke(21, 138, 242);
+        stroke("#848484");
+        strokeWeight(2.5);
         line(sel.x, sel.y, tgt.x, tgt.y);
-        fill("#dfdfdf");
-        stroke("#292929");
-        ellipse(tgt.x, tgt.y, 12, 12);
+        fill(240);
+        strokeWeight(2.5);
+        ellipse(tgt.x, tgt.y, 9, 9);
       }
 
-      //selectedPoint nochmals zeichnen
-      // noStroke();
-      // fill(21, 138, 242);
-      // ellipse(sel.x, sel.y, 9, 9);
+      // selectedPoint nochmals zeichnen
+      noStroke();
+      fill(21, 138, 242);
+      ellipse(sel.x, sel.y, 12, 12);
     }
   }
 }
@@ -161,6 +163,19 @@ function handleInput() {
       let regex = new RegExp(`\\b${query}\\b`, "i");
       return regex.test(indicator);
     });
+  }
+
+  // --- DEBUG: auto-select first filtered indicator ---
+  if (filteredArray.length > 0 && !window.debugDisabled) {
+    selectedIndicator = filteredArray[0];
+    const index = dataArray.indexOf(selectedIndicator);
+    if (index !== -1) {
+      closest5 = findFiveClosest(index);
+      console.log(
+        "Debug auto-selected:",
+        selectedIndicator["Indicator English"]
+      );
+    }
   }
 
   appendItems();
