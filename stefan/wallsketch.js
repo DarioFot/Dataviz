@@ -95,18 +95,23 @@ function draw() {
     const adjustedIndex = i + getOffsetUpTo(i, spacing);
     const { x, y } = indexToXY(adjustedIndex, cols, margin, spacing);
 
+    strokeWeight(2);
+
+    //selectedPoint – pointIncludesQuery – noPointSelected
     if (filteredArray.length > 0 && dataArray[i] === selectedIndicator) {
-      fill(255, 0, 0);
-      ellipse(x, y, 10, 10);
+      fill(21, 138, 242);
+      ellipse(x, y, 9, 9);
     } else if (
       dataArray.length > filteredArray.length &&
       filteredArray.includes(dataArray[i])
     ) {
-      fill(0, 30, 255);
-      ellipse(x, y, 10, 10);
+      noFill();
+      stroke(21, 138, 242);
+      ellipse(x, y, 9, 9);
     } else {
-      fill(30);
-      ellipse(x, y, 5, 5);
+      noStroke();
+      fill(255);
+      ellipse(x, y, 9, 9);
     }
   }
 
@@ -128,16 +133,17 @@ function draw() {
           spacing
         );
 
-        stroke(0);
-        strokeWeight(3);
+        stroke(21, 138, 242);
+        strokeWeight(2);
         line(sel.x, sel.y, tgt.x, tgt.y);
-        noFill();
-        ellipse(tgt.x, tgt.y, 12, 12);
+        // noFill();
+        // ellipse(tgt.x, tgt.y, 9, 9);
       }
 
-      noStroke();
-      fill(255, 0, 0);
-      ellipse(sel.x, sel.y, 12, 12);
+      //selectedPoint nochmals zeichnen
+      // noStroke();
+      // fill(21, 138, 242);
+      // ellipse(sel.x, sel.y, 9, 9);
     }
   }
 }
@@ -146,7 +152,7 @@ function handleInput() {
   // Only update input field value, don't change selectedIndicator or drawing
   // The drawing is now based on the communicated selectedIndicator from Monitor1
   let query = inputField.value().toLowerCase().trim();
-  
+
   // Keep filteredArray for display purposes but don't change selectedIndicator
   if (query === "") {
     filteredArray = dataArray;
@@ -240,12 +246,14 @@ window.handleControlFromSocket = function (msg) {
     // Finde den Indikator basierend auf dem "Indicator English" Text
     const indicatorEnglish = msg.payload.indicatorEnglish;
     console.log("Received indicatorEnglish:", indicatorEnglish);
-    
-    selectedIndicator = dataArray.find(item => item["Indicator English"] === indicatorEnglish);
+
+    selectedIndicator = dataArray.find(
+      (item) => item["Indicator English"] === indicatorEnglish
+    );
     console.log("Found selectedIndicator:", selectedIndicator);
     console.log("DataArray length:", dataArray.length);
     console.log("Embeddings length:", embeddings.length);
-    
+
     // Calculate closest 5 indicators for drawing connections
     if (selectedIndicator) {
       let index = dataArray.indexOf(selectedIndicator);
