@@ -388,24 +388,41 @@ function showClosestIndicators(curr) {
     showDetails(curr);
   }
 
-  document
-    .querySelectorAll("#contentContainer .clickable-word")
-    .forEach((el) => {
-      el.onclick = () => {
-        let w = el.getAttribute("data-word") || "";
-        const id = el.getAttribute("data-id");
-        w = w.replace(/[.,!?;:]+$/, "").toLowerCase(); // Satzzeichen entfernen
-        inputField.value(w);
-        handleInput(); // This will apply filters AND send to visual
-        const found = dataArray.find((d) => d["Indicator English"] === id);
-        if (found) {
-          selectedIndicator = found;
-          const idx = filteredArray.indexOf(found);
-          if (idx !== -1) wrapper.elt.scrollTop = idx * itemHeight;
-        }
-      };
-    });
+document
+  .querySelectorAll("#contentContainer .clickable-word")
+  .forEach((el) => {
+    el.onclick = () => {
+      let w = el.getAttribute("data-word") || "";
+      const id = el.getAttribute("data-id");
+      w = w.replace(/[.,!?;:]+$/, "").toLowerCase();
+
+      // 1) Suchwort setzen + filtern
+      inputField.value(w);
+      handleInput(); // setzt filteredArray neu
+
+      // 2) Den geklickten Indikator im neuen filteredArray suchen …
+      const idx = filteredArray.findIndex(
+        (d) => d["Indicator English"] === id
+      );
+
+      // … und an Position 0 schieben (falls vorhanden)
+      if (idx > 0) {
+        const [clickedItem] = filteredArray.splice(idx, 1);
+        filteredArray.unshift(clickedItem);
+      }
+
+      // 3) Ausgewähltes Item setzen (immer das erste der neuen Liste)
+      selectedIndicator = filteredArray[0] || null;
+
+      // 4) Scroll auf Anfang + neu rendern + senden
+      wrapper.elt.scrollTop = 0;
+      renderVisible();
+      showClosestIndicators(selectedIndicator);
+      sendSelectedToVisual(selectedIndicator);
+    };
+  });
 }
+
 
 function constrain(v, a, b) {
   return Math.min(Math.max(v, a), b);
