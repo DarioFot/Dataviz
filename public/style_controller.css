@@ -6,57 +6,68 @@
   --grey: #6f6f6f;
 }
 
+/* =========================
+   FONT DEFINITIONS
+========================= */
 @font-face {
   font-family: "Suisse International";
-  src: url("/fonts/SuisseIntl-Bold.otf");
+  src: url("/fonts/SuisseIntl-Medium.otf");
   font-weight: 700;
-  font-style: bold;
+  font-style: normal;
 }
 
 @font-face {
   font-family: "Suisse International";
-  src: url("/fonts/SuisseIntl-Medium.otf");
+  src: url("/fonts/SuisseIntl-Regular.otf");
   font-weight: 500;
-  font-style: medium;
+  font-style: normal;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap");
 
+/* =========================
+   BASE STYLES
+========================= */
 html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
   font-family: "Suisse International", sans-serif;
   font-weight: 500;
   background-color: var(--white);
+  letter-spacing: 0rem;
+}
+
+.detail-value {
+  font-family: "Suisse International", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
 }
 
 /* Topbar */
 #topbar {
-  width: 100%;
   padding: 2rem;
   display: flex;
   align-items: center;
-  justify-content: center; /* Zentriert Inhalt horizontal */
+  justify-content: center;
   position: sticky;
   top: 0;
   z-index: 10;
   border-bottom: 1px solid #ccc;
 }
 
-/* Panel – gleiche Breite wie der Inhalt der Liste darunter */
+/* Panel */
 #panel {
   position: relative;
-  width: 90%; /* exakt so breit wie der Inhalt der Scroll-Liste */
+  width: 90%;
   display: flex;
   justify-content: center;
 }
 
-/* --- Suchfeld final, mittig über der Liste --- */
+/* Suchfeld */
 #panel input[type="text"] {
   width: 100%;
-  max-width: 300px; /* feste Maximalbreite */
+  max-width: 300px;
   padding-top: 1rem;
   padding-right: 1rem;
   padding-bottom: 0.6rem;
@@ -83,10 +94,10 @@ body,
   width: 100%;
 }
 
-/* Scroll-Bereich */
+/* Scrollbereich */
 #scrollWrapper {
-  width: 90%; /* identisch mit Suchfeldbreite */
-  margin: 0 auto; /* zentriert */
+  width: 90%;
+  margin: 0 auto;
   height: 600px;
   overflow-y: scroll;
   position: relative;
@@ -99,7 +110,7 @@ body,
   width: 100%;
 }
 
-/* scroll item */
+/* Scroll Item */
 .scroll-item {
   position: absolute;
   left: 0;
@@ -113,7 +124,7 @@ body,
   background: var(--white);
 }
 
-/* inner line layout (3 columns) */
+/* Linienlayout */
 .line-container {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -148,43 +159,36 @@ body,
   line-height: 2rem;
 }
 
-/* highlight selected row */
+/* Highlight ausgewähltes Item */
 .selected-item {
   background-color: var(--blue);
   transition: background-color 0.2s;
   color: var(--black);
 }
 
-/* bottom area */
+/* =========================
+   BOTTOM AREA
+========================= */
 #contentContainer {
   border-top: 1px solid #ccc;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
-  padding: 0px;
+  padding: 1rem;
   box-sizing: border-box;
-  width: 90%; /* bündig mit Scrollbereich */
+  width: 90%;
   margin: 0 auto;
 }
 
 .item {
-  flex: 1;
-  max-width: 70%; /*Breite eines closest Indicators*/
-  margin: 0px auto;
-  border: thin solid #555;
-  text-align: center;
-  padding: 0px 10px;
-  line-height: 0.5;
-  font-size: 1rem;
-  background: #f9f9f9;
-  box-sizing: border-box;
+  text-align: left;
+  align-self: flex-start;
+  width: 100%;
+  text-transform: uppercase;
 }
 
-.item:hover {
-  background: #f1f1f1;
-}
-
-/* klickbare Wörter */
+/* Klickbare Wörter */
 .clickable-word {
   cursor: pointer;
   color: var(--black);
@@ -192,11 +196,11 @@ body,
 }
 
 .clickable-word:hover {
-  color: var(--blue);
+  color: var(--blue) !important;
   background: transparent;
 }
 
-/* hamburger + filter menu */
+/* Hamburger + Filtermenü */
 #hamburger {
   font-size: 48px;
   cursor: pointer;
@@ -223,6 +227,7 @@ body,
   display: none;
 }
 
+/* Checkbox-Label */
 #filterMenu label {
   display: flex;
   align-items: center;
@@ -234,7 +239,9 @@ body,
   transform: scale(1.6);
 }
 
-/* responsive */
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 1200px) {
   .scroll-item,
   .item {
@@ -243,10 +250,6 @@ body,
 
   #panel input[type="text"] {
     max-width: 450px;
-  }
-
-  #panel::after {
-    right: calc((100% - 450px) / 2 + 20px);
   }
 }
 
@@ -259,32 +262,31 @@ body,
   #panel input[type="text"] {
     max-width: 350px;
   }
-
-  #panel::after {
-    right: calc((100% - 350px) / 2 + 20px);
-  }
 }
 
-/* ✅ NEUE STYLING-ANPASSUNGEN */
+/* =========================
+   NEW COLOR + FONT WEIGHT RULES
+========================= */
 
 /* Standardfarbe für alle Indikatoren */
 .scroll-item .left-part,
 .scroll-item .center-part,
 .scroll-item .right-part {
-  font-weight: medium;
+  font-weight: 500;
 }
 
-/* Wenn Suchwort fett markiert ist */
+/* Wenn Suchwort fett markiert war → jetzt Medium */
 .center-part span[style*="font-weight:bold"] {
   font-family: "Suisse Int'l", sans-serif;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   line-height: normal;
   letter-spacing: 0.05rem;
   text-transform: uppercase;
   color: var(--black);
 }
 
+/* Basisfarbe */
 #innerContainer,
 #innerContainer * {
   color: var(--grey);
@@ -296,60 +298,43 @@ body,
   color: var(--black) !important;
 }
 
-/* Hover für Klickbare Wörter */
-.clickable-word:hover {
-  color: var(--blue) !important; /* höher priorisiert, überschreibt Grau */
-  background: transparent;
-}
-
-/* Wenn Suchwort fett markiert ist */
-.center-part span[style*="font-weight:bold"] {
-  font-family: "Suisse Int'l", sans-serif;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  letter-spacing: 0.05rem;
-  text-transform: uppercase;
-  color: var(--black);
-}
-
-/* --- DETAILS-BEREICH (oben über Scrollliste) --- */
+/* =========================
+   DETAILS-BEREICH
+========================= */
 #detailsContainer {
   width: 90%;
   margin: 20px auto 0 auto;
   text-align: center;
+  font-family: "Suisse Int'l", sans-serif;
+  font-weight: 300;
+  padding: 1rem;
 }
 
 #detailsContent {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: flex-start;
-  gap: 40px;
-  margin-top: 10px;
-  font-size: 28px;
-  color: var(--black);
+  width: 100%;
+  gap: 2rem;
 }
 
-/* Jede Spalte */
 .detail-block {
-  flex: 1;
-  min-width: 220px;
-}
-
-.detail-title {
-  font-weight: 600;
-  font-size: 24px;
-  margin-bottom: 10px;
+  flex: 1; /* Jeder Block füllt gleichmäßig den verfügbaren Platz */
+  min-width: 0; /* verhindert, dass Inhalte die Flexbox sprengen */
+  text-align: center; /* optional */
 }
 
 .detail-value {
-  background-color: var(--blue);
-  padding: 10px 16px;
-  border-radius: 4px;
   display: inline-block;
-  font-size: 24px;
+  line-height: 1.75rem;
+  text-transform: uppercase;
+  font-weight: 500;
 }
-
+.detail-title {
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--blue);
+}
 /* Responsive Verhalten */
 @media (max-width: 900px) {
   #detailsContent {

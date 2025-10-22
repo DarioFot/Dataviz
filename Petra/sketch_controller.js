@@ -4,7 +4,7 @@ let rawData;
 
 let inputField;
 let selectedIndicator = null;
-let activeFocusGroups = new Set(['youth', 'men', 'women']);
+let activeFocusGroups = new Set(["youth", "men", "women"]);
 
 let wrapper;
 let inner;
@@ -49,12 +49,14 @@ function setup() {
   inner.style("width", "100%");
 
   // filter menu handlers
-  const hamburger = select('#hamburger');
-  const filterMenu = select('#filterMenu');
-  hamburger.mousePressed(() => filterMenu.toggleClass('hidden'));
+  const hamburger = select("#hamburger");
+  const filterMenu = select("#filterMenu");
+  hamburger.mousePressed(() => filterMenu.toggleClass("hidden"));
 
-  document.querySelectorAll('#filterMenu input[type="checkbox"]').forEach(cb => {
-    cb.addEventListener('change', () => {
+  document
+    .querySelectorAll('#filterMenu input[type="checkbox"]')
+    .forEach((cb) => {
+      cb.addEventListener("change", () => {
         if (cb.checked) activeFocusGroups.add(cb.value);
         else activeFocusGroups.delete(cb.value);
         applyFilters();
@@ -62,7 +64,7 @@ function setup() {
     });
 
   // scroll handler
-  wrapper.elt.addEventListener('scroll', () => {
+  wrapper.elt.addEventListener("scroll", () => {
     renderVisible();
     updateSelectedIndicator();
   });
@@ -81,14 +83,14 @@ function onInputChange() {
 function applyFilters() {
   const q = (inputField.value() || "").toLowerCase();
 
-  filteredArray = dataArray.filter(item => {
+  filteredArray = dataArray.filter((item) => {
     let focus = (item["Focus Group"] || "").toLowerCase();
     let indicator = (item["Indicator English"] || "").toLowerCase();
     const matchesFocus = activeFocusGroups.has(focus);
 
     // Ganze-Wort-Filterung
     const words = indicator.match(/\b\w+\b/g) || [];
-    const matchesQuery = q === "" || words.some(w => w.toLowerCase() === q);
+    const matchesQuery = q === "" || words.some((w) => w.toLowerCase() === q);
 
     return matchesFocus && matchesQuery;
   });
@@ -109,9 +111,14 @@ function renderVisible() {
   const totalItems = filteredArray.length;
 
   const start = Math.max(0, Math.floor(scrollTop / itemHeight) - buffer);
-  const end = Math.min(totalItems - 1, Math.ceil((scrollTop + viewH) / itemHeight) + buffer);
+  const end = Math.min(
+    totalItems - 1,
+    Math.ceil((scrollTop + viewH) / itemHeight) + buffer
+  );
 
-  const key = `${start}:${end}:${(inputField.value()||"").toLowerCase()}:${filteredArray.length}:${selectedIndicator ? selectedIndicator["Indicator English"] : ""}`;
+  const key = `${start}:${end}:${(inputField.value() || "").toLowerCase()}:${
+    filteredArray.length
+  }:${selectedIndicator ? selectedIndicator["Indicator English"] : ""}`;
   if (key === lastRenderKey) return;
   lastRenderKey = key;
 
@@ -127,7 +134,10 @@ function renderVisible() {
 
     const itemDiv = createDiv().parent(inner);
     itemDiv.class("scroll-item");
-    if (selectedIndicator && selectedIndicator["Indicator English"] === item["Indicator English"]) {
+    if (
+      selectedIndicator &&
+      selectedIndicator["Indicator English"] === item["Indicator English"]
+    ) {
       itemDiv.addClass("selected-item");
     }
 
@@ -180,7 +190,9 @@ function buildThreePart(container, fullText, query, item) {
       const wordPart = m ? m[1] : tok;
       const punct = m ? m[2] : "";
 
-      const wordSpan = createSpan(wordPart).parent(centerDiv).class("clickable-word");
+      const wordSpan = createSpan(wordPart)
+        .parent(centerDiv)
+        .class("clickable-word");
       wordSpan.style("cursor", "pointer");
 
       if (punct) createSpan(punct).parent(centerDiv);
@@ -193,7 +205,9 @@ function buildThreePart(container, fullText, query, item) {
         handleInput(); // This will apply filters AND send to visual
         const idx = filteredArray.indexOf(item);
         if (idx !== -1) {
-          setTimeout(() => { wrapper.elt.scrollTop = idx * itemHeight; }, 0);
+          setTimeout(() => {
+            wrapper.elt.scrollTop = idx * itemHeight;
+          }, 0);
         }
       });
     }
@@ -204,7 +218,10 @@ function buildThreePart(container, fullText, query, item) {
   let matchIdx = -1;
   for (let k = 0; k < tokens.length; k++) {
     const cleanWord = tokens[k].replace(/[.,!?;:]+$/, "").toLowerCase();
-    if (cleanWord === q) { matchIdx = k; break; }
+    if (cleanWord === q) {
+      matchIdx = k;
+      break;
+    }
   }
 
   let leftTokens, centerToken, rightTokens;
@@ -212,7 +229,7 @@ function buildThreePart(container, fullText, query, item) {
     leftTokens = tokens.slice(0, matchIdx);
     centerToken = tokens[matchIdx];
     rightTokens = tokens.slice(matchIdx + 1);
-      } else {
+  } else {
     leftTokens = tokens;
     centerToken = null;
     rightTokens = [];
@@ -227,7 +244,9 @@ function buildThreePart(container, fullText, query, item) {
       const wordPart = m ? m[1] : tok;
       const punct = m ? m[2] : "";
 
-      const wordSpan = createSpan(wordPart).parent(parent).class("clickable-word");
+      const wordSpan = createSpan(wordPart)
+        .parent(parent)
+        .class("clickable-word");
       wordSpan.style("cursor", "pointer");
       if (makeBold) wordSpan.style("font-weight", "bold");
 
@@ -240,7 +259,9 @@ function buildThreePart(container, fullText, query, item) {
         handleInput(); // This will apply filters AND send to visual
         const idx = filteredArray.indexOf(item);
         if (idx !== -1) {
-          setTimeout(() => { wrapper.elt.scrollTop = idx * itemHeight; }, 0);
+          setTimeout(() => {
+            wrapper.elt.scrollTop = idx * itemHeight;
+          }, 0);
         }
       });
     }
@@ -266,12 +287,20 @@ function updateSelectedIndicator() {
   let cumulative = 0;
   for (let i = 0; i < filteredArray.length; i++) {
     const h = lineHeights.get(i) || itemHeight;
-    if (scrollTop < cumulative + h) { idx = i; break; }
+    if (scrollTop < cumulative + h) {
+      idx = i;
+      break;
+    }
     cumulative += h;
   }
 
   const newSelected = filteredArray[idx] || null;
-  if (!selectedIndicator || (newSelected && selectedIndicator["Indicator English"] !== newSelected["Indicator English"])) {
+  if (
+    !selectedIndicator ||
+    (newSelected &&
+      selectedIndicator["Indicator English"] !==
+        newSelected["Indicator English"])
+  ) {
     selectedIndicator = newSelected;
     showClosestIndicators(selectedIndicator);
     // Send selected indicator to visual for canvas drawing
@@ -279,17 +308,25 @@ function updateSelectedIndicator() {
   }
 
   const children = inner.elt.children;
-  for (let i = 0; i < children.length; i++) children[i].classList.remove("selected-item");
-  const visibleIdx = idx - Math.max(0, Math.floor(scrollTop / itemHeight) - buffer);
+  for (let i = 0; i < children.length; i++)
+    children[i].classList.remove("selected-item");
+  const visibleIdx =
+    idx - Math.max(0, Math.floor(scrollTop / itemHeight) - buffer);
   if (children[visibleIdx]) children[visibleIdx].classList.add("selected-item");
 }
 
 // --- cosine similarity ---
 function cosineSim(a, b) {
   if (!a || !b || a.length !== b.length) return 0;
-  let dot = 0, ma = 0, mb = 0;
-  for (let i = 0; i < a.length; i++) { dot += a[i]*b[i]; ma += a[i]*a[i]; mb += b[i]*b[i]; }
-  return dot / (Math.sqrt(ma)*Math.sqrt(mb));
+  let dot = 0,
+    ma = 0,
+    mb = 0;
+  for (let i = 0; i < a.length; i++) {
+    dot += a[i] * b[i];
+    ma += a[i] * a[i];
+    mb += b[i] * b[i];
+  }
+  return dot / (Math.sqrt(ma) * Math.sqrt(mb));
 }
 
 // --- show closest indicators ---
@@ -298,38 +335,55 @@ function showClosestIndicators(curr) {
   container.html("");
   if (!curr || !curr.embedding) return;
 
-  let sims = dataArray.map(it => ({it, sim: cosineSim(curr.embedding, it.embedding || [])}));
-  sims.sort((x,y) => y.sim - x.sim);
-  let closest = sims.filter(s => s.it["Indicator English"] !== curr["Indicator English"]).slice(0,5);
+  let sims = dataArray.map((it) => ({
+    it,
+    sim: cosineSim(curr.embedding, it.embedding || []),
+  }));
+  sims.sort((x, y) => y.sim - x.sim);
+  let closest = sims
+    .filter((s) => s.it["Indicator English"] !== curr["Indicator English"])
+    .slice(0, 5);
 
   for (let s of closest) {
     const item = s.it;
     let d = createDiv().parent(container).class("item");
     let title = item["Indicator English"] || "No Title";
-    let wordsHtml = title.split(/\s+/).map(w => `<span class="clickable-word" data-word="${w}" data-id="${item["Indicator English"]}">${w}</span>`).join(" ");
+    let wordsHtml = title
+      .split(/\s+/)
+      .map(
+        (w) =>
+          `<span class="clickable-word" data-word="${w}" data-id="${item["Indicator English"]}">${w}</span>`
+      )
+      .join(" ");
     d.html(`<h3>${wordsHtml}</h3>`);
     showDetails(curr);
   }
 
-  document.querySelectorAll("#contentContainer .clickable-word").forEach(el => {
-    el.onclick = () => {
-      let w = el.getAttribute("data-word") || "";
-      const id = el.getAttribute("data-id");
-      w = w.replace(/[.,!?;:]+$/, "").toLowerCase(); // Satzzeichen entfernen
-      inputField.value(w);
-      handleInput(); // This will apply filters AND send to visual
-      const found = dataArray.find(d => d["Indicator English"] === id);
-      if (found) {
-        selectedIndicator = found;
-        const idx = filteredArray.indexOf(found);
-        if (idx !== -1) wrapper.elt.scrollTop = idx * itemHeight;
-      }
-    };
-  });
+  document
+    .querySelectorAll("#contentContainer .clickable-word")
+    .forEach((el) => {
+      el.onclick = () => {
+        let w = el.getAttribute("data-word") || "";
+        const id = el.getAttribute("data-id");
+        w = w.replace(/[.,!?;:]+$/, "").toLowerCase(); // Satzzeichen entfernen
+        inputField.value(w);
+        handleInput(); // This will apply filters AND send to visual
+        const found = dataArray.find((d) => d["Indicator English"] === id);
+        if (found) {
+          selectedIndicator = found;
+          const idx = filteredArray.indexOf(found);
+          if (idx !== -1) wrapper.elt.scrollTop = idx * itemHeight;
+        }
+      };
+    });
 }
 
-function constrain(v, a, b) { return Math.min(Math.max(v, a), b); }
-function windowResized() { wrapper.style("height", "600px"); }
+function constrain(v, a, b) {
+  return Math.min(Math.max(v, a), b);
+}
+function windowResized() {
+  wrapper.style("height", "600px");
+}
 
 function showDetails(indicator) {
   const container = select("#detailsContent");
@@ -353,15 +407,17 @@ function showDetails(indicator) {
       <div class="detail-block">
         <div class="detail-title">Speaker</div>
         <div class="detail-value">${speaker}</div>
+      </div>      <div class="detail-block">
+        <div class="detail-title">Categories</div>
+        <div class="detail-value">${
+          [dim1, dim2].filter(Boolean).join(" & ") || "N/A"
+        }</div>
       </div>
       <div class="detail-block">
         <div class="detail-title">Community</div>
         <div class="detail-value">${community}</div>
       </div>
-      <div class="detail-block">
-        <div class="detail-title">Categories</div>
-        <div class="detail-value">${[dim1, dim2].filter(Boolean).join(" & ") || "N/A"}</div>
-      </div>
+
     </div>
   `;
 
@@ -404,11 +460,16 @@ function sendSelectedToVisual(indicator) {
         targetRoom: "visual",
         payload: {
           action: "selectedIndicator",
-          indicatorEnglish: indicatorEnglish
+          indicatorEnglish: indicatorEnglish,
         },
       });
     } else {
-      console.log("Cannot send - socket:", !!window.socket, "indicator:", !!indicator);
+      console.log(
+        "Cannot send - socket:",
+        !!window.socket,
+        "indicator:",
+        !!indicator
+      );
     }
   } catch (e) {
     console.log("Error sending selectedIndicator:", e);
