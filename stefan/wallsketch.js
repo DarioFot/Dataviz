@@ -52,7 +52,8 @@ function setup() {
     }
   }
 
-  let canvas = createCanvas(1200, 800);
+  let w = (windowHeight * 3) / 2;
+  let canvas = createCanvas(w, windowHeight);
   canvas.parent("canvasContainer");
 
   inputField = createInput();
@@ -341,4 +342,10 @@ function getOffsetUpTo(index, spacing) {
     }
   }
   return offset;
+}
+
+function windowResized() {
+  let w = (windowHeight * 3) / 2;
+  resizeCanvas(w, windowHeight);
+  spacing = (width - margin * 2) / (cols - 1);
 }
