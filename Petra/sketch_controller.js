@@ -12,13 +12,13 @@ let itemHeight = 70; // Basiswert (mindestens)
 let buffer = 4;
 let lastRenderKey = "";
 let lineHeights = new Map(); // speichert Höhe jeder Zeile
-let topPadding = 0; // Platz über den ersten Einträgen
-let bottomPadding = 0; // Platz unter den letzten Einträgen
 
 // --- load JSON ---
 function preload() {
   rawData = loadJSON("/stefan/data/embeddings-full.json");
 }
+
+//Testkommentar
 
 // --- setup ---
 function setup() {
@@ -98,21 +98,7 @@ function applyFilters() {
   wrapper.elt.scrollTop = 0;
   lastRenderKey = "";
   selectedIndicator = filteredArray[0] || null;
-
-  // Erstes Rendern
   renderVisible();
-
-  // --- NEU: Start in der Mitte ---
-  const visibleCount = Math.floor(wrapper.elt.clientHeight / itemHeight);
-  const midIndex = Math.floor(visibleCount / 2);
-
-  // Gleicher Abstand oben und unten, damit erstes und letztes Item mittig erscheinen können
-  topPadding = midIndex * itemHeight;
-  bottomPadding = midIndex * itemHeight;
-
-  wrapper.elt.scrollTop = 0;
-  renderVisible();
-
   showClosestIndicators(selectedIndicator);
   // Send selected indicator to visual for canvas drawing
   sendSelectedToVisual(selectedIndicator);
@@ -120,7 +106,7 @@ function applyFilters() {
 
 // --- render only visible items ---
 function renderVisible() {
-  const scrollTop = wrapper.elt.scrollTop - topPadding;
+  const scrollTop = wrapper.elt.scrollTop;
   const viewH = wrapper.elt.clientHeight;
   const totalItems = filteredArray.length;
 
@@ -167,7 +153,7 @@ function renderVisible() {
   for (let i = 0; i < totalItems; i++) {
     totalHeight += lineHeights.get(i) || itemHeight;
   }
-  inner.style("height", totalHeight + topPadding + bottomPadding + "px"); //NEU
+  inner.style("height", totalHeight + "px");
 
   // Positionierung der sichtbaren Zeilen
   let currentY = 0;
@@ -175,7 +161,7 @@ function renderVisible() {
     const h = lineHeights.get(i) || itemHeight;
     if (i >= start && i <= end) {
       const div = inner.elt.children[i - start];
-      div.style.top = currentY + topPadding + "px"; // NEU
+      div.style.top = currentY + "px";
       div.style.height = h + "px";
     }
     currentY += h;
@@ -268,30 +254,15 @@ function buildThreePart(container, fullText, query, item) {
       createSpan(" ").parent(parent);
 
       wordSpan.mousePressed(() => {
-        const word = wordPart.toLowerCase();
-        inputField.value(word);
-
-        // 1️⃣ Filter anwenden
-        handleInput();
-
-        // 2️⃣ Gespeichertes Item (aus dem Klick) nach dem Filtern ganz oben platzieren
-        const idx = filteredArray.findIndex(
-          (d) => d["Indicator English"] === item["Indicator English"]
-        );
-
-        if (idx > 0) {
-          const [clickedItem] = filteredArray.splice(idx, 1);
-          filteredArray.unshift(clickedItem);
+        inputField.value(wordPart.toLowerCase());
+        selectedIndicator = item;
+        handleInput(); // This will apply filters AND send to visual
+        const idx = filteredArray.indexOf(item);
+        if (idx !== -1) {
+          setTimeout(() => {
+            wrapper.elt.scrollTop = idx * itemHeight;
+          }, 0);
         }
-
-        // 3️⃣ Geklicktes Item bleibt als aktiv markiert
-        selectedIndicator = filteredArray[0] || null;
-
-        // 4️⃣ Scroll wieder auf Anfang (oben), dann rendern
-        wrapper.elt.scrollTop = 0;
-        renderVisible();
-        showClosestIndicators(selectedIndicator);
-        sendSelectedToVisual(selectedIndicator);
       });
     }
   }
@@ -311,27 +282,12 @@ function buildThreePart(container, fullText, query, item) {
 
 // --- update selectedIndicator ---
 function updateSelectedIndicator() {
-  const scrollTop = Math.max(0, wrapper.elt.scrollTop - topPadding);
-  const viewH = wrapper.elt.clientHeight;
-  const totalHeight =
-    [...lineHeights.values()].reduce((a, b) => a + (b || itemHeight), 0) +
-    topPadding +
-    bottomPadding;
-
-  // Mitte des sichtbaren Bereichs berechnen
-  const midPoint = scrollTop + viewH / 2;
-
-  // Sicherstellen, dass midPoint nicht über den Bereich hinausgeht
-  const clampedMidPoint = Math.min(
-    midPoint,
-    totalHeight - bottomPadding - itemHeight
-  );
-
+  const scrollTop = wrapper.elt.scrollTop;
   let idx = 0;
   let cumulative = 0;
   for (let i = 0; i < filteredArray.length; i++) {
     const h = lineHeights.get(i) || itemHeight;
-    if (clampedMidPoint < cumulative + h) {
+    if (scrollTop < cumulative + h) {
       idx = i;
       break;
     }
@@ -409,31 +365,15 @@ function showClosestIndicators(curr) {
       el.onclick = () => {
         let w = el.getAttribute("data-word") || "";
         const id = el.getAttribute("data-id");
-        w = w.replace(/[.,!?;:]+$/, "").toLowerCase();
-
-        // 1) Suchwort setzen + filtern
+        w = w.replace(/[.,!?;:]+$/, "").toLowerCase(); // Satzzeichen entfernen
         inputField.value(w);
-        handleInput(); // setzt filteredArray neu
-
-        // 2) Den geklickten Indikator im neuen filteredArray suchen …
-        const idx = filteredArray.findIndex(
-          (d) => d["Indicator English"] === id
-        );
-
-        // … und an Position 0 schieben (falls vorhanden)
-        if (idx > 0) {
-          const [clickedItem] = filteredArray.splice(idx, 1);
-          filteredArray.unshift(clickedItem);
+        handleInput(); // This will apply filters AND send to visual
+        const found = dataArray.find((d) => d["Indicator English"] === id);
+        if (found) {
+          selectedIndicator = found;
+          const idx = filteredArray.indexOf(found);
+          if (idx !== -1) wrapper.elt.scrollTop = idx * itemHeight;
         }
-
-        // 3) Ausgewähltes Item setzen (immer das erste der neuen Liste)
-        selectedIndicator = filteredArray[0] || null;
-
-        // 4) Scroll auf Anfang + neu rendern + senden
-        wrapper.elt.scrollTop = 0;
-        renderVisible();
-        showClosestIndicators(selectedIndicator);
-        sendSelectedToVisual(selectedIndicator);
       };
     });
 }

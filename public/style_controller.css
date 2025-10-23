@@ -29,16 +29,6 @@
    STARTSCREEN
 =========================== */
 
-p {
-  color: var(--black);
-  text-align: center;
-  font-family: "Suisse Int'l";
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 1.75rem;
-}
-
 /* --- Startscreen Layout --- */
 .startscreen {
   position: fixed;
@@ -60,23 +50,42 @@ p {
 
 .startscreen-content {
   text-align: center;
-  font-family: "Suisse International", sans-serif;
   max-width: 800px;
   padding: 2rem;
+  max-width: 30rem;
 }
 
 .startscreen-content h1 {
-  font-weight: 500;
-  letter-spacing: 0.05rem;
-  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 0.03rem;
+  margin-bottom: 2rem;
   text-transform: uppercase;
+  letter-spacing: 0.03rem;
 }
 
 .startscreen-content p {
-  font-size: 1.2rem;
-  color: var(--grey);
-  margin-bottom: 3rem;
-  font-weight: 300;
+  font-size: 0.8rem;
+  color: rgb(61, 61, 61);
+  font-family: "Suisse International", sans-serif;
+  font-weight: 300; /* same as About button */
+  letter-spacing: 0.02rem;
+  line-height: 1.2rem;
+  margin-top: 2rem;
+}
+a {
+  font-size: 0.8rem;
+  color: var(--black);
+  font-family: "Suisse International", sans-serif;
+  font-weight: 300; /* same as About button */
+  letter-spacing: 0.03em;
+  line-height: 1.2rem;
+  margin-top: 2rem;
+  text-underline-offset: 0.1rem;
+}
+
+a:hover {
+  color: var(--blue);
 }
 
 /* Input (panel reused from app) */
@@ -91,25 +100,6 @@ p {
   margin-top: 1.5rem;
 }
 
-.button-group button {
-  background: var(--blue);
-  color: var(--white);
-  border: none;
-  font-size: 1rem;
-  text-transform: uppercase;
-  padding: 0.9rem 2rem;
-  cursor: pointer;
-  letter-spacing: 0.05rem;
-  font-family: "Suisse International", sans-serif;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.button-group button:hover {
-  background: var(--black);
-  color: var(--white);
-}
-
 /* About Button — bottom center */
 #aboutBtn {
   position: absolute;
@@ -117,18 +107,36 @@ p {
   left: 50%;
   transform: translateX(-50%);
   background: none;
-  color: var(--blue);
+  color: var(--black);
   border: none;
   font-size: 1rem;
-  font-weight: 500;
-  text-transform: uppercase;
+  font-weight: 300;
   cursor: pointer;
   letter-spacing: 0.03em;
   transition: color 0.2s ease;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
 }
 
 #aboutBtn:hover {
+  color: var(--blue);
+}
+
+.back-button {
+  background: none;
   color: var(--black);
+  border: none;
+  font-size: 1rem;
+  font-weight: 300;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: color 0.2s ease;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.back-button:hover {
+  color: var(--blue);
 }
 
 /* =========================
@@ -139,7 +147,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Suisse International", sans-serif;
-  font-weight: 500;
   background-color: var(--white);
   letter-spacing: 0rem;
 }
@@ -172,12 +179,11 @@ body {
 /* Suchfeld */
 #panel input[type="text"] {
   width: 100%;
-  max-width: 300px;
   padding-top: 1rem;
   padding-right: 1rem;
   padding-bottom: 0.6rem;
   padding-left: 1rem;
-  border: 2px solid var(--blue);
+  border: 1px solid var(--blue);
   border-radius: 0;
   outline: none;
   color: var(--blue);
@@ -188,6 +194,20 @@ body {
   font-size: 1rem;
   font-weight: 500;
   background-color: var(--white);
+}
+
+@keyframes subtleGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px 1px rgba(19, 138, 242, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 8px 3px rgba(19, 138, 242, 0.3);
+  }
+}
+
+.panel {
+  animation: subtleGlow 2s ease-in-out infinite;
 }
 
 /* Container-Hintergründe */
