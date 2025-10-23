@@ -105,13 +105,13 @@ function draw() {
       dataArray.length > filteredArray.length &&
       filteredArray.includes(dataArray[i])
     ) {
-      fill(240);
-      stroke(21, 138, 242);
-      ellipse(x, y, 9, 9);
+      fill("#138af2");
+      noStroke();
+      ellipse(x, y, 5, 5);
     } else {
       noStroke();
       fill(255);
-      ellipse(x, y, 9, 9);
+      ellipse(x, y, 5, 5);
     }
   }
 
@@ -133,12 +133,20 @@ function draw() {
           spacing
         );
 
-        stroke("#848484");
+        const r = 11 / 2;
+        const dx = tgt.x - sel.x;
+        const dy = tgt.y - sel.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        const endX = tgt.x - (dx / dist) * r;
+        const endY = tgt.y - (dy / dist) * r;
+
+        stroke("#a9a9a9ff");
         strokeWeight(2.5);
-        line(sel.x, sel.y, tgt.x, tgt.y);
-        fill(240);
-        strokeWeight(2.5);
-        ellipse(tgt.x, tgt.y, 9, 9);
+        line(sel.x, sel.y, endX, endY);
+        strokeWeight(2);
+        noFill();
+        ellipse(tgt.x, tgt.y, r * 2, r * 2);
       }
 
       // selectedPoint nochmals zeichnen
