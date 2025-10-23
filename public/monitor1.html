@@ -21,6 +21,7 @@
         flex-direction: column;
         font-family: "Suisse International", sans-serif;
         transition: opacity 0.6s ease;
+        position: relative;
       }
 
       .startscreen.hidden {
@@ -30,6 +31,7 @@
 
       .startscreen-content {
         text-align: center;
+        max-width: 600px;
       }
 
       .startscreen h1 {
@@ -66,6 +68,46 @@
       .button-group button:hover {
         background: #0f6ed0;
       }
+
+      /* --- ABOUT SCREEN --- */
+      #aboutscreen {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: var(--white);
+        color: var(--black);
+        flex-direction: column;
+        font-family: "Suisse International", sans-serif;
+        transition: opacity 0.6s ease;
+        position: relative;
+        text-align: center;
+      }
+
+      #aboutscreen.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .back-button {
+        position: absolute;
+        top: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--blue);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.4rem;
+        cursor: pointer;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        transition: background 0.2s ease;
+      }
+
+      .back-button:hover {
+        background: #0f6ed0;
+      }
     </style>
   </head>
 
@@ -80,13 +122,27 @@
 
         <p>
           Discover how people in Mostar describe peace in their everyday lives.
-          Type a word and explore what “peace” means to the people of Mostar..
+          Type a word and explore what “peace” means to the people of Mostar.
         </p>
 
         <div class="button-group">
           <button id="startBtn">Start</button>
           <button id="aboutBtn">About</button>
         </div>
+      </div>
+    </div>
+
+    <!-- ✅ ABOUT SCREEN -->
+    <div id="aboutscreen" class="startscreen hidden">
+      <button id="backBtn" class="back-button">← Back</button>
+      <div class="startscreen-content">
+        <h1>About this Project</h1>
+        <p>
+          This prototype explores how people describe <strong>peace</strong> in
+          everyday life. It visualizes words and meanings gathered from voices
+          in <strong>Mostar</strong>.
+        </p>
+        <p>Design: <em>Swiss Style — Precision meets Clarity</em>.</p>
       </div>
     </div>
 
@@ -120,14 +176,16 @@
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const startScreen = document.getElementById("startscreen");
+        const aboutScreen = document.getElementById("aboutscreen");
         const mainApp = document.getElementById("mainApp");
         const startBtn = document.getElementById("startBtn");
         const aboutBtn = document.getElementById("aboutBtn");
+        const backBtn = document.getElementById("backBtn");
         const panelMain = document.getElementById("panelMain");
         const panel = document.getElementById("panel");
 
+        // Start button logic
         startBtn.addEventListener("click", () => {
-          // Transition
           startScreen.classList.add("hidden");
 
           setTimeout(() => {
@@ -137,7 +195,6 @@
             // Move panel to main app
             panelMain.appendChild(panel);
 
-            // Emit query if available
             const input = panel.querySelector("input");
             const query = input?.value?.trim();
             if (query && window.socket) {
@@ -151,10 +208,26 @@
           }, 600);
         });
 
+        // About button logic
         aboutBtn.addEventListener("click", () => {
-          alert(
-            "This is a prototype for exploring semantic relations in data.\nDesign: Swiss Style — Precision meets Clarity."
-          );
+          startScreen.classList.add("hidden");
+
+          setTimeout(() => {
+            startScreen.style.display = "none";
+            aboutScreen.classList.remove("hidden");
+            aboutScreen.style.display = "flex";
+          }, 600);
+        });
+
+        // Back button logic
+        backBtn.addEventListener("click", () => {
+          aboutScreen.classList.add("hidden");
+
+          setTimeout(() => {
+            aboutScreen.style.display = "none";
+            startScreen.classList.remove("hidden");
+            startScreen.style.display = "flex";
+          }, 600);
         });
       });
     </script>
