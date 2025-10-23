@@ -63,12 +63,14 @@ function setup() {
 }
 
 function draw() {
+  push();
+  translate(-3, -8); //push&pop to translate the whole thing it a bit to the left
   background(220);
   noStroke();
 
-  const margin = 50;
+  const margin = 35;
   const cols = 60;
-  const spacing = (width - margin * 2) / cols;
+  const spacing = (width - margin * 2) / (cols - 1);
 
   // let drawIndexOffset = 0;
 
@@ -155,6 +157,40 @@ function draw() {
       ellipse(sel.x, sel.y, 12, 12);
     }
   }
+
+  let legendeX = margin;
+  let legendeY = height - margin / 2.7;
+
+  fill(255);
+  ellipse(legendeX, legendeY, 5, 5);
+  text("Indicator", legendeX + 13, legendeY);
+
+  fill("#138af2");
+  ellipse(legendeX + spacing * 13, legendeY, 5, 5);
+  fill(255);
+  text("Indicator includes your query", legendeX + spacing * 13 + 10, legendeY);
+
+  fill("#138af2");
+  ellipse(legendeX + spacing * 5, legendeY, 12, 12);
+  fill(255);
+  text("Your selected indicator", legendeX + spacing * 5 + 12, legendeY);
+
+  stroke("#a9a9a9ff");
+  strokeWeight(2.5);
+  line(
+    legendeX + spacing * 23,
+    legendeY,
+    legendeX + spacing * 25 - 5.5,
+    legendeY
+  );
+
+  strokeWeight(2);
+  noFill();
+  ellipse(legendeX + spacing * 25, legendeY, 11, 11);
+  noStroke();
+  fill(255);
+  ellipse(legendeX + spacing * 25, legendeY, 5, 5);
+  text("Related Indicators", legendeX + spacing * 25 + 13, legendeY);
 }
 
 function handleInput() {
@@ -187,6 +223,7 @@ function handleInput() {
   }
 
   appendItems();
+  pop();
 }
 
 function appendItems() {
