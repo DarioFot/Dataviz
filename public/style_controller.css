@@ -295,12 +295,26 @@ body,
   border-top: 1px solid #ccc;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: center;
   padding: 1rem;
   box-sizing: border-box;
   width: 90%;
   margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 160px; /* space between items */
+  width: 100%;
+}
+
+.top-row .item {
+  flex: 0 0 calc(100% / 3 - 160px); /* 3 items across */
+}
+
+.bottom-row .item {
+  flex: 0 0 calc(100% / 3 - 160px); /* same width, only 2 items */
 }
 
 .item {
@@ -308,6 +322,14 @@ body,
   align-self: flex-start;
   width: 100%;
   text-transform: uppercase;
+}
+
+.sim-score {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--grey);
+  opacity: 0.95;
 }
 
 /* Klickbare Wörter */

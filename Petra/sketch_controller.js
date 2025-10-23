@@ -333,6 +333,9 @@ function cosineSim(a, b) {
 function showClosestIndicators(curr) {
   const container = select("#contentContainer");
   container.html("");
+  const topRow = createDiv().parent(container).addClass("row top-row");
+  const bottomRow = createDiv().parent(container).addClass("row bottom-row");
+
   if (!curr || !curr.embedding) return;
 
   let sims = dataArray.map((it) => ({
@@ -346,8 +349,10 @@ function showClosestIndicators(curr) {
 
   for (let s of closest) {
     const item = s.it;
-    let d = createDiv().parent(container).class("item");
+    let parentRow = closest.indexOf(s) % 2 === 0 ? topRow : bottomRow;
+    let d = createDiv().parent(parentRow).class("item");
     let title = item["Indicator English"] || "No Title";
+
     let wordsHtml = title
       .split(/\s+/)
       .map(
@@ -355,7 +360,13 @@ function showClosestIndicators(curr) {
           `<span class="clickable-word" data-word="${w}" data-id="${item["Indicator English"]}">${w}</span>`
       )
       .join(" ");
-    d.html(`<h3>${wordsHtml}</h3>`);
+
+    const simPercent = (s.sim * 100).toFixed(1) + "%";
+
+    d.html(
+      `<h3>${wordsHtml} <span class="sim-score">${simPercent}</span></h3>`
+    );
+
     showDetails(curr);
   }
 
