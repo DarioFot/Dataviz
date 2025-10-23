@@ -8,120 +8,20 @@
     <link rel="stylesheet" type="text/css" href="style_controller.css" />
     <script src="/libraries/p5.min.js"></script>
     <script src="/libraries/p5.sound.min.js"></script>
-
-    <style>
-      /* --- STARTSCREEN BASIC STYLE --- */
-      .startscreen {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background: var(--white);
-        color: var(--black);
-        flex-direction: column;
-        font-family: "Suisse International", sans-serif;
-        transition: opacity 0.6s ease;
-        position: relative;
-      }
-
-      .startscreen.hidden {
-        opacity: 0;
-        pointer-events: none;
-      }
-
-      .startscreen-content {
-        text-align: center;
-        max-width: 600px;
-      }
-
-      .startscreen h1 {
-        font-weight: 700;
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-        text-transform: uppercase;
-      }
-
-      .startscreen p {
-        font-size: 1rem;
-        margin: 1rem 0 2rem;
-        color: var(--grey);
-      }
-
-      .button-group {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-      }
-
-      .button-group button {
-        background: var(--blue);
-        color: white;
-        border: none;
-        padding: 0.8rem 1.6rem;
-        cursor: pointer;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-        transition: background 0.2s ease;
-      }
-
-      .button-group button:hover {
-        background: #0f6ed0;
-      }
-
-      /* --- ABOUT SCREEN --- */
-      #aboutscreen {
-        display: none;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background: var(--white);
-        color: var(--black);
-        flex-direction: column;
-        font-family: "Suisse International", sans-serif;
-        transition: opacity 0.6s ease;
-        position: relative;
-        text-align: center;
-      }
-
-      #aboutscreen.hidden {
-        opacity: 0;
-        pointer-events: none;
-      }
-
-      .back-button {
-        position: absolute;
-        top: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--blue);
-        color: white;
-        border: none;
-        padding: 0.6rem 1.4rem;
-        cursor: pointer;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-        transition: background 0.2s ease;
-      }
-
-      .back-button:hover {
-        background: #0f6ed0;
-      }
-    </style>
   </head>
 
   <body>
     <!-- STARTSCREEN -->
     <div id="startscreen" class="startscreen">
       <div class="startscreen-content">
-        <h1>What is a sign of peace in your perspective?</h1>
+        <h1>What is a sign of peace <br />in your perspective?</h1>
 
         <!-- ✅ Reuse same panel -->
         <div id="panel" class="panel"></div>
 
         <p>
-          Discover how people in Mostar describe peace in their everyday lives.
+          Discover how people in Mostar describe peace in their everyday
+          lives.<br />
           Type a word and explore what “peace” means to the people of Mostar.
         </p>
 
@@ -138,11 +38,18 @@
       <div class="startscreen-content">
         <h1>About this Project</h1>
         <p>
-          This prototype explores how people describe <strong>peace</strong> in
-          everyday life. It visualizes words and meanings gathered from voices
-          in <strong>Mostar</strong>.
+          Three decades after experiencing war, what do ordinary Mostarians
+          think about peace in their city and neighborhoods? How do they assess
+          the quality of their life together today? <br /><br />
+          As research for the project Mostar – Spaces to Activate and
+          Rejuvenate, Everyday Peace Indicators (EPI) worked with approximately
+          350 people in seven Mostar communities (mjesne zajednice) to get a
+          detailed picture of what life together and peace is like for
+          residents. Using women’s, men’s and youth focus groups and community
+          voting, EPI gathered thousands of basic, everyday indicators of
+          peaceful life together.
         </p>
-        <p>Design: <em>Swiss Style — Precision meets Clarity</em>.</p>
+        <p>Design: <em>Dario Foti, Stefan, Petra</em>.</p>
       </div>
     </div>
 

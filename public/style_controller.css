@@ -28,17 +28,6 @@
 /* ===========================
    STARTSCREEN
 =========================== */
-h1 {
-  color: var(--black);
-  text-align: center;
-  font-family: "Suisse Int'l";
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  letter-spacing: 0.05rem;
-  text-transform: uppercase;
-}
 
 p {
   color: var(--black);
@@ -46,7 +35,7 @@ p {
   font-family: "Suisse Int'l";
   font-size: 1rem;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.75rem;
 }
 
@@ -72,12 +61,11 @@ p {
 .startscreen-content {
   text-align: center;
   font-family: "Suisse International", sans-serif;
-  max-width: 600px;
+  max-width: 800px;
   padding: 2rem;
 }
 
 .startscreen-content h1 {
-  font-size: 2.8rem;
   font-weight: 500;
   letter-spacing: 0.05rem;
   margin-bottom: 1.5rem;
@@ -92,7 +80,7 @@ p {
 }
 
 /* Input (panel reused from app) */
-.startscreen #panel {
+.startscreen {
   margin: 0 auto 1.5rem;
 }
 
@@ -142,9 +130,6 @@ p {
 #aboutBtn:hover {
   color: var(--black);
 }
-
-/* =========================
-   BASE STYLES
 
 /* =========================
    BASE STYLES
@@ -202,14 +187,11 @@ body {
   font-family: "Suisse International";
   font-size: 1rem;
   font-weight: 500;
+  background-color: var(--white);
 }
 
 /* Container-Hintergründe */
 body,
-#canvasContainer {
-  background-color: var(--white) !important;
-}
-
 #canvasContainer {
   width: 100%;
 }
@@ -287,7 +269,7 @@ body,
 }
 
 /* =========================
-   BOTTOM AREA
+   RELATED VOICES
 ========================= */
 #contentContainer {
   border-top: 1px solid #ccc;
@@ -334,7 +316,7 @@ body,
   position: absolute;
   top: 70px;
   right: 20px;
-  background: #fff;
+  background: var(--white);
   border: 1px solid #aaa;
   padding: 12px;
   border-radius: 8px;
