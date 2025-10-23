@@ -25,6 +25,127 @@
 
 @import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap");
 
+/* ===========================
+   STARTSCREEN
+=========================== */
+h1 {
+  color: var(--black);
+  text-align: center;
+  font-family: "Suisse Int'l";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+}
+
+p {
+  color: var(--black);
+  text-align: center;
+  font-family: "Suisse Int'l";
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.75rem;
+}
+
+/* --- Startscreen Layout --- */
+.startscreen {
+  position: fixed;
+  inset: 0;
+  background-color: var(--white);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 1000;
+  transition: opacity 0.6s ease;
+}
+
+.startscreen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.startscreen-content {
+  text-align: center;
+  font-family: "Suisse International", sans-serif;
+  max-width: 600px;
+  padding: 2rem;
+}
+
+.startscreen-content h1 {
+  font-size: 2.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.startscreen-content p {
+  font-size: 1.2rem;
+  color: var(--grey);
+  margin-bottom: 3rem;
+  font-weight: 300;
+}
+
+/* Input (panel reused from app) */
+.startscreen #panel {
+  margin: 0 auto 1.5rem;
+}
+
+/* Start Button */
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.button-group button {
+  background: var(--blue);
+  color: var(--white);
+  border: none;
+  font-size: 1rem;
+  text-transform: uppercase;
+  padding: 0.9rem 2rem;
+  cursor: pointer;
+  letter-spacing: 0.05rem;
+  font-family: "Suisse International", sans-serif;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.button-group button:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* About Button — bottom center */
+#aboutBtn {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  color: var(--blue);
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: color 0.2s ease;
+}
+
+#aboutBtn:hover {
+  color: var(--black);
+}
+
+/* =========================
+   BASE STYLES
+
 /* =========================
    BASE STYLES
 ========================= */

@@ -4,32 +4,162 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monitor 1</title>
+
     <link rel="stylesheet" type="text/css" href="style_controller.css" />
     <script src="/libraries/p5.min.js"></script>
     <script src="/libraries/p5.sound.min.js"></script>
+
+    <style>
+      /* --- STARTSCREEN BASIC STYLE --- */
+      .startscreen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: var(--white);
+        color: var(--black);
+        flex-direction: column;
+        font-family: "Suisse International", sans-serif;
+        transition: opacity 0.6s ease;
+      }
+
+      .startscreen.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .startscreen-content {
+        text-align: center;
+      }
+
+      .startscreen h1 {
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+      }
+
+      .startscreen p {
+        font-size: 1rem;
+        margin: 1rem 0 2rem;
+        color: var(--grey);
+      }
+
+      .button-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      .button-group button {
+        background: var(--blue);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.6rem;
+        cursor: pointer;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        transition: background 0.2s ease;
+      }
+
+      .button-group button:hover {
+        background: #0f6ed0;
+      }
+    </style>
   </head>
+
   <body>
-    <div id="topbar">
-      <div id="panel"></div>
-      <div id="hamburger">&#9776;</div>
-      <div id="filterMenu" class="hidden">
-        <label><input type="checkbox" value="youth" checked /> Youth</label>
-        <label><input type="checkbox" value="men" checked /> Men</label>
-        <label><input type="checkbox" value="women" checked /> Women</label>
+    <!-- STARTSCREEN -->
+    <div id="startscreen" class="startscreen">
+      <div class="startscreen-content">
+        <h1>What is a sign of peace in your perspective?</h1>
+
+        <!-- ✅ Reuse same panel -->
+        <div id="panel" class="panel"></div>
+
+        <p>
+          Discover how people in Mostar describe peace in their everyday lives.
+          Type a word and explore what “peace” means to the people of Mostar..
+        </p>
+
+        <div class="button-group">
+          <button id="startBtn">Start</button>
+          <button id="aboutBtn">About</button>
+        </div>
       </div>
     </div>
 
-    <div id="canvasContainer"></div>
-    <div id="detailsContainer">
-      <div id="detailsContent"></div>
-    </div>
-    <div id="contentContainer">Content</div>
+    <!--  MAIN APP -->
+    <div id="mainApp" style="display: none">
+      <div id="topbar">
+        <div id="panelMain"></div>
+        <div id="hamburger">&#9776;</div>
+        <div id="filterMenu" class="hidden">
+          <label><input type="checkbox" value="youth" checked /> Youth</label>
+          <label><input type="checkbox" value="men" checked /> Men</label>
+          <label><input type="checkbox" value="women" checked /> Women</label>
+        </div>
+      </div>
 
+      <div id="canvasContainer"></div>
+      <div id="detailsContainer">
+        <div id="detailsContent"></div>
+      </div>
+      <div id="contentContainer">Content</div>
+    </div>
+
+    <!-- ✅ SOCKET.IO -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
       window.socket = io();
       window.socket.emit("join", "monitor1");
     </script>
+
+    <!-- ✅ LOGIC -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const startScreen = document.getElementById("startscreen");
+        const mainApp = document.getElementById("mainApp");
+        const startBtn = document.getElementById("startBtn");
+        const aboutBtn = document.getElementById("aboutBtn");
+        const panelMain = document.getElementById("panelMain");
+        const panel = document.getElementById("panel");
+
+        startBtn.addEventListener("click", () => {
+          // Transition
+          startScreen.classList.add("hidden");
+
+          setTimeout(() => {
+            startScreen.style.display = "none";
+            mainApp.style.display = "block";
+
+            // Move panel to main app
+            panelMain.appendChild(panel);
+
+            // Emit query if available
+            const input = panel.querySelector("input");
+            const query = input?.value?.trim();
+            if (query && window.socket) {
+              window.socket.emit("control", {
+                targetRoom: "visual",
+                payload: { action: "searchQuery", query },
+              });
+            }
+
+            window.initialSearch = query || "";
+          }, 600);
+        });
+
+        aboutBtn.addEventListener("click", () => {
+          alert(
+            "This is a prototype for exploring semantic relations in data.\nDesign: Swiss Style — Precision meets Clarity."
+          );
+        });
+      });
+    </script>
+
+    <!-- ✅ MAIN SKETCH -->
     <script src="/Petra/sketch_controller.js"></script>
   </body>
 </html>
