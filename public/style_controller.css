@@ -487,3 +487,28 @@ body,
     gap: 20px;
   }
 }
+
+/* =========================
+   BLUE DOTS (only for selected item)
+========================= */
+.blue-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--blue);
+  display: none; /* Standard: ausgeblendet */
+  vertical-align: middle;
+  margin: 0 0.6rem;
+}
+
+.scroll-item.selected-item .blue-dot {
+  display: inline-block; /* Nur im ausgewählten Item sichtbar */
+}
+
+.left-dot {
+  order: -1;
+}
+
+.right-dot {
+  order: 1;
+}
