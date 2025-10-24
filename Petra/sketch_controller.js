@@ -289,7 +289,6 @@ function buildThreePart(container, fullText, query, item) {
   rightDot.class("blue-dot right-dot");
 }
 
-
 // --- update selectedIndicator ---
 function updateSelectedIndicator() {
   const scrollTop = wrapper.elt.scrollTop;
@@ -297,7 +296,7 @@ function updateSelectedIndicator() {
   let cumulative = 0;
   for (let i = 0; i < filteredArray.length; i++) {
     const h = lineHeights.get(i) || itemHeight;
-    if (scrollTop < cumulative + h) {
+    if (scrollTop < cumulative + h * 0.05) {
       idx = i;
       break;
     }

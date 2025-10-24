@@ -16,8 +16,10 @@
       <div class="startscreen-content">
         <h1>What is a sign of peace <br />in your perspective?</h1>
 
-        <!-- ✅ Reuse same panel -->
-        <div id="panel" class="panel"></div>
+        <!-- Panel mit Eingabefeld -->
+        <div id="panel" class="panel">
+          <input type="text" placeholder="Type your word here" />
+        </div>
 
         <p>
           Discover how people in Mostar describe peace in their everyday
@@ -77,10 +79,7 @@
       <div id="detailsContainer">
         <div id="detailsContent"></div>
       </div>
-      <div id="contentContainer">
-        <div class="row top-row"></div>
-        <div class="row bottom-row"></div>
-      </div>
+      <div id="contentContainer">Content</div>
     </div>
 
     <!-- ✅ SOCKET.IO -->
@@ -102,8 +101,7 @@
         const panelMain = document.getElementById("panelMain");
         const panel = document.getElementById("panel");
 
-        // Start button logic
-        startBtn.addEventListener("click", () => {
+        function showMainApp() {
           startScreen.classList.add("hidden");
 
           setTimeout(() => {
@@ -123,13 +121,14 @@
             }
 
             window.initialSearch = query || "";
+            console.log("showMainApp() executed, query:", query);
           }, 600);
-        });
+        }
 
-        // About button logic
+        startBtn.addEventListener("click", showMainApp);
+
         aboutBtn.addEventListener("click", () => {
           startScreen.classList.add("hidden");
-
           setTimeout(() => {
             startScreen.style.display = "none";
             aboutScreen.classList.remove("hidden");
@@ -137,19 +136,78 @@
           }, 600);
         });
 
-        // Back button logic
         backBtn.addEventListener("click", () => {
           aboutScreen.classList.add("hidden");
-
           setTimeout(() => {
             aboutScreen.style.display = "none";
             startScreen.classList.remove("hidden");
             startScreen.style.display = "flex";
           }, 600);
         });
+
+        // ---------- Robust ENTER handling ----------
+        // 1) Global keydown: if Enter pressed and focus is inside #panel -> showMainApp
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            const active = document.activeElement;
+            if (
+              active &&
+              (active.tagName === "INPUT" || active.tagName === "TEXTAREA")
+            ) {
+              if (active.closest && active.closest("#panel")) {
+                event.preventDefault();
+                showMainApp();
+              }
+            }
+          }
+        });
+
+        // 2) If p5 creates the input later, ensure it has a keydown handler as well.
+        //    Try to observe mutations inside #panel and attach handler once input appears.
+        const attachKeyHandlerToPanelInput = () => {
+          const input = panel.querySelector("input");
+          if (input && !input._enterHandlerAttached) {
+            input.addEventListener("keydown", (e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                showMainApp();
+              }
+            });
+            input._enterHandlerAttached = true;
+            console.log("Attached keydown directly to panel input");
+            return true;
+          }
+          return false;
+        };
+
+        // Try immediate attach (if input already exists)
+        attachKeyHandlerToPanelInput();
+
+        // MutationObserver: watch panel for added nodes (fast and clean)
+        const mo = new MutationObserver((mutations) => {
+          for (const m of mutations) {
+            if (m.addedNodes && m.addedNodes.length) {
+              if (attachKeyHandlerToPanelInput()) {
+                // stop observing once we attached
+                mo.disconnect();
+                return;
+              }
+            }
+          }
+        });
+
+        mo.observe(panel, { childList: true, subtree: true });
+
+        // Fallback polling (if MutationObserver somehow doesn't detect)
+        const pollInterval = setInterval(() => {
+          if (attachKeyHandlerToPanelInput()) {
+            clearInterval(pollInterval);
+          }
+        }, 300);
+
+        // End of DOMContentLoaded
       });
     </script>
-
     <!-- ✅ MAIN SKETCH -->
     <script src="/Petra/sketch_controller.js"></script>
   </body>
