@@ -191,11 +191,14 @@ function renderVisible() {
     totalHeight += lineHeights.get(i) || itemHeight;
   }
 
+  totalHeight += itemHeight * 7;
+
   const minHeight = wrapper.elt.clientHeight + itemHeight * buffer;
   inner.style("height", Math.max(totalHeight, minHeight) + "px");
 
+  const realTotalHeight = totalHeight - itemHeight * 7;
   const lastItemHeight = lineHeights.get(totalItems - 1) || itemHeight;
-  const maxScrollTop = totalHeight - lastItemHeight;
+  const maxScrollTop = realTotalHeight - lastItemHeight;
   wrapper.elt.scrollTop = constrain(wrapper.elt.scrollTop, 0, maxScrollTop);
 
   // Positionierung der sichtbaren Zeilen
