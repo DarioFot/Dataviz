@@ -13,6 +13,23 @@ let buffer = 4;
 let lastRenderKey = "";
 let lineHeights = new Map(); // speichert Höhe jeder Zeile
 
+const communityNames = {
+  bijeliBrijegLT: "Bijeli Brijeg",
+  bijeliBrijegP: "Bijeli Brijeg",
+  blagajLT: "Blagaj",
+  blagajP: "Blagaj",
+  cernicaLT: "Cernica",
+  cernicaP: "Cernica",
+  cimLT: "Cim",
+  cimP: "Cim",
+  podhumLT: "Podhum",
+  podhumP: "Podhum",
+  potociLT: "Potoci",
+  potociP: "Potoci",
+  zalikLT: "Zalik",
+  zalikP: "Zalik",
+};
+
 // --- load JSON ---
 function preload() {
   rawData = loadJSON("/stefan/data/embeddings-full.json");
@@ -370,6 +387,9 @@ function cosineSim(a, b) {
 function showClosestIndicators(curr) {
   const container = select("#contentContainer");
   container.html("");
+
+  createElement("h2", "RELATED VOICES").parent(container);
+
   const topRow = createDiv().parent(container).addClass("row top-row");
   const bottomRow = createDiv().parent(container).addClass("row bottom-row");
 
@@ -384,19 +404,23 @@ function showClosestIndicators(curr) {
     .filter((s) => s.it["Indicator English"] !== curr["Indicator English"])
     .slice(0, 5);
 
+  let counter = 1;
   for (let s of closest) {
     const item = s.it;
     let parentRow = closest.indexOf(s) % 2 === 0 ? topRow : bottomRow;
     let d = createDiv().parent(parentRow).class("item");
-    let title = item["Indicator English"] || "No Title";
 
-    let wordsHtml = title
-      .split(/\s+/)
-      .map(
-        (w) =>
-          `<span class="clickable-word" data-word="${w}" data-id="${item["Indicator English"]}">${w}</span>`
-      )
-      .join(" ");
+    const title = item["Indicator English"] || "No Title";
+
+    let wordsHtml =
+      `${counter} – ` +
+      title
+        .split(/\s+/)
+        .map(
+          (w) =>
+            `<span class="clickable-word" data-word="${w}" data-id="${item["Indicator English"]}">${w}</span>`
+        )
+        .join(" ");
 
     const simPercent = (s.sim * 100).toFixed(1) + "%";
 
@@ -405,6 +429,8 @@ function showClosestIndicators(curr) {
     );
 
     showDetails(curr);
+
+    counter++;
   }
 
   document
@@ -445,9 +471,11 @@ function showDetails(indicator) {
 
   // Werte aus dem JSON holen
   const speaker = indicator["Focus Group"] || "N/A";
-  const community = indicator["Community"] || "N/A";
-  const dim1 = indicator["Dimension 1"] || "";
-  const dim2 = indicator["Dimension 2"] || "";
+  const dim1 = indicator["Subcat 1 name"] || "";
+  const dim2 = indicator["Subcat 2 name"] || "";
+
+  const rawCommunity = indicator["Community"] || "N/A";
+  const community = communityNames[rawCommunity] || "N/A";
 
   // HTML-Struktur aufbauen (ohne CSS zu ändern!)
   const html = `

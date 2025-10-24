@@ -302,6 +302,14 @@ body,
   margin: 0 auto;
 }
 
+#contentContainer h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--black);
+}
+
 .row {
   display: flex;
   justify-content: center;
@@ -324,11 +332,25 @@ body,
   text-transform: uppercase;
 }
 
+.item h3 {
+  font-weight: 500 !important;
+}
+
 .sim-score {
   margin-left: 0.5rem;
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--grey);
+  opacity: 0.95;
+}
+
+.indicator-number {
+  font-weight: 700;
+  color: var(--grey);
+  margin-right: 0.3rem; /* space between number and text */
+  font-size: 0.9rem;
+  display: inline-block;
+  text-align: left;
   opacity: 0.95;
 }
 
@@ -477,7 +499,8 @@ body,
 .detail-title {
   font-weight: 500;
   font-size: 1rem;
-  color: var(--blue);
+  text-transform: uppercase;
+  color: var(--black);
 }
 /* Responsive Verhalten */
 @media (max-width: 900px) {
