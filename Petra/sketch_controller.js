@@ -71,6 +71,8 @@ function setup() {
 
   // initial render
   applyFilters();
+
+  console.log("version 24.10.14");
 }
 
 // --- input change ---
@@ -95,9 +97,25 @@ function applyFilters() {
     return matchesFocus && matchesQuery;
   });
 
+  // // === STEP 1: Add transparent placeholder ===
+  // if (filteredArray.length > 0) {
+  //   const transparentIndicator = {
+  //     id: "placeholder",
+  //     x: filteredArray[0].x,
+  //     y: filteredArray[0].y,
+  //     visible: false,
+  //     alpha: 0,
+  //   };
+  //   filteredArray.unshift(transparentIndicator);
+  // }
+
+  // // Checkpoint logs
+  // console.log("Filtered array length:", filteredArray.length);
+  // console.log("First element:", filteredArray[0]);
+
   wrapper.elt.scrollTop = 0;
   lastRenderKey = "";
-  selectedIndicator = filteredArray[0] || null;
+  selectedIndicator = filteredArray[0] || null; //change to 1?
   renderVisible();
   showClosestIndicators(selectedIndicator);
   // Send selected indicator to visual for canvas drawing
@@ -141,6 +159,8 @@ function renderVisible() {
       itemDiv.addClass("selected-item");
     }
 
+    // if (item.id === "placeholder" || item.visible === false) continue;
+
     buildThreePart(itemDiv, text, q, item);
 
     // Nach DOM-Erstellung Höhe messen
@@ -153,7 +173,13 @@ function renderVisible() {
   for (let i = 0; i < totalItems; i++) {
     totalHeight += lineHeights.get(i) || itemHeight;
   }
-  inner.style("height", totalHeight + "px");
+
+  const minHeight = wrapper.elt.clientHeight + itemHeight * buffer;
+  inner.style("height", Math.max(totalHeight, minHeight) + "px");
+
+  const lastItemHeight = lineHeights.get(totalItems - 1) || itemHeight;
+  const maxScrollTop = totalHeight - lastItemHeight;
+  wrapper.elt.scrollTop = constrain(wrapper.elt.scrollTop, 0, maxScrollTop);
 
   // Positionierung der sichtbaren Zeilen
   let currentY = 0;
@@ -287,12 +313,14 @@ function updateSelectedIndicator() {
   let cumulative = 0;
   for (let i = 0; i < filteredArray.length; i++) {
     const h = lineHeights.get(i) || itemHeight;
-    if (scrollTop < cumulative + h) {
+    if (scrollTop < cumulative + h * 0.05) {
       idx = i;
       break;
     }
     cumulative += h;
   }
+
+  // if (idx === 0 && filteredArray[0]?.id === "placeholder") idx = 1;
 
   const newSelected = filteredArray[idx] || null;
   if (
@@ -485,4 +513,8 @@ function sendSelectedToVisual(indicator) {
   } catch (e) {
     console.log("Error sending selectedIndicator:", e);
   }
+}
+
+function constrain(v, a, b) {
+  return Math.min(Math.max(v, a), b);
 }
