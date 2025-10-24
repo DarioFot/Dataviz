@@ -487,3 +487,24 @@ body,
     gap: 20px;
   }
 }
+
+/* =========================
+   BLUE DOTS
+========================= */
+.blue-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--blue);
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.6rem;
+}
+
+.left-dot {
+  order: -1; /* Punkt vor Text */
+}
+
+.right-dot {
+  order: 1; /* Punkt nach Text */
+}

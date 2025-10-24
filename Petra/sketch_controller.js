@@ -175,7 +175,7 @@ function buildThreePart(container, fullText, query, item) {
 
   const tokens = fullText.match(/\b\w+\b[.,!?;:]?|\S+/g) || [];
 
-  // --- FALL 1: Keine Suche aktiv → einfacher zentrierter Text ---
+  // === FALL 1: Keine Suche aktiv → zentrierter Text ohne Punkte ===
   if (q === "") {
     const line = createDiv().parent(container);
     line.class("line-container");
@@ -198,11 +198,11 @@ function buildThreePart(container, fullText, query, item) {
       if (punct) createSpan(punct).parent(centerDiv);
       createSpan(" ").parent(centerDiv);
 
-      // Klick auf Wort → Suche starten
+      // Klick → Suche starten
       wordSpan.mousePressed(() => {
         inputField.value(wordPart.toLowerCase());
         selectedIndicator = item;
-        handleInput(); // This will apply filters AND send to visual
+        handleInput(); // Filter neu anwenden
         const idx = filteredArray.indexOf(item);
         if (idx !== -1) {
           setTimeout(() => {
@@ -214,7 +214,7 @@ function buildThreePart(container, fullText, query, item) {
     return;
   }
 
-  // --- FALL 2: Suche aktiv → bisherige Logik mit drei Teilen ---
+  // === FALL 2: Suche aktiv → Dreiteiliges Layout MIT Punkten ===
   let matchIdx = -1;
   for (let k = 0; k < tokens.length; k++) {
     const cleanWord = tokens[k].replace(/[.,!?;:]+$/, "").toLowerCase();
@@ -256,7 +256,7 @@ function buildThreePart(container, fullText, query, item) {
       wordSpan.mousePressed(() => {
         inputField.value(wordPart.toLowerCase());
         selectedIndicator = item;
-        handleInput(); // This will apply filters AND send to visual
+        handleInput(); // Filter neu anwenden
         const idx = filteredArray.indexOf(item);
         if (idx !== -1) {
           setTimeout(() => {
@@ -267,18 +267,28 @@ function buildThreePart(container, fullText, query, item) {
     }
   }
 
-  // Left
+  // --- LEFT PART ---
   const leftDiv = createDiv().parent(line).class("left-part");
+
+  // 🔵 Punkt links
+  const leftDot = createDiv().parent(leftDiv);
+  leftDot.class("blue-dot left-dot");
+
   appendWordSpans(leftDiv, leftTokens, false);
 
-  // Center (fett bei Treffer)
+  // --- CENTER PART ---
   const centerDiv = createDiv().parent(line).class("center-part");
   if (centerToken) appendWordSpans(centerDiv, [centerToken], true);
 
-  // Right
+  // --- RIGHT PART ---
   const rightDiv = createDiv().parent(line).class("right-part");
   appendWordSpans(rightDiv, rightTokens, false);
+
+  // 🔵 Punkt rechts
+  const rightDot = createDiv().parent(rightDiv);
+  rightDot.class("blue-dot right-dot");
 }
+
 
 // --- update selectedIndicator ---
 function updateSelectedIndicator() {
