@@ -114,21 +114,16 @@ function applyFilters() {
     return matchesFocus && matchesQuery;
   });
 
-  // // === STEP 1: Add transparent placeholder ===
-  // if (filteredArray.length > 0) {
-  //   const transparentIndicator = {
-  //     id: "placeholder",
-  //     x: filteredArray[0].x,
-  //     y: filteredArray[0].y,
-  //     visible: false,
-  //     alpha: 0,
-  //   };
-  //   filteredArray.unshift(transparentIndicator);
-  // }
-
-  // // Checkpoint logs
-  // console.log("Filtered array length:", filteredArray.length);
-  // console.log("First element:", filteredArray[0]);
+  // If a selectedIndicator exists and is in filteredArray, move it to top
+  if (selectedIndicator) {
+    const idx = filteredArray.indexOf(selectedIndicator);
+    if (idx > -1) {
+      filteredArray.splice(idx, 1);
+      filteredArray.unshift(selectedIndicator);
+    }
+  } else {
+    selectedIndicator = filteredArray[0] || null;
+  }
 
   wrapper.elt.scrollTop = 0;
   lastRenderKey = "";
@@ -248,13 +243,12 @@ function buildThreePart(container, fullText, query, item) {
       wordSpan.mousePressed(() => {
         inputField.value(wordPart.toLowerCase());
         selectedIndicator = item;
+
+        moveItemToTopInDataArray(item);
         handleInput(); // Filter neu anwenden
-        const idx = filteredArray.indexOf(item);
-        if (idx !== -1) {
-          setTimeout(() => {
-            wrapper.elt.scrollTop = idx * itemHeight;
-          }, 0);
-        }
+        setTimeout(() => {
+          wrapper.elt.scrollTop = 0;
+        }, 0);
       });
     }
     return;
@@ -302,13 +296,12 @@ function buildThreePart(container, fullText, query, item) {
       wordSpan.mousePressed(() => {
         inputField.value(wordPart.toLowerCase());
         selectedIndicator = item;
+
+        moveItemToTopInDataArray(item);
         handleInput(); // Filter neu anwenden
-        const idx = filteredArray.indexOf(item);
-        if (idx !== -1) {
-          setTimeout(() => {
-            wrapper.elt.scrollTop = idx * itemHeight;
-          }, 0);
-        }
+        setTimeout(() => {
+          wrapper.elt.scrollTop = 0;
+        }, 0);
       });
     }
   }
@@ -443,13 +436,19 @@ function showClosestIndicators(curr) {
         let w = el.getAttribute("data-word") || "";
         const id = el.getAttribute("data-id");
         w = w.replace(/[.,!?;:]+$/, "").toLowerCase(); // Satzzeichen entfernen
-        inputField.value(w);
-        handleInput(); // This will apply filters AND send to visual
+
         const found = dataArray.find((d) => d["Indicator English"] === id);
         if (found) {
+          // move in canonical array then reapply filters
+          moveItemToTopInDataArray(found);
+
+          inputField.value(w);
+          handleInput(); // This will apply filters AND send to visual
+
           selectedIndicator = found;
-          const idx = filteredArray.indexOf(found);
-          if (idx !== -1) wrapper.elt.scrollTop = idx * itemHeight;
+          setTimeout(() => {
+            wrapper.elt.scrollTop = 0;
+          }, 0);
         }
       };
     });
@@ -557,4 +556,16 @@ function sendSelectedToVisual(indicator) {
 
 function constrain(v, a, b) {
   return Math.min(Math.max(v, a), b);
+}
+
+function moveItemToTopInDataArray(item) {
+  if (!item) return false;
+  const idx = dataArray.indexOf(item);
+  if (idx > -1) {
+    // remove and unshift to the front
+    dataArray.splice(idx, 1);
+    dataArray.unshift(item);
+    return true;
+  }
+  return false;
 }
