@@ -476,8 +476,9 @@ const infoRelated = createSpan("i")
   );
 infoRelated.parent(relatedTitle); // ✅ Icon INS H2 hängen
 
-  const topRow = createDiv().parent(container).addClass("row top-row");
-  const bottomRow = createDiv().parent(container).addClass("row bottom-row");
+  // const topRow = createDiv().parent(container).addClass("row top-row");
+  // const bottomRow = createDiv().parent(container).addClass("row bottom-row");
+  const contentRow = createDiv().parent(container).addClass("row content-row");
 
   if (!curr || !curr.embedding) return;
 
@@ -493,8 +494,8 @@ infoRelated.parent(relatedTitle); // ✅ Icon INS H2 hängen
   let counter = 1;
   for (let s of closest) {
     const item = s.it;
-    const parentRow = s < 3 ? topRow : bottomRow;
-    let d = createDiv().parent(parentRow).class("item");
+    // const parentRow = s < 3 ? topRow : bottomRow;
+    let d = createDiv().parent(contentRow).class("item");
 
     const title = item["Indicator English"] || "No Title";
 
