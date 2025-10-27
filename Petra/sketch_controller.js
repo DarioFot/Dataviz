@@ -50,6 +50,12 @@ function setup() {
   // input
   inputField = createInput();
   inputField.parent("panel");
+
+  // make sure it's a text field and has your custom placeholder
+  inputField.attribute("type", "text");
+  inputField.attribute("placeholder", "Your Word");
+
+  // connect to your existing input handler
   inputField.input(onInputChange);
 
   // outer wrapper

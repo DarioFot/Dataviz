@@ -17,9 +17,7 @@
         <h1>What is a sign of peace <br />in your perspective?</h1>
 
         <!-- Panel mit Eingabefeld -->
-        <div id="panel" class="panel">
-          <input type="text" placeholder="Type your word here" />
-        </div>
+        <div id="panel" class="panel"></div>
 
         <p>
           Discover how people in Mostar describe peace in their everyday
@@ -66,7 +64,10 @@
     <!--  MAIN APP -->
     <div id="mainApp" style="display: none">
       <div id="topbar">
+        <button id="restartBtn" class="topbar-btn">restart</button>
+
         <div id="panelMain"></div>
+
         <div id="hamburger">&#9776;</div>
         <div id="filterMenu" class="hidden">
           <label><input type="checkbox" value="youth" checked /> Youth</label>
@@ -91,6 +92,20 @@
       window.socket = io();
       window.socket.emit("join", "monitor1");
     </script>
+
+    <script>
+      // Restart button → reloads entire app (go back to start)
+      document.addEventListener("DOMContentLoaded", () => {
+        const restartBtn = document.getElementById("restartBtn");
+        if (restartBtn) {
+          restartBtn.addEventListener("click", () => {
+            window.location.reload(); // full reset back to start screen
+          });
+        }
+      });
+    </script>
+
+    <script src="/Petra/sketch_controller.js"></script>
 
     <!-- ✅ LOGIC -->
     <script>

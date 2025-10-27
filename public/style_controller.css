@@ -139,6 +139,32 @@ a:hover {
   color: var(--blue);
 }
 
+#startBtn {
+  display: none;
+}
+
+#restartBtn {
+  position: absolute;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--black);
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: color 0.2s ease;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+#restartBtn:hover {
+  color: var(--blue);
+  background: none;
+}
+
 /* =========================
    BASE STYLES
 ========================= */
@@ -162,9 +188,8 @@ body {
   padding: 2rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: sticky;
-  top: 0;
+  justify-content: center; /* centers the panel */
+  position: relative; /* makes absolute children position relative to this */
   z-index: 10;
   border-bottom: 1px solid #ccc;
 }
@@ -180,20 +205,24 @@ body {
 #panel input[type="text"] {
   width: 100%;
   padding-top: 1rem;
-  padding-right: 1rem;
   padding-bottom: 0.6rem;
-  padding-left: 1rem;
   border: 1px solid var(--blue);
   border-radius: 0;
   outline: none;
   color: var(--blue);
-  text-align: left;
+  text-align: center;
   box-sizing: border-box;
   text-transform: uppercase;
   font-family: "Suisse International";
   font-size: 1rem;
   font-weight: 500;
   background-color: var(--white);
+}
+#panel input::placeholder {
+  color: var(--grey);
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  font-weight: 300;
 }
 
 @keyframes subtleGlow {
@@ -374,6 +403,7 @@ body,
   user-select: none;
   position: absolute;
   right: 20px;
+  display: none;
 }
 
 #filterMenu {
