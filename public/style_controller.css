@@ -533,6 +533,7 @@ h2 {
   font-weight: 300;
   margin-top: 2rem;
   padding-bottom: 2rem;
+  display: none;
 }
 
 #detailsContent {
@@ -550,23 +551,6 @@ h2 {
   min-height: 1.75rem; /* Prevent layout shift when content is cleared */
 }
 
-.detail-value {
-  display: inline-block;
-  line-height: 1.75rem;
-  text-transform: uppercase;
-  font-weight: 500;
-  opacity: 0;
-  animation: fadeInValue 0.6s ease forwards;
-}
-
-@keyframes fadeInValue {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 .detail-title {
   font-family: "Suisse Int'l";
   font-size: 1rem;
@@ -577,7 +561,40 @@ h2 {
   color: var(--black);
 }
 
-/* Details and content container animations */
+/* =========================
+   ANIMATIONS SECTION
+   Edit all animations here
+========================= */
+
+/* Fade In Animation Keyframes */
+@keyframes fadeInValue {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInRow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Animation Settings - EDIT HERE */
+.detail-value {
+  display: inline-block;
+  line-height: 1.75rem;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0;
+  animation: fadeInValue 0.6s ease forwards;
+}
+
 #detailsContainer {
   opacity: 0;
   animation: fadeInValue 0.6s ease forwards;
@@ -607,6 +624,25 @@ h2 {
   display: none; /* Standard: ausgeblendet */
   vertical-align: middle;
   margin: 0 0.6rem;
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 0px 0px rgba(19, 138, 242, 0);
+  }
+  25% {
+    box-shadow: 0 0 8px 3px rgba(19, 138, 242, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0px 0px rgba(19, 138, 242, 0);
+  }
+  75% {
+    box-shadow: 0 0 8px 3px rgba(19, 138, 242, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0px 0px rgba(19, 138, 242, 0);
+  }
 }
 
 .scroll-item.selected-item .blue-dot {
