@@ -5,7 +5,6 @@ let embeddings = [];
 let closest5 = [];
 let selectedIndicator = null;
 let firstCommunityLabelIndices = new Set();
-let linesStartTime = 0;
 
 const communityNames = {
   bijeliBrijegLT: "Bijeli Brijeg",
@@ -129,34 +128,28 @@ function draw() {
         spacing
       );
 
-      // Check if 2 seconds have passed since selection
-      const currentTime = millis();
-      const elapsed = currentTime - linesStartTime;
-      
-      if (elapsed >= 600) {
-        for (let targetIdx of closest5) {
-          const tgt = indexToXY(
-            targetIdx + getOffsetUpTo(targetIdx, spacing),
-            cols,
-            margin,
-            spacing
-          );
+      for (let targetIdx of closest5) {
+        const tgt = indexToXY(
+          targetIdx + getOffsetUpTo(targetIdx, spacing),
+          cols,
+          margin,
+          spacing
+        );
 
-          const r = 11 / 2;
-          const dx = tgt.x - sel.x;
-          const dy = tgt.y - sel.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+        const r = 11 / 2;
+        const dx = tgt.x - sel.x;
+        const dy = tgt.y - sel.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
-          const endX = tgt.x - (dx / dist) * r;
-          const endY = tgt.y - (dy / dist) * r;
+        const endX = tgt.x - (dx / dist) * r;
+        const endY = tgt.y - (dy / dist) * r;
 
-          stroke("#a9a9a9ff");
-          strokeWeight(2.5);
-          line(sel.x, sel.y, endX, endY);
-          strokeWeight(2);
-          noFill();
-          ellipse(tgt.x, tgt.y, r * 2, r * 2);
-        }
+        stroke("#a9a9a9ff");
+        strokeWeight(2.5);
+        line(sel.x, sel.y, endX, endY);
+        strokeWeight(2);
+        noFill();
+        ellipse(tgt.x, tgt.y, r * 2, r * 2);
       }
 
       // selectedPoint nochmals zeichnen
@@ -220,7 +213,6 @@ function handleInput() {
   // --- DEBUG: auto-select first filtered indicator ---
   if (filteredArray.length > 0 && !window.debugDisabled) {
     selectedIndicator = filteredArray[0];
-    linesStartTime = millis(); // Reset timer when selection changes
     const index = dataArray.indexOf(selectedIndicator);
     if (index !== -1) {
       closest5 = findFiveClosest(index);
@@ -318,7 +310,6 @@ window.handleControlFromSocket = function (msg) {
     selectedIndicator = dataArray.find(
       (item) => item["Indicator English"] === indicatorEnglish
     );
-    linesStartTime = millis(); // Reset timer when selection changes
     console.log("Found selectedIndicator:", selectedIndicator);
     console.log("DataArray length:", dataArray.length);
     console.log("Embeddings length:", embeddings.length);
