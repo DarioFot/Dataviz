@@ -253,9 +253,15 @@ body,
   overflow-y: scroll;
   position: relative;
   border-bottom: 1px solid #ccc;
-  background: var(--white);
+
+  /* Firefox */
+  scrollbar-width: none;
 }
 
+/* Chrome, Safari, Edge */
+#scrollWrapper::-webkit-scrollbar {
+  display: none;
+}
 #innerContainer {
   position: relative;
   width: 100%;
