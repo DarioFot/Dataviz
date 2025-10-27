@@ -63,8 +63,11 @@
 
     <!--  MAIN APP -->
     <div id="mainApp" style="display: none">
+      <div id="detailsContainer">
+        <div id="detailsContent"></div>
+      </div>
+      
       <div id="topbar">
-        <button id="restartBtn" class="topbar-btn">restart</button>
 
         <div id="panelMain"></div>
 
@@ -75,16 +78,14 @@
           <label><input type="checkbox" value="women" checked /> Women</label>
         </div>
       </div>
-      
-      <h2 class="related-title">VOICES MATCHING YOUR SEARCH</h2>
+
       <div id="canvasContainer"></div>
-      <div id="detailsContainer">
-        <div id="detailsContent"></div>
-      </div>
       <div id="contentContainer">
         Content
-        <h2 class="related-title">RELATED VOICES</h2>
+        <h2 class="related-title">Related Voices</h2>
       </div>
+      
+      <button id="restartBtn">restart</button>
     </div>
 
     <!-- ✅ SOCKET.IO -->

@@ -146,9 +146,9 @@ a:hover {
 
 #restartBtn {
   position: absolute;
-  left: 2rem;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   color: var(--black);
   background: none;
   border: none;
@@ -176,6 +176,11 @@ body {
   font-family: "Suisse International", sans-serif;
   background-color: var(--white);
   letter-spacing: 0rem;
+}
+
+#mainApp {
+  position: relative;
+  min-height: 100vh;
 }
 
 .detail-value {
