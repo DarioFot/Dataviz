@@ -497,7 +497,7 @@ function showClosestIndicators(curr) {
   let counter = 1;
   for (let s of closest) {
     const item = s.it;
-    let parentRow = closest.indexOf(s) % 2 === 0 ? topRow : bottomRow;
+    const parentRow = s < 3 ? topRow : bottomRow;
     let d = createDiv().parent(parentRow).class("item");
 
     const title = item["Indicator English"] || "No Title";
@@ -616,7 +616,6 @@ function showDetails(indicator) {
 
   container.html(html);
 }
-
 
 // KOMMUNIKATION ZWISCHEN PAGES
 function handleInput() {
