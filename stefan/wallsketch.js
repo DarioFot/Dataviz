@@ -105,17 +105,17 @@ function draw() {
       fill(21, 138, 242);
       noStroke();
       ellipse(x, y, 12, 12);
-      
+
       // Add fast pulsing glow effect (20 pulses per cycle)
       const cycle = (frameCount * 0.2) % (TWO_PI * 2);
       let pulseAmount, pulseOpacity;
-      
-      if (cycle < PI/2) {
-        pulseAmount = map(cycle, 0, PI/2, 0, 15);
-        pulseOpacity = map(cycle, 0, PI/2, 0, 0.6);
+
+      if (cycle < PI / 2) {
+        pulseAmount = map(cycle, 0, PI / 2, 0, 15);
+        pulseOpacity = map(cycle, 0, PI / 2, 0, 0.6);
       } else if (cycle < PI) {
-        pulseAmount = map(cycle, PI/2, PI, 15, 0);
-        pulseOpacity = map(cycle, PI/2, PI, 0.6, 0);
+        pulseAmount = map(cycle, PI / 2, PI, 15, 0);
+        pulseOpacity = map(cycle, PI / 2, PI, 0.6, 0);
       } else if (cycle < PI * 1.5) {
         pulseAmount = map(cycle, PI, PI * 1.5, 0, 15);
         pulseOpacity = map(cycle, PI, PI * 1.5, 0, 0.6);
@@ -123,13 +123,13 @@ function draw() {
         pulseAmount = map(cycle, PI * 1.5, TWO_PI, 15, 0);
         pulseOpacity = map(cycle, PI * 1.5, TWO_PI, 0.6, 0);
       }
-      
+
       drawingContext.shadowBlur = pulseAmount;
       drawingContext.shadowColor = `rgba(19, 138, 242, ${pulseOpacity})`;
       fill(21, 138, 242);
       ellipse(x, y, 12, 12);
       drawingContext.shadowBlur = 0;
-      drawingContext.shadowColor = 'transparent';
+      drawingContext.shadowColor = "transparent";
     } else if (
       dataArray.length > filteredArray.length &&
       filteredArray.includes(dataArray[i])
@@ -182,13 +182,13 @@ function draw() {
       // Add fast pulsing glow effect (20 pulses per cycle)
       const cycle = (frameCount * 0.2) % (TWO_PI * 2);
       let pulseAmount, pulseOpacity;
-      
-      if (cycle < PI/2) {
-        pulseAmount = map(cycle, 0, PI/2, 0, 15);
-        pulseOpacity = map(cycle, 0, PI/2, 0, 0.6);
+
+      if (cycle < PI / 2) {
+        pulseAmount = map(cycle, 0, PI / 2, 0, 15);
+        pulseOpacity = map(cycle, 0, PI / 2, 0, 0.6);
       } else if (cycle < PI) {
-        pulseAmount = map(cycle, PI/2, PI, 15, 0);
-        pulseOpacity = map(cycle, PI/2, PI, 0.6, 0);
+        pulseAmount = map(cycle, PI / 2, PI, 15, 0);
+        pulseOpacity = map(cycle, PI / 2, PI, 0.6, 0);
       } else if (cycle < PI * 1.5) {
         pulseAmount = map(cycle, PI, PI * 1.5, 0, 15);
         pulseOpacity = map(cycle, PI, PI * 1.5, 0, 0.6);
@@ -196,14 +196,14 @@ function draw() {
         pulseAmount = map(cycle, PI * 1.5, TWO_PI, 15, 0);
         pulseOpacity = map(cycle, PI * 1.5, TWO_PI, 0.6, 0);
       }
-      
+
       drawingContext.shadowBlur = pulseAmount;
       drawingContext.shadowColor = `rgba(19, 138, 242, ${pulseOpacity})`;
       noStroke();
       fill(21, 138, 242);
       ellipse(sel.x, sel.y, 12, 12);
       drawingContext.shadowBlur = 0;
-      drawingContext.shadowColor = 'transparent';
+      drawingContext.shadowColor = "transparent";
     }
   }
 
