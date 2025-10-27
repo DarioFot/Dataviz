@@ -59,19 +59,19 @@ function setup() {
   // connect to your existing input handler
   inputField.input(onInputChange);
 
-  // Titel mit Info-Button
-  const titleWrapper = createDiv().parent("canvasContainer");
-  titleWrapper.class("title-wrapper");
-  const canvasTitle = createElement("h2", "Voices Matching Your Search").parent(
-    titleWrapper
+ // Titel mit Info-Button (korrekte Positionierung)
+const canvasTitle = createElement("h2", "Voices Matching Your Search");
+canvasTitle.parent("canvasContainer");
+
+// Info-Button direkt INS h2 hängen (nicht als eigenes Div)
+const infoVoices = createSpan("i")
+  .addClass("info-icon")
+  .attribute(
+    "data-info",
+    "This section provides more information about the selected statement. Speaker: During data collection, three focus groups were interviewed in each community — Women, Men, and Youth. Speaker indicates from which focus group the statement originates. Community: Shows the neighborhood in which the statement was made. Category: Indicates the thematic categories to which the statement belongs. Since some statements can relate to multiple overarching themes, one or two categories may be displayed."
   );
-  const infoVoices = createDiv("i")
-    .parent(titleWrapper)
-    .addClass("info-icon")
-    .attribute(
-      "data-info",
-      "This section provides more information about the selected statement. ⁠Speaker: During data collection, three focus groups were interviewed in each community — Women, Men, and Youth. Speaker indicates from which focus group the statement originates. ⁠Community: Shows the neighborhood in which the statement was made. Category: Indicates the thematic categories to which the statement belongs. Since some statements can relate to multiple overarching themes, one or two categories may be displayed."
-    );
+infoVoices.parent(canvasTitle); // ✅ direkt im H2 platzieren
+
 
   // outer wrapper
   wrapper = createDiv().parent("canvasContainer");
@@ -464,21 +464,17 @@ function showClosestIndicators(curr) {
   const container = select("#contentContainer");
   container.html("");
 
-  // Titel mit Info-Button
-  const relatedWrapper = createDiv().parent(container);
-  relatedWrapper.class("title-wrapper");
+// Titel mit Info-Button (korrekte Positionierung)
+const relatedTitle = createElement("h2", "Related Voices");
+relatedTitle.parent(container);
 
-  const relatedTitle = createElement("h2", "Related Voices").parent(
-    relatedWrapper
+const infoRelated = createSpan("i")
+  .addClass("info-icon")
+  .attribute(
+    "data-info",
+    "Below, you can see statements from the dataset that are most similar in meaning to the one you selected. They may or may not contain the same keyword. The similarity between statements was determined using a Large Language Model (LLM), and the degree of relatedness is indicated as a percentage."
   );
-
-  const infoRelated = createDiv("i")
-    .parent(relatedWrapper)
-    .addClass("info-icon")
-    .attribute(
-      "data-info",
-      "Below, you can see statements from the dataset that are most similar in meaning to the one you selected. They may or may not contain the same keyword. The similarity between statements was determined using a Large Language Model (LLM), and the degree of relatedness is indicated as a percentage."
-    );
+infoRelated.parent(relatedTitle); // ✅ Icon INS H2 hängen
 
   const topRow = createDiv().parent(container).addClass("row top-row");
   const bottomRow = createDiv().parent(container).addClass("row bottom-row");

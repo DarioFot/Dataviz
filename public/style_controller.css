@@ -663,14 +663,13 @@ h2 {
 /* .related-title removed - all h2 elements now share the same style defined above */
 
 /* =========================
-   INFO ICON + WRAPPER
+   INFO ICONS (saubere rechte Position)
 ========================= */
 
-.title-wrapper {
-  display: flex;
+.detail-title {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
+  position: relative; /* Damit Tooltip sich daran orientiert */
 }
 
 .info-icon {
@@ -679,6 +678,7 @@ h2 {
   align-items: center;
   width: 1.1rem;
   height: 1.1rem;
+  margin-left: 0.4rem;
   border: 1px solid var(--black);
   border-radius: 50%;
   font-family: "Suisse International", sans-serif;
@@ -686,8 +686,9 @@ h2 {
   font-size: 0.8rem;
   color: var(--black);
   cursor: pointer;
-  position: relative;
   transition: all 0.2s ease;
+  position: relative; /* Tooltip richtet sich an das Icon */
+  flex-shrink: 0; /* verhindert, dass Icon schrumpft */
 }
 
 .info-icon:hover {
@@ -696,30 +697,46 @@ h2 {
   border-color: var(--blue);
 }
 
-/* Tooltip */
+/* Tooltip-Box */
 .info-icon::after {
   content: attr(data-info);
   position: absolute;
-  bottom: 140%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  left: calc(100% + 10px); /* Abstand zum Icon */
+  transform: translateY(-50%);
   width: max-content;
-  max-width: 220px;
+  max-width: 240px;
   background: var(--white);
   color: var(--black);
   border: 1px solid var(--grey);
   border-radius: 0.4rem;
-  padding: 0.5rem 0.7rem;
+  padding: 0.6rem 0.8rem;
   font-size: 0.7rem;
   line-height: 1rem;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  text-align: left;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
-  z-index: 100;
+  z-index: 20;
+  white-space: normal;
 }
 
-.info-icon:hover::after {
+/* Tooltip-Pfeil */
+.info-icon::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-right-color: var(--grey);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 21;
+}
+
+.info-icon:hover::after,
+.info-icon:hover::before {
   opacity: 1;
 }
