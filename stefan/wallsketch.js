@@ -61,6 +61,8 @@ function setup() {
   inputField.input(handleInput);
 
   appendItems();
+
+  console.log("version 24.15.50");
 }
 
 function draw() {
@@ -258,18 +260,18 @@ function handleInput() {
     });
   }
 
-  // --- DEBUG: auto-select first filtered indicator ---
-  if (filteredArray.length > 0 && !window.debugDisabled) {
-    selectedIndicator = filteredArray[0];
-    const index = dataArray.indexOf(selectedIndicator);
-    if (index !== -1) {
-      closest5 = findFiveClosest(index);
-      console.log(
-        "Debug auto-selected:",
-        selectedIndicator["Indicator English"]
-      );
-    }
-  }
+  // // --- DEBUG: auto-select first filtered indicator ---
+  // if (filteredArray.length > 0 && !window.debugDisabled) {
+  //   selectedIndicator = filteredArray[0];
+  //   const index = dataArray.indexOf(selectedIndicator);
+  //   if (index !== -1) {
+  //     closest5 = findFiveClosest(index);
+  //     console.log(
+  //       "Debug auto-selected:",
+  //       selectedIndicator["Indicator English"]
+  //     );
+  //   }
+  // }
 
   appendItems();
   pop();
