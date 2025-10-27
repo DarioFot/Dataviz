@@ -610,3 +610,17 @@ body,
 .right-dot {
   order: 1;
 }
+
+/* =========================
+   Styling Übertitel
+========================= */
+
+.related-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
