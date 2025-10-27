@@ -291,10 +291,10 @@ function buildThreePart(container, fullText, query, item) {
 
   const line = createDiv().parent(container);
   line.class("line-container");
-  // → Jetzt 5 Spalten
+  /*// → Jetzt 5 Spalten
   line.style("display", "grid");
   line.style("grid-template-columns", "auto 1fr auto 1fr auto");
-  line.style("align-items", "center");
+  line.style("align-items", "center");*/
 
   // Hilfsfunktion für Wörter
   function appendWordSpans(parent, tokenArray, makeBold = false) {
@@ -332,26 +332,35 @@ function buildThreePart(container, fullText, query, item) {
     }
   }
 
-  // --- 1️⃣ Punkt ganz links ---
+  //Left Part
+ /*// --- 1️⃣ Punkt ganz links ---
   const dotLeft = createDiv().parent(line);
-  dotLeft.class("blue-dot left-dot");
+  dotLeft.class("blue-dot left-dot");*/
 
   // --- 2️⃣ Linker Satzteil ---
   const leftDiv = createDiv().parent(line).class("left-part");
+  // 🔵 Punkt links
+  const leftDot = createDiv().parent(leftDiv);
+  leftDot.class("blue-dot left-dot");
   leftDiv.style("text-align", "right");
   appendWordSpans(leftDiv, leftTokens, false);
 
+    // --- CENTER PART ---
   // --- 3️⃣ Suchwort zentriert ---
   const centerDiv = createDiv().parent(line).class("center-part");
-  centerDiv.style("text-align", "center");
+  //centerDiv.style("text-align", "center");
   if (centerToken) appendWordSpans(centerDiv, [centerToken], true);
 
   // --- 4️⃣ Rechter Satzteil ---
-  const rightDiv = createDiv().parent(line).class("right-part");
-  rightDiv.style("text-align", "left");
-  appendWordSpans(rightDiv, rightTokens, false);
 
-  // --- 5️⃣ Punkt ganz rechts ---
+    // 🔵 Punkt rechts
+  const rightDiv = createDiv().parent(line).class("right-part");
+  //rightDiv.style("text-align", "left");
+  appendWordSpans(rightDiv, rightTokens, false);
+  const rightDot = createDiv().parent(rightDiv);
+  rightDot.class("blue-dot right-dot");
+
+  /*// --- 5️⃣ Punkt ganz rechts ---
   const dotRight = createDiv().parent(line);
   dotRight.class("blue-dot right-dot");
 
@@ -361,7 +370,7 @@ function buildThreePart(container, fullText, query, item) {
   dotRight.style("display", "inline-block");
 
   // Sicherstellen, dass jede Zeile gleiches Grid-Layout bekommt
-  line.style("display", "grid");
+  line.style("display", "grid");*/
 }
 
 // --- update selectedIndicator ---
