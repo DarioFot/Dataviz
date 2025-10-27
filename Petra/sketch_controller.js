@@ -59,19 +59,18 @@ function setup() {
   // connect to your existing input handler
   inputField.input(onInputChange);
 
- // Titel mit Info-Button (korrekte Positionierung)
-const canvasTitle = createElement("h2", "Voices Matching Your Search");
-canvasTitle.parent("canvasContainer");
+  // Titel mit Info-Button (korrekte Positionierung)
+  const canvasTitle = createElement("h2", "Voices Matching Your Search");
+  canvasTitle.parent("canvasContainer");
 
-// Info-Button direkt INS h2 hängen (nicht als eigenes Div)
-const infoVoices = createSpan("i")
-  .addClass("info-icon")
-  .attribute(
-    "data-info",
-    "In the scrolling area, you can explore all statements from across Mostar that contain the same search term (only exact matches). Click on individual words to navigate through different “signs of peace” and see how people describe peace in their own ways."
-  );
-infoVoices.parent(canvasTitle); // ✅ direkt im H2 platzieren
-
+  // Info-Button direkt INS h2 hängen (nicht als eigenes Div)
+  const infoVoices = createSpan("i")
+    .addClass("info-icon")
+    .attribute(
+      "data-info",
+      "In the scrolling area, you can explore all statements from across Mostar that contain the same search term (only exact matches). Click on individual words to navigate through different “signs of peace” and see how people describe peace in their own ways."
+    );
+  infoVoices.parent(canvasTitle); // ✅ direkt im H2 platzieren
 
   // outer wrapper
   wrapper = createDiv().parent("canvasContainer");
@@ -110,7 +109,7 @@ infoVoices.parent(canvasTitle); // ✅ direkt im H2 platzieren
   // initial render
   applyFilters();
 
-  console.log("version 24.10.14");
+  console.log("version 24.15.50");
 }
 
 // --- input change ---
@@ -461,17 +460,17 @@ function showClosestIndicators(curr) {
   const container = select("#contentContainer");
   container.html("");
 
-// Titel mit Info-Button (korrekte Positionierung)
-const relatedTitle = createElement("h2", "Related Voices");
-relatedTitle.parent(container);
+  // Titel mit Info-Button (korrekte Positionierung)
+  const relatedTitle = createElement("h2", "Related Voices");
+  relatedTitle.parent(container);
 
-const infoRelated = createSpan("i")
-  .addClass("info-icon")
-  .attribute(
-    "data-info",
-    "Below are statements from the dataset most similar in meaning to the one you selected. They may not contain the same keyword. Similarity was determined using a Large Language Model (LLM) and is shown as a percentage."
-  );
-infoRelated.parent(relatedTitle); // ✅ Icon INS H2 hängen
+  const infoRelated = createSpan("i")
+    .addClass("info-icon")
+    .attribute(
+      "data-info",
+      "Below are statements from the dataset most similar in meaning to the one you selected. They may not contain the same keyword. Similarity was determined using a Large Language Model (LLM) and is shown as a percentage."
+    );
+  infoRelated.parent(relatedTitle); // ✅ Icon INS H2 hängen
 
   // const topRow = createDiv().parent(container).addClass("row top-row");
   // const bottomRow = createDiv().parent(container).addClass("row bottom-row");
