@@ -59,6 +59,10 @@ function setup() {
   // connect to your existing input handler
   inputField.input(onInputChange);
 
+  // Add title
+  const canvasTitle = createElement("h2", "Voices Matching Your Search");
+  canvasTitle.parent("canvasContainer");
+  
   // outer wrapper
   wrapper = createDiv().parent("canvasContainer");
   wrapper.id("scrollWrapper");
@@ -450,7 +454,7 @@ function showClosestIndicators(curr) {
   const container = select("#contentContainer");
   container.html("");
 
-  createElement("h2", "RELATED VOICES").parent(container);
+  createElement("h2", "Related Voices").parent(container);
 
   const topRow = createDiv().parent(container).addClass("row top-row");
   const bottomRow = createDiv().parent(container).addClass("row bottom-row");

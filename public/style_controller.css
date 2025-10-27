@@ -355,9 +355,13 @@ body,
   margin: 0 auto;
 }
 
-#contentContainer h2 {
-  font-size: 1.2rem;
-  font-weight: 700;
+h2 {
+  font-family: "Suisse Int'l";
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.75rem; /* 175% */
+  text-transform: none;
   text-align: center;
   margin-bottom: 1rem;
   color: var(--black);
@@ -564,23 +568,24 @@ body,
   }
 }
 .detail-title {
-  font-weight: 500;
+  font-family: "Suisse Int'l";
   font-size: 1rem;
-  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.75rem; /* 175% */
+  text-transform: none;
   color: var(--black);
+}
 
-  #detailsContainer,
-  #contentContainer {
-    opacity: 0;
-    transform: translateY(20px); /* subtle slide effect */
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
+/* Details and content container animations */
+#detailsContainer {
+  opacity: 0;
+  animation: fadeInValue 0.6s ease forwards;
+}
 
-  /* Visible state */
-  .visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+#contentContainer {
+  opacity: 0;
+  animation: fadeInRow 0.6s ease forwards;
 }
 /* Responsive Verhalten */
 @media (max-width: 900px) {
@@ -619,13 +624,4 @@ body,
 /* =========================
    Styling Übertitel
 ========================= */
-
-.related-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 1rem;
-  color: var(--black);
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
-}
+/* .related-title removed - all h2 elements now share the same style defined above */
