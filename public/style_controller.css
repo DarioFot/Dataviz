@@ -191,7 +191,7 @@ body {
   justify-content: center; /* centers the panel */
   position: relative; /* makes absolute children position relative to this */
   z-index: 10;
-  border-bottom: 1px solid #ccc;
+  margin-bottom: 2rem;
 }
 
 /* Panel */
@@ -249,10 +249,9 @@ body,
 #scrollWrapper {
   width: 90%;
   margin: 0 auto;
-  height: 25rem !important;
+  height: 20rem !important;
   overflow-y: scroll;
   position: relative;
-  border-bottom: 1px solid #ccc;
 
   /* Firefox */
   scrollbar-width: none;
@@ -327,7 +326,6 @@ body,
    RELATED VOICES
 ========================= */
 #contentContainer {
-  border-top: 1px solid #ccc;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -504,12 +502,12 @@ body,
    DETAILS-BEREICH
 ========================= */
 #detailsContainer {
-  width: 90%;
   margin: 20px auto 0 auto;
   text-align: center;
   font-family: "Suisse Int'l", sans-serif;
   font-weight: 300;
-  padding: 1rem;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 #detailsContent {
