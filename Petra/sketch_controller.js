@@ -54,7 +54,7 @@ function setup() {
 
   // make sure it's a text field and has your custom placeholder
   inputField.attribute("type", "text");
-  inputField.attribute("placeholder", "Your Word");
+  inputField.attribute("placeholder", "your word (e.g. respect, together, socialize)");
 
   // connect to your existing input handler
   inputField.input(onInputChange);
