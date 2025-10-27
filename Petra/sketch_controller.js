@@ -68,7 +68,7 @@ const infoVoices = createSpan("i")
   .addClass("info-icon")
   .attribute(
     "data-info",
-    "This section provides more information about the selected statement. Speaker: During data collection, three focus groups were interviewed in each community — Women, Men, and Youth. Speaker indicates from which focus group the statement originates. Community: Shows the neighborhood in which the statement was made. Category: Indicates the thematic categories to which the statement belongs. Since some statements can relate to multiple overarching themes, one or two categories may be displayed."
+    "In the scrolling area, you can explore all statements from across Mostar that contain the same search term (only exact matches). Click on individual words to navigate through different “signs of peace” and see how people describe peace in their own ways."
   );
 infoVoices.parent(canvasTitle); // ✅ direkt im H2 platzieren
 
@@ -472,7 +472,7 @@ const infoRelated = createSpan("i")
   .addClass("info-icon")
   .attribute(
     "data-info",
-    "Below, you can see statements from the dataset that are most similar in meaning to the one you selected. They may or may not contain the same keyword. The similarity between statements was determined using a Large Language Model (LLM), and the degree of relatedness is indicated as a percentage."
+    "Below are statements from the dataset most similar in meaning to the one you selected. They may not contain the same keyword. Similarity was determined using a Large Language Model (LLM) and is shown as a percentage."
   );
 infoRelated.parent(relatedTitle); // ✅ Icon INS H2 hängen
 
@@ -586,7 +586,7 @@ function showDetails(indicator) {
       <div class="detail-block">
         <div class="detail-title">
           Speaker
-          <div class="info-icon" data-info="Indicates which focus group the statement originates from — Youth, Men, or Women.">i</div>
+          <div class="info-icon" data-info="Indicates which focus group the statement originates from — Women, Men or Youth.">i</div>
         </div>
         <div class="detail-value">${speaker}</div>
       </div>
@@ -604,7 +604,7 @@ function showDetails(indicator) {
       <div class="detail-block">
         <div class="detail-title">
           Community
-          <div class="info-icon" data-info="Specifies the Mostar neighborhood or local community where this voice originates.">i</div>
+          <div class="info-icon" data-info="Neighborhood in Mostar where the statement originates.">i</div>
         </div>
         <div class="detail-value">${community}</div>
       </div>
