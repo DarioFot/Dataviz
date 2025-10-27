@@ -351,13 +351,23 @@ function buildThreePart(container, fullText, query, item) {
   const dotLeft = createDiv().parent(line);
   dotLeft.class("blue-dot left-dot");*/
 
+  /*
   // --- 2️⃣ Linker Satzteil ---
   const leftDiv = createDiv().parent(line).class("left-part");
   // 🔵 Punkt links
   const leftDot = createDiv().parent(leftDiv);
   leftDot.class("blue-dot left-dot");
   leftDiv.style("text-align", "right");
+  appendWordSpans(leftDiv, leftTokens, false);*/
+
+   // --- 2️⃣ Linker Satzteil ---
+  const leftDivWrapper = createDiv().parent(line).class("left-part-wrapper");
+  createDiv().parent(leftDivWrapper).class("blue-dot");
+  const leftDiv = createDiv().parent(leftDivWrapper).class("left-part");
+  leftDiv.style("text-align", "right");
   appendWordSpans(leftDiv, leftTokens, false);
+  
+
 
   // --- CENTER PART ---
   // --- 3️⃣ Suchwort zentriert ---
@@ -368,23 +378,10 @@ function buildThreePart(container, fullText, query, item) {
   // --- 4️⃣ Rechter Satzteil ---
 
   // 🔵 Punkt rechts
-  const rightDiv = createDiv().parent(line).class("right-part");
-  //rightDiv.style("text-align", "left");
+  const rightDivWrapper = createDiv().parent(line).class("right-part-wrapper");
+  const rightDiv = createDiv().parent(rightDivWrapper).class("right-part");
   appendWordSpans(rightDiv, rightTokens, false);
-  const rightDot = createDiv().parent(rightDiv);
-  rightDot.class("blue-dot right-dot");
-
-  /*// --- 5️⃣ Punkt ganz rechts ---
-  const dotRight = createDiv().parent(line);
-  dotRight.class("blue-dot right-dot");
-
-  // --- Sichtbarkeit und Layout für alle Items erzwingen ---
-  // Punkte immer anzeigen, unabhängig vom selectedIndicator
-  dotLeft.style("display", "inline-block");
-  dotRight.style("display", "inline-block");
-
-  // Sicherstellen, dass jede Zeile gleiches Grid-Layout bekommt
-  line.style("display", "grid");*/
+  createDiv().parent(rightDivWrapper).class("blue-dot");
 }
 
 // --- update selectedIndicator ---

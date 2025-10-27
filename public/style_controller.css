@@ -612,15 +612,31 @@ h2 {
 /* =========================
    BLUE DOTS (only for selected item)
 ========================= */
+
+
+.right-part-wrapper{
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+
+.left-part-wrapper{
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+   justify-content: flex-end;
+}
+
+
 .blue-dot {
+  flex: 0 0 10px;   /* verhindert Schrumpfen UND Wachsen */
   width: 10px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: 100%;
   background-color: var(--blue);
-  display: none; /* Standard: ausgeblendet */
-  vertical-align: middle;
-  margin: 0 0.6rem;
   animation: glowPulse 2s ease-in-out infinite;
+  display: none; /* Standard: ausgeblendet */
 }
 
 @keyframes glowPulse {
@@ -697,8 +713,8 @@ h2 {
 .info-icon::after {
   content: attr(data-info);
   position: absolute;
-  bottom: 140%;
-  left: 50%;
+  top: 50%;
+  left: 120%;
   transform: translateX(-50%);
   width: max-content;
   max-width: 400px;
@@ -720,3 +736,4 @@ h2 {
 .info-icon:hover::after {
   opacity: 1;
 }
+
