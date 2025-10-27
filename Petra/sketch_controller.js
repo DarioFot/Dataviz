@@ -70,7 +70,7 @@ function setup() {
     .addClass("info-icon")
     .attribute(
       "data-info",
-      "Shows all statements that contain your search word or are closely related."
+      "This section provides more information about the selected statement. ⁠Speaker: During data collection, three focus groups were interviewed in each community — Women, Men, and Youth. Speaker indicates from which focus group the statement originates. ⁠Community: Shows the neighborhood in which the statement was made. Category: Indicates the thematic categories to which the statement belongs. Since some statements can relate to multiple overarching themes, one or two categories may be displayed."
     );
 
   // outer wrapper
@@ -477,7 +477,7 @@ function showClosestIndicators(curr) {
     .addClass("info-icon")
     .attribute(
       "data-info",
-      "Displays the five statements most similar in meaning to the selected one."
+      "Below, you can see statements from the dataset that are most similar in meaning to the one you selected. They may or may not contain the same keyword. The similarity between statements was determined using a Large Language Model (LLM), and the degree of relatedness is indicated as a percentage."
     );
 
   const topRow = createDiv().parent(container).addClass("row top-row");
