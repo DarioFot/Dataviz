@@ -12,6 +12,7 @@ let itemHeight = 70; // Basiswert (mindestens)
 let buffer = 4;
 let lastRenderKey = "";
 let lineHeights = new Map(); // speichert Höhe jeder Zeile
+let scrollTimeout = null; // timeout for delayed detail updates while scrolling
 
 const communityNames = {
   bijeliBrijegLT: "Bijeli Brijeg",
@@ -255,6 +256,13 @@ function buildThreePart(container, fullText, query, item) {
         setTimeout(() => {
           wrapper.elt.scrollTop = 0;
         }, 0);
+        
+        // Show details immediately when clicking
+        if (scrollTimeout) {
+          clearTimeout(scrollTimeout);
+          scrollTimeout = null;
+        }
+        showDetails(item);
       });
     }
     return;
@@ -313,6 +321,13 @@ function buildThreePart(container, fullText, query, item) {
         setTimeout(() => {
           wrapper.elt.scrollTop = 0;
         }, 0);
+        
+        // Show details immediately when clicking
+        if (scrollTimeout) {
+          clearTimeout(scrollTimeout);
+          scrollTimeout = null;
+        }
+        showDetails(item);
       });
     }
   }
@@ -376,6 +391,27 @@ function updateSelectedIndicator() {
     showClosestIndicators(selectedIndicator);
     // Send selected indicator to visual for canvas drawing
     sendSelectedToVisual(selectedIndicator);
+    
+    // Clear only the detail values while scrolling
+    const detailValues = document.querySelectorAll(".detail-value");
+    detailValues.forEach(el => {
+      el.textContent = "";
+    });
+    
+    // Clear row content while scrolling (same as detail values)
+    const rows = document.querySelectorAll(".row");
+    rows.forEach(row => {
+      row.innerHTML = "";
+    });
+    
+    // Clear any existing timeout and delay the detail update
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
+    }
+    scrollTimeout = setTimeout(() => {
+      showDetails(selectedIndicator);
+      showClosestIndicators(selectedIndicator); // Also show rows after delay
+    }, 300); // 0.3 second delay after scrolling stops
   }
 
   const children = inner.elt.children;
@@ -445,9 +481,12 @@ function showClosestIndicators(curr) {
       `<h3>${wordsHtml} <span class="sim-score">${simPercent}</span></h3>`
     );
 
-    showDetails(curr);
-
     counter++;
+  }
+  
+  // Only show details immediately if not scrolling (when timeout was triggered)
+  if (!scrollTimeout) {
+    showDetails(curr);
   }
 
   document
@@ -470,6 +509,13 @@ function showClosestIndicators(curr) {
           setTimeout(() => {
             wrapper.elt.scrollTop = 0;
           }, 0);
+          
+          // Show details immediately when clicking
+          if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = null;
+          }
+          showDetails(found);
         }
       };
     });

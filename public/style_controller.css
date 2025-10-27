@@ -3,7 +3,8 @@
   --black: #292929;
   --white: #dfdfdf;
   --light-blue: #e0f0ff;
-  --grey: #898989;
+  --grey: #bebebe;
+  --desc-grey: #898989;
 }
 
 /* =========================
@@ -219,7 +220,7 @@ body {
   background-color: var(--white);
 }
 #panel input::placeholder {
-  color: var(--grey);
+  color: var(--desc-grey);
   text-transform: uppercase;
   letter-spacing: 0.05rem;
   font-weight: 300;
@@ -249,7 +250,7 @@ body,
 #scrollWrapper {
   width: 90%;
   margin: 0 auto;
-  height: 20rem !important;
+  height: 21rem !important;
   overflow-y: scroll;
   position: relative;
 
@@ -289,6 +290,21 @@ body,
   margin: 0 auto;
 }
 
+/* Row animations */
+.row {
+  opacity: 0;
+  animation: fadeInRow 0.6s ease forwards;
+}
+
+@keyframes fadeInRow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .left-part {
   text-align: right;
 }
@@ -315,11 +331,8 @@ body,
 
 /* Highlight ausgewähltes Item */
 .selected-item {
-  border-style: solid;
   border-color: var(--blue);
-  border-radius: 2px;
   transition: background-color 0.2s;
-  color: var(--black);
 }
 
 /* =========================
@@ -373,7 +386,7 @@ body,
   margin-left: 0.5rem;
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--grey);
+  color: var(--desc-grey);
   opacity: 0.95;
 }
 
@@ -529,12 +542,36 @@ body,
   line-height: 1.75rem;
   text-transform: uppercase;
   font-weight: 500;
+  opacity: 0;
+  animation: fadeInValue 0.6s ease forwards;
+}
+
+@keyframes fadeInValue {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .detail-title {
   font-weight: 500;
   font-size: 1rem;
   text-transform: uppercase;
   color: var(--black);
+
+  #detailsContainer,
+  #contentContainer {
+    opacity: 0;
+    transform: translateY(20px); /* subtle slide effect */
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  /* Visible state */
+  .visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 /* Responsive Verhalten */
 @media (max-width: 900px) {
