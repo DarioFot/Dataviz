@@ -255,7 +255,7 @@ body,
 #scrollWrapper {
   width: 90%;
   margin: 0 auto;
-  height: 21rem !important;
+  height: 20rem !important;
   overflow-y: scroll;
   position: relative;
 
@@ -533,7 +533,6 @@ h2 {
   font-weight: 300;
   margin-top: 2rem;
   padding-bottom: 2rem;
-  display: none;
 }
 
 #detailsContent {

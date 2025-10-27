@@ -38,10 +38,10 @@ body {
 #canvasContainer {
 }
 
-#panel {
+#contentContainer {
   display: none;
 }
 
-#contentContainer {
+#log {
   display: none;
 }
