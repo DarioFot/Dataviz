@@ -398,10 +398,10 @@ function updateSelectedIndicator() {
       el.textContent = "\u00A0"; // Non-breaking space to maintain height
     });
     
-    // Hide rows while scrolling instead of clearing
+    // Clear row content while scrolling (same as detail values)
     const rows = document.querySelectorAll(".row");
     rows.forEach(row => {
-      row.style.opacity = "0";
+      row.innerHTML = "";
     });
     
     // Clear any existing timeout and delay the detail update
@@ -411,11 +411,6 @@ function updateSelectedIndicator() {
     scrollTimeout = setTimeout(() => {
       showDetails(selectedIndicator);
       showClosestIndicators(selectedIndicator); // Also show rows after delay
-      // Show rows after delay
-      const rows = document.querySelectorAll(".row");
-      rows.forEach(row => {
-        row.style.opacity = "1";
-      });
     }, 300); // 0.3 second delay after scrolling stops
   }
 

@@ -295,6 +295,7 @@ body,
 .row.bottom-row {
   opacity: 0;
   animation: fadeInRow 0.6s ease forwards;
+  min-height: 3rem; /* Prevent layout shift when content is cleared */
 }
 
 @keyframes fadeInRow {
