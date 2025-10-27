@@ -59,10 +59,20 @@ function setup() {
   // connect to your existing input handler
   inputField.input(onInputChange);
 
-  // Add title
-  const canvasTitle = createElement("h2", "Voices Matching Your Search");
-  canvasTitle.parent("canvasContainer");
-  
+  // Titel mit Info-Button
+  const titleWrapper = createDiv().parent("canvasContainer");
+  titleWrapper.class("title-wrapper");
+  const canvasTitle = createElement("h2", "Voices Matching Your Search").parent(
+    titleWrapper
+  );
+  const infoVoices = createDiv("i")
+    .parent(titleWrapper)
+    .addClass("info-icon")
+    .attribute(
+      "data-info",
+      "Shows all statements that contain your search word or are closely related."
+    );
+
   // outer wrapper
   wrapper = createDiv().parent("canvasContainer");
   wrapper.id("scrollWrapper");
@@ -260,7 +270,7 @@ function buildThreePart(container, fullText, query, item) {
         setTimeout(() => {
           wrapper.elt.scrollTop = 0;
         }, 0);
-        
+
         // Show details immediately when clicking
         if (scrollTimeout) {
           clearTimeout(scrollTimeout);
@@ -325,7 +335,7 @@ function buildThreePart(container, fullText, query, item) {
         setTimeout(() => {
           wrapper.elt.scrollTop = 0;
         }, 0);
-        
+
         // Show details immediately when clicking
         if (scrollTimeout) {
           clearTimeout(scrollTimeout);
@@ -337,7 +347,7 @@ function buildThreePart(container, fullText, query, item) {
   }
 
   //Left Part
- /*// --- 1️⃣ Punkt ganz links ---
+  /*// --- 1️⃣ Punkt ganz links ---
   const dotLeft = createDiv().parent(line);
   dotLeft.class("blue-dot left-dot");*/
 
@@ -349,7 +359,7 @@ function buildThreePart(container, fullText, query, item) {
   leftDiv.style("text-align", "right");
   appendWordSpans(leftDiv, leftTokens, false);
 
-    // --- CENTER PART ---
+  // --- CENTER PART ---
   // --- 3️⃣ Suchwort zentriert ---
   const centerDiv = createDiv().parent(line).class("center-part");
   //centerDiv.style("text-align", "center");
@@ -357,7 +367,7 @@ function buildThreePart(container, fullText, query, item) {
 
   // --- 4️⃣ Rechter Satzteil ---
 
-    // 🔵 Punkt rechts
+  // 🔵 Punkt rechts
   const rightDiv = createDiv().parent(line).class("right-part");
   //rightDiv.style("text-align", "left");
   appendWordSpans(rightDiv, rightTokens, false);
@@ -404,19 +414,19 @@ function updateSelectedIndicator() {
     showClosestIndicators(selectedIndicator);
     // Send selected indicator to visual for canvas drawing
     sendSelectedToVisual(selectedIndicator);
-    
+
     // Clear only the detail values while scrolling (keep space with non-breaking space)
     const detailValues = document.querySelectorAll(".detail-value");
-    detailValues.forEach(el => {
+    detailValues.forEach((el) => {
       el.textContent = "\u00A0"; // Non-breaking space to maintain height
     });
-    
+
     // Clear row content while scrolling (same as detail values)
     const rows = document.querySelectorAll(".row");
-    rows.forEach(row => {
+    rows.forEach((row) => {
       row.innerHTML = "";
     });
-    
+
     // Clear any existing timeout and delay the detail update
     if (scrollTimeout) {
       clearTimeout(scrollTimeout);
@@ -454,7 +464,21 @@ function showClosestIndicators(curr) {
   const container = select("#contentContainer");
   container.html("");
 
-  createElement("h2", "Related Voices").parent(container);
+  // Titel mit Info-Button
+  const relatedWrapper = createDiv().parent(container);
+  relatedWrapper.class("title-wrapper");
+
+  const relatedTitle = createElement("h2", "Related Voices").parent(
+    relatedWrapper
+  );
+
+  const infoRelated = createDiv("i")
+    .parent(relatedWrapper)
+    .addClass("info-icon")
+    .attribute(
+      "data-info",
+      "Displays the five statements most similar in meaning to the selected one."
+    );
 
   const topRow = createDiv().parent(container).addClass("row top-row");
   const bottomRow = createDiv().parent(container).addClass("row bottom-row");
@@ -496,7 +520,7 @@ function showClosestIndicators(curr) {
 
     counter++;
   }
-  
+
   // Only show details immediately if not scrolling (when timeout was triggered)
   if (!scrollTimeout) {
     showDetails(curr);
@@ -522,7 +546,7 @@ function showClosestIndicators(curr) {
           setTimeout(() => {
             wrapper.elt.scrollTop = 0;
           }, 0);
-          
+
           // Show details immediately when clicking
           if (scrollTimeout) {
             clearTimeout(scrollTimeout);
@@ -559,28 +583,40 @@ function showDetails(indicator) {
   const rawCommunity = indicator["Community"] || "N/A";
   const community = communityNames[rawCommunity] || "N/A";
 
-  // HTML-Struktur aufbauen (ohne CSS zu ändern!)
+  // HTML-Struktur mit Info-Buttons
   const html = `
     <div id="detailsContent">
       <div class="detail-block">
-        <div class="detail-title">Speaker</div>
+        <div class="detail-title">
+          Speaker
+          <div class="info-icon" data-info="Indicates which focus group the statement originates from — Youth, Men, or Women.">i</div>
+        </div>
         <div class="detail-value">${speaker}</div>
-      </div>      <div class="detail-block">
-        <div class="detail-title">Categories</div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-title">
+          Categories
+          <div class="info-icon" data-info="Indicates the thematic area(s) this statement belongs to.">i</div>
+        </div>
         <div class="detail-value">${
           [dim1, dim2].filter(Boolean).join(" & ") || "N/A"
         }</div>
       </div>
+
       <div class="detail-block">
-        <div class="detail-title">Community</div>
+        <div class="detail-title">
+          Community
+          <div class="info-icon" data-info="Specifies the Mostar neighborhood or local community where this voice originates.">i</div>
+        </div>
         <div class="detail-value">${community}</div>
       </div>
-
     </div>
   `;
 
   container.html(html);
 }
+
 
 // KOMMUNIKATION ZWISCHEN PAGES
 function handleInput() {
