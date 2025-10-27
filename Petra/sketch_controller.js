@@ -392,16 +392,16 @@ function updateSelectedIndicator() {
     // Send selected indicator to visual for canvas drawing
     sendSelectedToVisual(selectedIndicator);
     
-    // Clear only the detail values while scrolling
+    // Clear only the detail values while scrolling (keep space with non-breaking space)
     const detailValues = document.querySelectorAll(".detail-value");
     detailValues.forEach(el => {
-      el.textContent = "";
+      el.textContent = "\u00A0"; // Non-breaking space to maintain height
     });
     
-    // Clear row content while scrolling (same as detail values)
+    // Hide rows while scrolling instead of clearing
     const rows = document.querySelectorAll(".row");
     rows.forEach(row => {
-      row.innerHTML = "";
+      row.style.opacity = "0";
     });
     
     // Clear any existing timeout and delay the detail update
@@ -411,6 +411,11 @@ function updateSelectedIndicator() {
     scrollTimeout = setTimeout(() => {
       showDetails(selectedIndicator);
       showClosestIndicators(selectedIndicator); // Also show rows after delay
+      // Show rows after delay
+      const rows = document.querySelectorAll(".row");
+      rows.forEach(row => {
+        row.style.opacity = "1";
+      });
     }, 300); // 0.3 second delay after scrolling stops
   }
 

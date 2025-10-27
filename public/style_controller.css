@@ -537,6 +537,7 @@ body,
   flex: 1; /* Jeder Block füllt gleichmäßig den verfügbaren Platz */
   min-width: 0; /* verhindert, dass Inhalte die Flexbox sprengen */
   text-align: center; /* optional */
+  min-height: 1.75rem; /* Prevent layout shift when content is cleared */
 }
 
 .detail-value {
