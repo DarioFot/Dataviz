@@ -659,13 +659,14 @@ h2 {
 /* .related-title removed - all h2 elements now share the same style defined above */
 
 /* =========================
-   INFO ICONS (saubere rechte Position)
+   INFO ICON + WRAPPER
 ========================= */
 
-.detail-title {
-  display: inline-flex;
+.title-wrapper {
+  display: flex;
   align-items: center;
-  position: relative; /* Damit Tooltip sich daran orientiert */
+  justify-content: center;
+  gap: 0.4rem;
 }
 
 .info-icon {
@@ -682,9 +683,8 @@ h2 {
   font-size: 1rem;
   color: var(--black);
   cursor: pointer;
+  position: relative;
   transition: all 0.2s ease;
-  position: relative; /* Tooltip richtet sich an das Icon */
-  flex-shrink: 0; /* verhindert, dass Icon schrumpft */
 }
 
 /*.info-icon:hover {
@@ -693,13 +693,13 @@ h2 {
   border-color: var(--blue);
 }*/
 
-/* Tooltip-Box */
+/* Tooltip */
 .info-icon::after {
   content: attr(data-info);
   position: absolute;
-  top: 50%;
-  left: calc(100% + 10px); /* Abstand zum Icon */
-  transform: translateY(-50%);
+  bottom: 140%;
+  left: 50%;
+  transform: translateX(-50%);
   width: max-content;
   max-width: 400px;
   background: #f7f7f7;
@@ -714,25 +714,9 @@ h2 {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
-  z-index: 20;
-  white-space: normal;
+  z-index: 100;
 }
 
-/* Tooltip-Pfeil */
-.info-icon::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  transform: translateY(-50%);
-  border: 6px solid transparent;
-  border-right-color: var(--grey);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  z-index: 21;
-}
-
-.info-icon:hover::after,
-.info-icon:hover::before {
+.info-icon:hover::after {
   opacity: 1;
 }
