@@ -745,6 +745,7 @@ h2 {
   flex: 0 0 10px; /* verhindert Schrumpfen UND Wachsen */
   width: 10px;
   height: 10px;
+  margin-bottom: 3px;
   border-radius: 100%;
   background-color: var(--blue);
   animation: glowPulse 2s ease-in-out infinite;
