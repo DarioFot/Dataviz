@@ -27,6 +27,8 @@ let inputField;
 
 function preload() {
   rawData = loadJSON("/stefan/data/embeddings-full.json");
+  SuisseLight = loadFont("../fonts/SuisseIntl-Light.otf");
+  SuisseMedium = loadFont("../fonts/SuisseIntl-Medium.otf");
 }
 
 function setup() {
@@ -97,12 +99,13 @@ function draw() {
         margin,
         spacing
       );
+      textFont(SuisseMedium);
       noStroke();
       fill(white);
       textSize(15);
       textStyle(BOLD);
       textAlign(LEFT, CENTER);
-      text(label, labelX - 3, labelY);
+      text(label.toUpperCase(), labelX - 3, labelY);
       textSize(10);
     }
 
@@ -220,38 +223,45 @@ function draw() {
 
   let legendeX = margin;
   let legendeY = height - margin / 2.7;
+  let offsetY = 2.5;
 
+  textFont(SuisseLight);
+  textSize(15);
   fill(lightGray);
   ellipse(legendeX, legendeY, 5, 5);
   fill(white);
-  text("Indicator", legendeX + 13, legendeY);
+  text("Voices", legendeX + 13, legendeY - offsetY);
 
   fill("#138af2");
-  ellipse(legendeX + spacing * 13, legendeY, 8, 8);
+  ellipse(legendeX + spacing * 12, legendeY, 8, 8);
   fill(255);
-  text("Indicator includes your query", legendeX + spacing * 13 + 10, legendeY);
+  text(
+    "Voices matching your search",
+    legendeX + spacing * 12 + 13,
+    legendeY - offsetY
+  );
 
   fill("#138af2");
   ellipse(legendeX + spacing * 5, legendeY, 17, 17);
   fill(255);
-  text("Your selected indicator", legendeX + spacing * 5 + 12, legendeY);
+  text("Selected voice", legendeX + spacing * 5 + 17, legendeY - offsetY);
 
   stroke(lightGray);
   strokeWeight(1.5);
   line(
-    legendeX + spacing * 22,
+    legendeX + spacing * 23,
     legendeY,
-    legendeX + spacing * 25 - 5.5,
+    legendeX + spacing * 26 - 5.5,
     legendeY
   );
 
-  strokeWeight(2);
+  strokeWeight(1.5);
   noFill();
-  ellipse(legendeX + spacing * 25, legendeY, 11, 11);
+  ellipse(legendeX + spacing * 26, legendeY, 11, 11);
   noStroke();
   fill(255);
-  ellipse(legendeX + spacing * 25, legendeY, 5, 5);
-  text("Related Indicators", legendeX + spacing * 25 + 13, legendeY);
+  ellipse(legendeX + spacing * 26, legendeY, 5, 5);
+  text("Related voices", legendeX + spacing * 26 + 13, legendeY - offsetY);
 }
 
 function handleInput() {
@@ -398,7 +408,7 @@ function getOffsetUpTo(index, spacing) {
       const rawLabel = dataArray[i]["Community"];
       const label = communityNames[rawLabel] || rawLabel;
       const w = textWidth(label);
-      offset += ceil((w * 1.7) / spacing); // same padding as dots
+      offset += ceil((w * 2.3) / spacing); // same padding as dots
     }
   }
   return offset;
