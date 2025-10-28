@@ -152,7 +152,12 @@
             // Move panel to main app
             panelMain.appendChild(panel);
 
+            // Update placeholder for main app
             const input = panel.querySelector("input");
+            if (input) {
+              input.placeholder = "your word";
+            }
+
             const query = input?.value?.trim();
             if (query && window.socket) {
               window.socket.emit("control", {
