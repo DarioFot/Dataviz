@@ -30,8 +30,6 @@ function preload() {
 }
 
 function setup() {
-  pixelDensity(3);
-
   dataArray = Object.values(rawData).filter((item) => {
     const name = item["Indicator English"];
     return name && name.trim() !== "" && name.trim().toLowerCase() !== "null";
@@ -68,10 +66,10 @@ function setup() {
 }
 
 function draw() {
-  let black = color("#141414ff");
+  let black = color("#343539");
   let blue = color("#329fffff");
-  let lightGray = color("#abadd3ff");
-  let darkGray = color("#abadd3ff");
+  let lightGray = color("#bbc7c7");
+  let darkGray = color("#9cccdc");
   let white = color("#ffffff");
 
   push();
@@ -79,7 +77,7 @@ function draw() {
   background(black);
   noStroke();
 
-  const margin = 45;
+  const margin = 35;
   const cols = 60;
   const spacing = (width - margin * 2) / (cols - 1);
 
@@ -99,11 +97,10 @@ function draw() {
       );
       noStroke();
       fill(white);
-      textSize(15);
+      textSize(10);
       textStyle(BOLD);
       textAlign(LEFT, CENTER);
       text(label, labelX - 3, labelY);
-      textSize(10);
     }
 
     const adjustedIndex = i + getOffsetUpTo(i, spacing);
@@ -221,25 +218,24 @@ function draw() {
   let legendeX = margin;
   let legendeY = height - margin / 2.7;
 
-  fill(lightGray);
+  fill(255);
   ellipse(legendeX, legendeY, 5, 5);
-  fill(white);
   text("Indicator", legendeX + 13, legendeY);
 
   fill("#138af2");
-  ellipse(legendeX + spacing * 13, legendeY, 8, 8);
+  ellipse(legendeX + spacing * 13, legendeY, 5, 5);
   fill(255);
   text("Indicator includes your query", legendeX + spacing * 13 + 10, legendeY);
 
   fill("#138af2");
-  ellipse(legendeX + spacing * 5, legendeY, 17, 17);
+  ellipse(legendeX + spacing * 5, legendeY, 12, 12);
   fill(255);
   text("Your selected indicator", legendeX + spacing * 5 + 12, legendeY);
 
-  stroke(lightGray);
-  strokeWeight(1.5);
+  stroke("#a9a9a9ff");
+  strokeWeight(2.5);
   line(
-    legendeX + spacing * 22,
+    legendeX + spacing * 23,
     legendeY,
     legendeX + spacing * 25 - 5.5,
     legendeY
@@ -398,7 +394,7 @@ function getOffsetUpTo(index, spacing) {
       const rawLabel = dataArray[i]["Community"];
       const label = communityNames[rawLabel] || rawLabel;
       const w = textWidth(label);
-      offset += ceil((w * 1.7) / spacing); // same padding as dots
+      offset += ceil((w * 1.1) / spacing); // same padding as dots
     }
   }
   return offset;
