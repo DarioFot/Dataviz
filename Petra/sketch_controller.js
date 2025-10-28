@@ -64,13 +64,14 @@ function setup() {
   canvasTitle.parent("canvasContainer");
 
   // Info-Button direkt INS h2 hängen (nicht als eigenes Div)
-  const infoVoices = createSpan("i")
+  const infoVoices = createSpan("")
     .addClass("info-icon")
     .attribute(
       "data-info",
       "In the scrolling area, you can explore all statements from across Mostar that contain the same search term (only exact matches). Click on individual words to navigate through different “signs of peace” and see how people describe peace in their own ways."
     );
   infoVoices.parent(canvasTitle); // ✅ direkt im H2 platzieren
+  createSpan("i").addClass("info-letter").parent(infoVoices);
 
   // outer wrapper
   wrapper = createDiv().parent("canvasContainer");
@@ -464,13 +465,14 @@ function showClosestIndicators(curr) {
   const relatedTitle = createElement("h2", "Related Voices");
   relatedTitle.parent(container);
 
-  const infoRelated = createSpan("i")
+  const infoRelated = createSpan("")
     .addClass("info-icon")
     .attribute(
       "data-info",
       "Below are statements from the dataset most similar in meaning to the one you selected. They may not contain the same keyword. Similarity was determined using a Large Language Model (LLM) and is shown as a percentage."
     );
   infoRelated.parent(relatedTitle); // ✅ Icon INS H2 hängen
+  createSpan("i").addClass("info-letter").parent(infoRelated);
 
   // const topRow = createDiv().parent(container).addClass("row top-row");
   // const bottomRow = createDiv().parent(container).addClass("row bottom-row");
@@ -582,7 +584,7 @@ function showDetails(indicator) {
       <div class="detail-block">
         <div class="detail-title">
           Speaker
-          <div class="info-icon" data-info="Indicates which focus group the statement originates from — Women, Men or Youth.">i</div>
+          <div class="info-icon" data-info="Indicates which focus group the statement originates from — Women, Men or Youth."><span class="info-letter">i</span></div>
         </div>
         <div class="detail-value">${speaker}</div>
       </div>
@@ -590,7 +592,7 @@ function showDetails(indicator) {
       <div class="detail-block">
         <div class="detail-title">
           Categories
-          <div class="info-icon" data-info="Indicates the thematic area(s) this statement belongs to.">i</div>
+          <div class="info-icon" data-info="Indicates the thematic area(s) this statement belongs to."><span class="info-letter">i</span></div>
         </div>
         <div class="detail-value">${
           [dim1, dim2].filter(Boolean).join(" & ") || "N/A"
@@ -600,7 +602,7 @@ function showDetails(indicator) {
       <div class="detail-block">
         <div class="detail-title">
           Community
-          <div class="info-icon" data-info="Neighborhood in Mostar where the statement originates.">i</div>
+          <div class="info-icon" data-info="Neighborhood in Mostar where the statement originates."><span class="info-letter">i</span></div>
         </div>
         <div class="detail-value">${community}</div>
       </div>

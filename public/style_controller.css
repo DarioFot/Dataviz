@@ -5,6 +5,7 @@
   --light-blue: #e0f0ff;
   --grey: #bebebe;
   --desc-grey: #898989;
+  --info-letter-offset: 0.08rem;
 }
 
 /* =========================
@@ -702,7 +703,10 @@ h2 {
   position: relative;
   transition: all 0.2s ease;
 }
-
+.info-letter {
+  display: inline-block;
+  transform: translateY(var(--info-letter-offset));
+}
 /*.info-icon:hover {
   background-color: var(--light-blue);
   color: var(--blue);
