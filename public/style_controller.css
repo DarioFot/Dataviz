@@ -548,6 +548,10 @@ h2 {
   background: transparent;
 }
 
+.scroll-item.selected-item .clickable-word:hover {
+  color: var(--blue) !important;
+}
+
 /* Hamburger + Filtermenü */
 #hamburger {
   font-size: 48px;
