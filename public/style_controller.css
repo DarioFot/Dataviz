@@ -3,7 +3,7 @@
   --black: #1b1c1e;
   --white: #fffff;
   --light-blue: #e0f0ff;
-  --grey: #404347;
+  --grey: #898989;
   --desc-grey: #898989;
   --info-letter-offset: 0.08rem;
 
@@ -319,8 +319,9 @@ body {
 }
 
 .detail-value {
-  font-family: var(--ff-suisse-medium);
+  font-family: var(--ff-suisse-light);
   font-size: 1rem;
+  color: var(--black);
 }
 
 /* Topbar */
@@ -385,7 +386,7 @@ body,
 #scrollWrapper {
   width: 90%;
   margin: 0 auto;
-  height: 16rem !important;
+  height: 20rem !important;
   overflow-y: scroll;
   position: relative;
 
@@ -486,14 +487,12 @@ body,
 }
 
 h2 {
-  font-family: var(--ff-suisse-regular);
+  font-family: var(--ff-suisse-light);
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.75rem; /* 175% */
   text-transform: none;
   text-align: center;
-  margin-bottom: 1rem;
   color: var(--black);
 }
 
@@ -509,15 +508,13 @@ h2 {
   flex: 0 0 calc(100% / 3 - 160px); /* 3 items across */
 }
 
-.item {
+.item h3 {
   text-align: left;
   align-self: flex-start;
   width: 100%;
-  text-transform: uppercase;
-}
-
-.item h3 {
-  font-family: var(--ff-suisse-medium);
+  font-family: var(--ff-suisse-light);
+  font-weight: 300 !important;
+  font-size: 1rem;
 }
 
 .sim-score {
@@ -526,16 +523,18 @@ h2 {
   font-weight: 500;
   color: var(--desc-grey);
   opacity: 0.95;
+  color: var(--blue);
 }
 
 .indicator-number {
-  font-family: var(--ff-suisse-bold);
+  font-family: var(--ff-suisse-regular);
   color: var(--grey);
   margin-right: 0.3rem; /* space between number and text */
   font-size: 0.9rem;
   display: inline-block;
   text-align: left;
   opacity: 0.95;
+
 }
 
 /* Klickbare Wörter */
@@ -624,12 +623,12 @@ h2 {
 .scroll-item .left-part,
 .scroll-item .center-part,
 .scroll-item .right-part {
-  font-family: var(--ff-suisse-medium);
+  font-family: var(--ff-suisse-regular);
 }
 
 /* Wenn Suchwort fett markiert war → jetzt Medium */
 .center-part span[style*="font-weight:bold"] {
-  font-family: var(--ff-suisse-medium);
+  font-family: var(--ff-suisse-bold);
   line-height: normal;
   letter-spacing: 0.05rem;
   text-transform: uppercase;
@@ -652,11 +651,10 @@ h2 {
    DETAILS-BEREICH
 ========================= */
 #detailsContainer {
-  margin: 20px auto 0 auto;
   text-align: center;
   font-family: var(--ff-suisse-light);
-  margin-top: 2rem;
-  padding-bottom: 2rem;
+  margin-bottom: 6rem;
+
 }
 
 #detailsContent {
@@ -675,7 +673,7 @@ h2 {
 }
 
 .detail-title {
-  font-family: var(--ff-suisse-regular);
+  font-family: var(--ff-suisse-light);
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -712,7 +710,6 @@ h2 {
 .detail-value {
   display: inline-block;
   line-height: 1.75rem;
-  text-transform: uppercase;
   font-weight: 500;
   opacity: 0;
   animation: fadeInValue 0.6s ease forwards;
@@ -796,7 +793,6 @@ h2 {
 /* =========================
    Styling Übertitel
 ========================= */
-/* .related-title removed - all h2 elements now share the same style defined above */
 
 /* =========================
    INFO ICON + WRAPPER
@@ -813,8 +809,8 @@ h2 {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.1rem;
+  height: 1.1rem;
   margin-left: 0.4rem;
   border: 1px solid var(--black);
   border-radius: 50%;
@@ -828,6 +824,7 @@ h2 {
 .info-letter {
   display: inline-block;
   transform: translateY(var(--info-letter-offset));
+  font-family: var(--ff-suisse-light);
 }
 /*.info-icon:hover {
   background-color: var(--light-blue);
