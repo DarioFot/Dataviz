@@ -8,7 +8,7 @@ let activeFocusGroups = new Set(["youth", "men", "women"]);
 
 let wrapper;
 let inner;
-let itemHeight = 70; // Basiswert (mindestens)
+let itemHeight = 60; // Basiswert (mindestens)
 let buffer = 4;
 let lastRenderKey = "";
 let lineHeights = new Map(); // speichert Höhe jeder Zeile
@@ -56,14 +56,14 @@ function setup() {
   inputField.attribute("type", "text");
   inputField.attribute(
     "placeholder",
-    "your word (e.g. respect, together, socialize)"
+    "your word (e.g. respect / together / socialize)"
   );
 
   // connect to your existing input handler
   inputField.input(onInputChange);
 
   // Titel mit Info-Button (korrekte Positionierung)
-  const canvasTitle = createElement("h2", "Voices Matching Your Search");
+  const canvasTitle = createElement("h2", "Voices matching your search");
   canvasTitle.parent("canvasContainer");
 
   // Info-Button direkt INS h2 hängen (nicht als eigenes Div)
@@ -463,7 +463,10 @@ function showClosestIndicators(curr) {
   container.html("");
 
   // Titel mit Info-Button (korrekte Positionierung)
-  const relatedTitle = createElement("h2", "Related Voices");
+  const relatedTitle = createElement(
+    "h2",
+    "Related voices ranked by similarity score"
+  );
   relatedTitle.parent(container);
 
   const infoRelated = createSpan("")

@@ -1,7 +1,7 @@
 :root {
   --blue: #138af2;
-  --black: #1b1c1e;
-  --white: #fffff;
+  --black: #141414;
+  --white: fffff;
   --light-blue: #e0f0ff;
   --grey: #898989;
   --desc-grey: #898989;
@@ -204,16 +204,16 @@
 
 .startscreen-content p {
   font-size: 1rem;
-  color: rgb(61, 61, 61);
-  font-family: var(--ff-suisse-light);
+  color: var(--black);
+  font-family: var(--ff-suisse-regular);
   letter-spacing: 0.02rem;
   line-height: 1.2rem;
-  margin-top: 2rem;
+  margin-top: 2.8rem;
 }
 a {
   font-size: 0.8rem;
   color: var(--black);
-  font-family: var(--ff-suisse-light);
+  font-family: var(--ff-suisse-regular);
   letter-spacing: 0.03em;
   line-height: 1.2rem;
   margin-top: 2rem;
@@ -318,12 +318,6 @@ body {
   min-height: 100vh;
 }
 
-.detail-value {
-  font-family: var(--ff-suisse-light);
-  font-size: 1rem;
-  color: var(--black);
-}
-
 /* Topbar */
 #topbar {
   padding: 2rem;
@@ -354,7 +348,7 @@ body {
   box-sizing: border-box;
   text-transform: uppercase;
   font-family: var(--ff-suisse-regular);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   background-color: transparent;
   animation: subtleGlow 2s ease-in-out infinite;
@@ -380,13 +374,14 @@ body {
 body,
 #canvasContainer {
   width: 100%;
+  margin-top: 2rem;
 }
 
 /* Scrollbereich */
 #scrollWrapper {
   width: 90%;
   margin: 0 auto;
-  height: 20rem !important;
+  height: 18rem !important;
   overflow-y: scroll;
   position: relative;
 
@@ -465,6 +460,7 @@ body,
   font-size: 1.5rem;
   text-transform: uppercase;
   line-height: 2rem;
+  letter-spacing: 0.01rem;
 }
 
 /* Highlight ausgewähltes Item */
@@ -484,6 +480,7 @@ body,
   box-sizing: border-box;
   width: 90%;
   margin: 0 auto;
+  text-transform: uppercase;
 }
 
 h2 {
@@ -494,6 +491,7 @@ h2 {
   text-transform: none;
   text-align: center;
   color: var(--black);
+  letter-spacing: 0rem;
 }
 
 .row {
@@ -512,9 +510,10 @@ h2 {
   text-align: left;
   align-self: flex-start;
   width: 100%;
-  font-family: var(--ff-suisse-light);
+  font-family: var(--ff-suisse-light) !important;
   font-weight: 300 !important;
   font-size: 1rem;
+  letter-spacing: 0.02rem;
 }
 
 .sim-score {
@@ -534,7 +533,6 @@ h2 {
   display: inline-block;
   text-align: left;
   opacity: 0.95;
-
 }
 
 /* Klickbare Wörter */
@@ -630,7 +628,7 @@ h2 {
 .center-part span[style*="font-weight:bold"] {
   font-family: var(--ff-suisse-bold);
   line-height: normal;
-  letter-spacing: 0.05rem;
+  letter-spacing: 0.06rem;
   text-transform: uppercase;
   color: var(--black);
 }
@@ -653,16 +651,18 @@ h2 {
 #detailsContainer {
   text-align: center;
   font-family: var(--ff-suisse-light);
-  margin-bottom: 6rem;
-
+  margin-bottom: 5rem;
+  margin-top: 1.6rem;
 }
 
 #detailsContent {
+  font-family: var(--ff-suisse-light);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
   gap: 2rem;
+  text-transform: uppercase;
 }
 
 .detail-block {
@@ -670,6 +670,10 @@ h2 {
   min-width: 0; /* verhindert, dass Inhalte die Flexbox sprengen */
   text-align: center; /* optional */
   min-height: 1.75rem; /* Prevent layout shift when content is cleared */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .detail-title {
@@ -680,6 +684,10 @@ h2 {
   line-height: 1.75rem; /* 175% */
   text-transform: none;
   color: var(--black);
+  letter-spacing: 0.01rem;
+}
+.detail-value {
+  font-family: var(--ff-suisse-medium);
 }
 
 /* =========================
@@ -712,6 +720,7 @@ h2 {
   line-height: 1.75rem;
   font-weight: 500;
   opacity: 0;
+  letter-spacing: 0.02rem;
   animation: fadeInValue 0.6s ease forwards;
 }
 
@@ -809,17 +818,18 @@ h2 {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 1.1rem;
-  height: 1.1rem;
-  margin-left: 0.4rem;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.5rem;
   border: 1px solid var(--black);
   border-radius: 50%;
-  font-family: var(--ff-suisse-medium);
+  font-family: var(--ff-suisse-light);
   font-size: 1rem;
   color: var(--black);
   cursor: pointer;
   position: relative;
   transition: all 0.2s ease;
+  display: none;
 }
 .info-letter {
   display: inline-block;
