@@ -213,7 +213,7 @@ body {
   padding-top: 1rem;
   padding-bottom: 0.6rem;
   border: 1px solid var(--blue);
-  border-radius: 0;
+  border-radius: 2rem;
   outline: none;
   color: var(--blue);
   text-align: center;
@@ -222,7 +222,8 @@ body {
   font-family: "Suisse International";
   font-size: 1rem;
   font-weight: 500;
-  background-color: var(--white);
+  background-color: transparent;
+  animation: subtleGlow 2s ease-in-out infinite;
 }
 #panel input::placeholder {
   color: var(--desc-grey);
@@ -239,10 +240,6 @@ body {
   50% {
     box-shadow: 0 0 8px 3px rgba(19, 138, 242, 0.3);
   }
-}
-
-.panel {
-  animation: subtleGlow 2s ease-in-out infinite;
 }
 
 /* Container-Hintergründe */
@@ -613,24 +610,21 @@ h2 {
    BLUE DOTS (only for selected item)
 ========================= */
 
-
-.right-part-wrapper{
+.right-part-wrapper {
   display: flex;
   align-items: center;
   gap: 0.6rem;
 }
 
-
-.left-part-wrapper{
+.left-part-wrapper {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-   justify-content: flex-end;
+  justify-content: flex-end;
 }
-
 
 .blue-dot {
-  flex: 0 0 10px;   /* verhindert Schrumpfen UND Wachsen */
+  flex: 0 0 10px; /* verhindert Schrumpfen UND Wachsen */
   width: 10px;
   height: 10px;
   border-radius: 100%;
@@ -726,7 +720,7 @@ h2 {
   font-size: 1rem;
   line-height: 1.4rem;
   text-align: left;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
@@ -736,4 +730,3 @@ h2 {
 .info-icon:hover::after {
   opacity: 1;
 }
-
