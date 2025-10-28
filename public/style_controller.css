@@ -236,52 +236,17 @@ a:hover {
   margin-top: 1.5rem;
 }
 
-/* About Button — bottom center */
-#aboutBtn {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: none;
-  color: var(--black);
-  border: none;
-  font-size: 1rem;
-  font-weight: 300;
-  cursor: pointer;
-  letter-spacing: 0.03em;
-  transition: color 0.2s ease;
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
-}
-
-#aboutBtn:hover {
-  color: var(--blue);
-}
-
-.back-button {
-  background: none;
-  color: var(--black);
-  border: none;
-  font-size: 1rem;
-  font-weight: 300;
-  cursor: pointer;
-  letter-spacing: 0.03em;
-  transition: color 0.2s ease;
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
-}
-
-.back-button:hover {
-  color: var(--blue);
-}
-
 #startBtn {
   display: none;
 }
 
+#restartBtn {
+  bottom: 7.4rem;
+}
+
 .button {
   position: absolute;
-  bottom: 2rem;
+  bottom: 4rem;
   left: 50%;
   transform: translateX(-50%);
   color: var(--black);
