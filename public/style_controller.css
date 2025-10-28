@@ -1,28 +1,165 @@
 :root {
   --blue: #138af2;
-  --black: #292929;
-  --white: #dfdfdf;
+  --black: #1b1c1e;
+  --white: #fffff;
   --light-blue: #e0f0ff;
-  --grey: #bebebe;
+  --grey: #404347;
   --desc-grey: #898989;
   --info-letter-offset: 0.08rem;
+
+  /* Suisse Intl family per-style variables */
+  --ff-suisse-black: "Suisse Intl Black", sans-serif;
+  --ff-suisse-black-italic: "Suisse Intl Black Italic", sans-serif;
+  --ff-suisse-bold: "Suisse Intl Bold", sans-serif;
+  --ff-suisse-bold-italic: "Suisse Intl Bold Italic", sans-serif;
+  --ff-suisse-semibold: "Suisse Intl SemiBold", sans-serif;
+  --ff-suisse-semibold-italic: "Suisse Intl SemiBold Italic", sans-serif;
+  --ff-suisse-medium: "Suisse Intl Medium", sans-serif;
+  --ff-suisse-medium-italic: "Suisse Intl Medium Italic", sans-serif;
+  --ff-suisse-regular: "Suisse Intl Regular", sans-serif;
+  --ff-suisse-regular-italic: "Suisse Intl Regular Italic", sans-serif;
+  --ff-suisse-book: "Suisse Intl Book", sans-serif;
+  --ff-suisse-book-italic: "Suisse Intl Book Italic", sans-serif;
+  --ff-suisse-light: "Suisse Intl Light", sans-serif;
+  --ff-suisse-light-italic: "Suisse Intl Light Italic", sans-serif;
+  --ff-suisse-ultralight: "Suisse Intl UltraLight", sans-serif;
+  --ff-suisse-ultralight-italic: "Suisse Intl UltraLight Italic", sans-serif;
+  --ff-suisse-thin: "Suisse Intl Thin", sans-serif;
+  --ff-suisse-thin-italic: "Suisse Intl Thin Italic", sans-serif;
 }
 
 /* =========================
    FONT DEFINITIONS
 ========================= */
+/* =========================
+   Suisse Intl - per-style families
+   (Use variables in :root, e.g., font-family: var(--ff-suisse-regular))
+========================= */
 @font-face {
-  font-family: "Suisse International";
-  src: url("/fonts/SuisseIntl-Medium.otf");
-  font-weight: 700;
+  font-family: "Suisse Intl Black";
+  src: url("/fonts/SuisseIntl-Black.otf");
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
-
 @font-face {
-  font-family: "Suisse International";
-  src: url("/fonts/SuisseIntl-Regular.otf");
-  font-weight: 500;
+  font-family: "Suisse Intl Black Italic";
+  src: url("/fonts/SuisseIntl-BlackItalic.otf");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Bold";
+  src: url("/fonts/SuisseIntl-Bold.otf");
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Bold Italic";
+  src: url("/fonts/SuisseIntl-BoldItalic.otf");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl SemiBold";
+  src: url("/fonts/SuisseIntl-SemiBold.otf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl SemiBold Italic";
+  src: url("/fonts/SuisseIntl-SemiBoldItalic.otf");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Medium";
+  src: url("/fonts/SuisseIntl-Medium.otf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Medium Italic";
+  src: url("/fonts/SuisseIntl-MediumItalic.otf");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Regular";
+  src: url("/fonts/SuisseIntl-Regular.otf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Regular Italic";
+  src: url("/fonts/SuisseIntl-RegularItalic.otf");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Book";
+  src: url("/fonts/SuisseIntl-Book.otf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Book Italic";
+  src: url("/fonts/SuisseIntl-BookItalic.otf");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Light";
+  src: url("/fonts/SuisseIntl-Light.otf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Light Italic";
+  src: url("/fonts/SuisseIntl-LightItalic.otf");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl UltraLight";
+  src: url("/fonts/SuisseIntl-UltraLight.otf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl UltraLight Italic";
+  src: url("/fonts/SuisseIntl-UltraLightItalic.otf");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Thin";
+  src: url("/fonts/SuisseIntl-Thin.otf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Suisse Intl Thin Italic";
+  src: url("/fonts/SuisseIntl-ThinItalic.otf");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap");
@@ -58,19 +195,17 @@
 }
 
 .startscreen-content h1 {
-  font-weight: 700;
+  font-family: var(--ff-suisse-light);
   font-size: 2rem;
   letter-spacing: 0.03rem;
   margin-bottom: 2rem;
-  text-transform: uppercase;
   letter-spacing: 0.03rem;
 }
 
 .startscreen-content p {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: rgb(61, 61, 61);
-  font-family: "Suisse International", sans-serif;
-  font-weight: 300; /* same as About button */
+  font-family: var(--ff-suisse-light);
   letter-spacing: 0.02rem;
   line-height: 1.2rem;
   margin-top: 2rem;
@@ -78,8 +213,7 @@
 a {
   font-size: 0.8rem;
   color: var(--black);
-  font-family: "Suisse International", sans-serif;
-  font-weight: 300; /* same as About button */
+  font-family: var(--ff-suisse-light);
   letter-spacing: 0.03em;
   line-height: 1.2rem;
   margin-top: 2rem;
@@ -174,7 +308,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: "Suisse International", sans-serif;
+  font-family: var(--ff-suisse-regular);
   background-color: var(--white);
   letter-spacing: 0rem;
 }
@@ -185,8 +319,7 @@ body {
 }
 
 .detail-value {
-  font-family: "Suisse International", sans-serif;
-  font-weight: 500;
+  font-family: var(--ff-suisse-medium);
   font-size: 1rem;
 }
 
@@ -198,7 +331,6 @@ body {
   justify-content: center; /* centers the panel */
   position: relative; /* makes absolute children position relative to this */
   z-index: 10;
-  margin-bottom: 2rem;
 }
 
 /* Panel */
@@ -220,7 +352,7 @@ body {
   text-align: center;
   box-sizing: border-box;
   text-transform: uppercase;
-  font-family: "Suisse International";
+  font-family: var(--ff-suisse-regular);
   font-size: 1rem;
   font-weight: 500;
   background-color: transparent;
@@ -253,7 +385,7 @@ body,
 #scrollWrapper {
   width: 90%;
   margin: 0 auto;
-  height: 20rem !important;
+  height: 16rem !important;
   overflow-y: scroll;
   position: relative;
 
@@ -354,7 +486,7 @@ body,
 }
 
 h2 {
-  font-family: "Suisse Int'l";
+  font-family: var(--ff-suisse-regular);
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -385,7 +517,7 @@ h2 {
 }
 
 .item h3 {
-  font-weight: 500 !important;
+  font-family: var(--ff-suisse-medium);
 }
 
 .sim-score {
@@ -397,7 +529,7 @@ h2 {
 }
 
 .indicator-number {
-  font-weight: 700;
+  font-family: var(--ff-suisse-bold);
   color: var(--grey);
   margin-right: 0.3rem; /* space between number and text */
   font-size: 0.9rem;
@@ -492,14 +624,12 @@ h2 {
 .scroll-item .left-part,
 .scroll-item .center-part,
 .scroll-item .right-part {
-  font-weight: 500;
+  font-family: var(--ff-suisse-medium);
 }
 
 /* Wenn Suchwort fett markiert war → jetzt Medium */
 .center-part span[style*="font-weight:bold"] {
-  font-family: "Suisse Int'l", sans-serif;
-  font-style: normal;
-  font-weight: 500;
+  font-family: var(--ff-suisse-medium);
   line-height: normal;
   letter-spacing: 0.05rem;
   text-transform: uppercase;
@@ -524,8 +654,7 @@ h2 {
 #detailsContainer {
   margin: 20px auto 0 auto;
   text-align: center;
-  font-family: "Suisse Int'l", sans-serif;
-  font-weight: 300;
+  font-family: var(--ff-suisse-light);
   margin-top: 2rem;
   padding-bottom: 2rem;
 }
@@ -546,7 +675,7 @@ h2 {
 }
 
 .detail-title {
-  font-family: "Suisse Int'l";
+  font-family: var(--ff-suisse-regular);
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -689,8 +818,7 @@ h2 {
   margin-left: 0.4rem;
   border: 1px solid var(--black);
   border-radius: 50%;
-  font-family: "Suisse International", sans-serif;
-  font-weight: 500;
+  font-family: var(--ff-suisse-medium);
   font-size: 1rem;
   color: var(--black);
   cursor: pointer;
