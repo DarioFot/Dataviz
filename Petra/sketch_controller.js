@@ -54,7 +54,10 @@ function setup() {
 
   // make sure it's a text field and has your custom placeholder
   inputField.attribute("type", "text");
-  inputField.attribute("placeholder", "your word (e.g. respect, together, socialize)");
+  inputField.attribute(
+    "placeholder",
+    "your word (e.g. respect, together, socialize)"
+  );
 
   // connect to your existing input handler
   inputField.input(onInputChange);
@@ -360,14 +363,12 @@ function buildThreePart(container, fullText, query, item) {
   leftDiv.style("text-align", "right");
   appendWordSpans(leftDiv, leftTokens, false);*/
 
-   // --- 2️⃣ Linker Satzteil ---
+  // --- 2️⃣ Linker Satzteil ---
   const leftDivWrapper = createDiv().parent(line).class("left-part-wrapper");
   createDiv().parent(leftDivWrapper).class("blue-dot");
   const leftDiv = createDiv().parent(leftDivWrapper).class("left-part");
   leftDiv.style("text-align", "right");
   appendWordSpans(leftDiv, leftTokens, false);
-  
-
 
   // --- CENTER PART ---
   // --- 3️⃣ Suchwort zentriert ---
