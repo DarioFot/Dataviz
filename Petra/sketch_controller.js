@@ -242,13 +242,12 @@ function buildThreePart(container, fullText, query, item) {
 
   // === FALL 1: Keine Suche aktiv → zentrierter Text ohne Punkte ===
   if (q === "") {
-    const line = createDiv().parent(container);
-    line.class("line-container");
-    line.style("grid-template-columns", "1fr");
-    line.style("justify-items", "center");
-
-    const centerDiv = createDiv().parent(line).class("center-part");
+    const line = createDiv().parent(container).class("ohneContainer");
+    const containerOhne = createDiv().parent(line).class("ohneContainer");
+    createDiv().parent(containerOhne).class("blue-dot"); 
+    const centerDiv = createDiv().parent(containerOhne).class("center-part");
     centerDiv.style("text-align", "center");
+    createDiv().parent(containerOhne).class("blue-dot");
 
     for (const tok of tokens) {
       const m = tok.match(/^(\w+)([.,!?;:]*)$/);

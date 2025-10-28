@@ -750,6 +750,19 @@ h2 {
    BLUE DOTS (only for selected item)
 ========================= */
 
+.line {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.ohneContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
 .right-part-wrapper {
   display: flex;
   align-items: center;
