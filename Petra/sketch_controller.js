@@ -307,10 +307,6 @@ function buildThreePart(container, fullText, query, item) {
 
   const line = createDiv().parent(container);
   line.class("line-container");
-  /*// → Jetzt 5 Spalten
-  line.style("display", "grid");
-  line.style("grid-template-columns", "auto 1fr auto 1fr auto");
-  line.style("align-items", "center");*/
 
   // Hilfsfunktion für Wörter
   function appendWordSpans(parent, tokenArray, makeBold = false) {

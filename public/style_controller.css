@@ -279,7 +279,7 @@ a:hover {
   display: none;
 }
 
-#restartBtn {
+.button {
   position: absolute;
   bottom: 2rem;
   left: 50%;
@@ -296,7 +296,7 @@ a:hover {
   text-underline-offset: 0.2rem;
 }
 
-#restartBtn:hover {
+.button:hover {
   color: var(--blue);
   background: none;
 }
