@@ -26,7 +26,7 @@ body {
   width: 100%;
   font-family: "Suisse International", sans-serif;
   font-weight: 300;
-  background-color: #fff;
+  background-color: #141414ff;
 
   /* Center everything */
   display: flex;
@@ -43,5 +43,9 @@ body {
 }
 
 #log {
+  display: none;
+}
+
+#panel {
   display: none;
 }
