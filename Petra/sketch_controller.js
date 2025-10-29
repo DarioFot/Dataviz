@@ -679,8 +679,7 @@ function moveItemToTopInDataArray(item) {
 
 function addInfoButton(parentEl, infoText) {
   // Prüfe, ob es ein p5.Element ist → dann echtes DOM-Element holen
-  const target =
-    parentEl.elt !== undefined ? parentEl.elt : parentEl;
+  const target = parentEl.elt !== undefined ? parentEl.elt : parentEl;
 
   // Wrapper erstellen
   const infoWrapper = document.createElement("span");
