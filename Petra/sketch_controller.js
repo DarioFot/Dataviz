@@ -234,7 +234,9 @@ function buildThreePart(container, fullText, query, item) {
   container.html("");
   const q = (query || "").trim().toLowerCase();
 
-  const tokens = fullText.match(/\b\w+\b[.,!?;:]?|\S+/g) || [];
+  const tokens =
+    fullText.match(/["'“”‘’(\[\{]?\w+(?:[-']\w+)*[)"’”\]\}]?[.,!?;:]?|\S+/g) ||
+    [];
 
   // === FALL 1: Keine Suche aktiv → zentrierter Text ohne Punkte ===
   if (q === "") {
@@ -260,22 +262,28 @@ function buildThreePart(container, fullText, query, item) {
 
       // Klick → Suche starten
       wordSpan.mousePressed(() => {
-        inputField.value(wordPart.toLowerCase());
-        selectedIndicator = item;
+  // Bereinigt das Wort für die Eingabe (Klammern, Quotes, Satzzeichen entfernen)
+  const cleanWord = wordPart
+    .replace(/^["'“”‘’(\[\{]+/, "")    // öffnende Zeichen entfernen
+    .replace(/[)"’”\]\}]+$/, "")       // schließende Zeichen entfernen
+    .replace(/[.,!?;:]+$/, "")         // Endzeichen (Punkte, Kommas etc.)
+    .toLowerCase();
 
-        moveItemToTopInDataArray(item);
-        handleInput(); // Filter neu anwenden
-        setTimeout(() => {
-          wrapper.elt.scrollTop = 0;
-        }, 0);
+  inputField.value(cleanWord);
+  selectedIndicator = item;
+  moveItemToTopInDataArray(item);
+  handleInput();
+  setTimeout(() => {
+    wrapper.elt.scrollTop = 0;
+  }, 0);
 
-        // Show details immediately when clicking
-        if (scrollTimeout) {
-          clearTimeout(scrollTimeout);
-          scrollTimeout = null;
-        }
-        showDetails(item);
-      });
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = null;
+  }
+  showDetails(item);
+});
+
     }
     return;
   }
@@ -283,7 +291,10 @@ function buildThreePart(container, fullText, query, item) {
   // === FALL 2: Suche aktiv → Fünf Spalten (Punkt – links – Mitte – rechts – Punkt) ===
   let matchIdx = -1;
   for (let k = 0; k < tokens.length; k++) {
-    const cleanWord = tokens[k].replace(/[.,!?;:]+$/, "").toLowerCase();
+    const cleanWord = tokens[k]
+      .replace(/^["'“”‘’(\[\{]+|[)"’”\]\}]+$/g, "")
+      .replace(/[.,!?;:]+$/, "")
+      .toLowerCase();
     if (cleanWord === q) {
       matchIdx = k;
       break;
@@ -321,9 +332,14 @@ function buildThreePart(container, fullText, query, item) {
       createSpan(" ").parent(parent);
 
       wordSpan.mousePressed(() => {
-        inputField.value(wordPart.toLowerCase());
-        selectedIndicator = item;
+        // Entfernt Klammern, Anführungszeichen, Punktuation
+        const cleanWord = wordPart
+          .replace(/^["'“”‘’(\[\{]+|[)"’”\]\}]+$/g, "")
+          .replace(/[.,!?;:]+$/, "")
+          .toLowerCase();
 
+        inputField.value(cleanWord);
+        selectedIndicator = item;
         moveItemToTopInDataArray(item);
         handleInput();
         setTimeout(() => {
