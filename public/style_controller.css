@@ -339,7 +339,7 @@ body {
 #panel input[type="text"] {
   width: 100%;
   padding-top: 1rem;
-  padding-bottom: 0.6rem;
+  padding-bottom: 0.8rem;
   border: 1px solid var(--blue);
   border-radius: 2rem;
   outline: none;
