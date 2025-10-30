@@ -67,14 +67,10 @@ function setup() {
   canvasTitle.parent("canvasContainer");
 
   // Info-Button direkt INS h2 hängen (nicht als eigenes Div)
-  const infoVoices = createSpan("")
-    .addClass("info-icon")
-    .attribute(
-      "data-info",
-      "In the scrolling area, you can explore all statements from across Mostar that contain the same search term (only exact matches). Click on individual words to navigate through different “signs of peace” and see how people describe peace in their own ways."
-    );
-  infoVoices.parent(canvasTitle); // ✅ direkt im H2 platzieren
-  createSpan("i").addClass("info-letter").parent(infoVoices);
+  addInfoButton(
+    canvasTitle,
+    "In the scrolling area, you can explore all statements from across Mostar that contain the same search term (only exact matches). Click on individual words to navigate through different “signs of peace” and see how people describe peace in their own ways."
+  );
 
   // outer wrapper
   wrapper = createDiv().parent("canvasContainer");
@@ -238,17 +234,18 @@ function buildThreePart(container, fullText, query, item) {
   container.html("");
   const q = (query || "").trim().toLowerCase();
 
-  const tokens = fullText.match(/\b\w+\b[.,!?;:]?|\S+/g) || [];
+  const tokens =
+    fullText.match(/["'“”‘’(\[\{]?\w+(?:[-']\w+)*[)"’”\]\}]?[.,!?;:]?|\S+/g) ||
+    [];
 
   // === FALL 1: Keine Suche aktiv → zentrierter Text ohne Punkte ===
   if (q === "") {
-    const line = createDiv().parent(container);
-    line.class("line-container");
-    line.style("grid-template-columns", "1fr");
-    line.style("justify-items", "center");
-
-    const centerDiv = createDiv().parent(line).class("center-part");
+    const line = createDiv().parent(container).class("ohneContainer");
+    const containerOhne = createDiv().parent(line).class("ohneContainer");
+    createDiv().parent(containerOhne).class("blue-dot");
+    const centerDiv = createDiv().parent(containerOhne).class("center-part");
     centerDiv.style("text-align", "center");
+    createDiv().parent(containerOhne).class("blue-dot");
 
     for (const tok of tokens) {
       const m = tok.match(/^(\w+)([.,!?;:]*)$/);
@@ -265,22 +262,28 @@ function buildThreePart(container, fullText, query, item) {
 
       // Klick → Suche starten
       wordSpan.mousePressed(() => {
-        inputField.value(wordPart.toLowerCase());
-        selectedIndicator = item;
+  // Bereinigt das Wort für die Eingabe (Klammern, Quotes, Satzzeichen entfernen)
+  const cleanWord = wordPart
+    .replace(/^["'“”‘’(\[\{]+/, "")    // öffnende Zeichen entfernen
+    .replace(/[)"’”\]\}]+$/, "")       // schließende Zeichen entfernen
+    .replace(/[.,!?;:]+$/, "")         // Endzeichen (Punkte, Kommas etc.)
+    .toLowerCase();
 
-        moveItemToTopInDataArray(item);
-        handleInput(); // Filter neu anwenden
-        setTimeout(() => {
-          wrapper.elt.scrollTop = 0;
-        }, 0);
+  inputField.value(cleanWord);
+  selectedIndicator = item;
+  moveItemToTopInDataArray(item);
+  handleInput();
+  setTimeout(() => {
+    wrapper.elt.scrollTop = 0;
+  }, 0);
 
-        // Show details immediately when clicking
-        if (scrollTimeout) {
-          clearTimeout(scrollTimeout);
-          scrollTimeout = null;
-        }
-        showDetails(item);
-      });
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = null;
+  }
+  showDetails(item);
+});
+
     }
     return;
   }
@@ -288,7 +291,10 @@ function buildThreePart(container, fullText, query, item) {
   // === FALL 2: Suche aktiv → Fünf Spalten (Punkt – links – Mitte – rechts – Punkt) ===
   let matchIdx = -1;
   for (let k = 0; k < tokens.length; k++) {
-    const cleanWord = tokens[k].replace(/[.,!?;:]+$/, "").toLowerCase();
+    const cleanWord = tokens[k]
+      .replace(/^["'“”‘’(\[\{]+|[)"’”\]\}]+$/g, "")
+      .replace(/[.,!?;:]+$/, "")
+      .toLowerCase();
     if (cleanWord === q) {
       matchIdx = k;
       break;
@@ -308,10 +314,6 @@ function buildThreePart(container, fullText, query, item) {
 
   const line = createDiv().parent(container);
   line.class("line-container");
-  /*// → Jetzt 5 Spalten
-  line.style("display", "grid");
-  line.style("grid-template-columns", "auto 1fr auto 1fr auto");
-  line.style("align-items", "center");*/
 
   // Hilfsfunktion für Wörter
   function appendWordSpans(parent, tokenArray, makeBold = false) {
@@ -330,9 +332,14 @@ function buildThreePart(container, fullText, query, item) {
       createSpan(" ").parent(parent);
 
       wordSpan.mousePressed(() => {
-        inputField.value(wordPart.toLowerCase());
-        selectedIndicator = item;
+        // Entfernt Klammern, Anführungszeichen, Punktuation
+        const cleanWord = wordPart
+          .replace(/^["'“”‘’(\[\{]+|[)"’”\]\}]+$/g, "")
+          .replace(/[.,!?;:]+$/, "")
+          .toLowerCase();
 
+        inputField.value(cleanWord);
+        selectedIndicator = item;
         moveItemToTopInDataArray(item);
         handleInput();
         setTimeout(() => {
@@ -469,14 +476,10 @@ function showClosestIndicators(curr) {
   );
   relatedTitle.parent(container);
 
-  const infoRelated = createSpan("")
-    .addClass("info-icon")
-    .attribute(
-      "data-info",
-      "Below are statements from the dataset most similar in meaning to the one you selected. They may not contain the same keyword. Similarity was determined using a Large Language Model (LLM) and is shown as a percentage. The higher the percentage, the more similar the statement is in meaning to the selected one."
-    );
-  infoRelated.parent(relatedTitle); // ✅ Icon INS H2 hängen
-  createSpan("i").addClass("info-letter").parent(infoRelated);
+  addInfoButton(
+    relatedTitle,
+    "Below are statements from the dataset most similar in meaning to the one you selected. They may not contain the same keyword. Similarity was determined using a Large Language Model (LLM) and is shown as a percentage. The higher the percentage, the more similar the statement is in meaning to the selected one."
+  );
 
   // const topRow = createDiv().parent(container).addClass("row top-row");
   // const bottomRow = createDiv().parent(container).addClass("row bottom-row");
@@ -588,7 +591,9 @@ function showDetails(indicator) {
       <div class="detail-block">
         <div class="detail-title">
           Speaker
-          <div class="info-icon" data-info="Indicates which focus group the statement originates from — Women, Men or Youth."><span class="info-letter">i</span></div>
+          <div class="info-icon" data-info="Indicates which focus group the statement originates from — Women, Men or Youth.">
+  <img src="/libraries/assets/i-button.png" class="info-image" alt="info" />
+</div>
         </div>
         <div class="detail-value">${speaker}</div>
       </div>
@@ -596,7 +601,9 @@ function showDetails(indicator) {
       <div class="detail-block">
         <div class="detail-title">
           Categories
-          <div class="info-icon" data-info="Indicates the thematic area(s) this statement belongs to."><span class="info-letter">i</span></div>
+          <div class="info-icon" data-info="Indicates the thematic area(s) this statement belongs to.">
+  <img src="/libraries/assets/i-button.png" class="info-image" alt="info" />
+</div>
         </div>
         <div class="detail-value">${
           [dim1, dim2].filter(Boolean).join(" & ") || "N/A"
@@ -606,7 +613,9 @@ function showDetails(indicator) {
       <div class="detail-block">
         <div class="detail-title">
           Community
-          <div class="info-icon" data-info="Neighborhood in Mostar where the statement originates."><span class="info-letter">i</span></div>
+          <div class="info-icon" data-info="Neighborhood in Mostar where the statement originates.">
+  <img src="/libraries/assets/i-button.png" class="info-image" alt="info" />
+</div>
         </div>
         <div class="detail-value">${community}</div>
       </div>
@@ -682,4 +691,25 @@ function moveItemToTopInDataArray(item) {
     return true;
   }
   return false;
+}
+
+function addInfoButton(parentEl, infoText) {
+  // Prüfe, ob es ein p5.Element ist → dann echtes DOM-Element holen
+  const target = parentEl.elt !== undefined ? parentEl.elt : parentEl;
+
+  // Wrapper erstellen
+  const infoWrapper = document.createElement("span");
+  infoWrapper.classList.add("info-icon");
+  infoWrapper.setAttribute("data-info", infoText);
+
+  // PNG-Bild hinzufügen
+  const img = document.createElement("img");
+  img.src = "/libraries/assets/i-button.png";
+  img.alt = "info";
+  img.classList.add("info-image");
+
+  infoWrapper.appendChild(img);
+  target.appendChild(infoWrapper);
+
+  return infoWrapper;
 }

@@ -70,9 +70,9 @@ function setup() {
 }
 
 function draw() {
-  let black = color("#02010dff");
-  let blue = color("#206caeff");
-  let lightGray = color("#3e3e4dff");
+  let black = color("#141414ff");
+  let blue = color("#329fffff");
+  let lightGray = color("#abadd3ff");
   let darkGray = color("#abadd3ff");
   let white = color("#ffffff");
 
@@ -85,8 +85,7 @@ function draw() {
   const cols = 60;
   const spacing = (width - margin * 2) / (cols - 1);
 
-  let maxAmount = 50;
-  let maxOpacity = 40;
+  // let drawIndexOffset = 0;
 
   for (let i = 0; i < dataArray.length; i++) {
     const rawLabel = dataArray[i]["Community"];
@@ -103,7 +102,7 @@ function draw() {
       textFont(SuisseMedium);
       noStroke();
       fill(white);
-      textSize(17);
+      textSize(15);
       textStyle(BOLD);
       textAlign(LEFT, CENTER);
       text(label.toUpperCase(), labelX - 3, labelY);
@@ -122,21 +121,21 @@ function draw() {
       ellipse(x, y, 17, 17);
 
       // Add fast pulsing glow effect (20 pulses per cycle)
-      const cycle = (millis() % 2000) / 2000;
+      const cycle = (frameCount * 0.2) % (TWO_PI * 2);
       let pulseAmount, pulseOpacity;
 
-      if (cycle < 0.25) {
-        pulseAmount = map(cycle, 0, 0.25, 0, maxAmount);
-        pulseOpacity = map(cycle, 0, 0.25, 0, maxOpacity);
-      } else if (cycle < 0.5) {
-        pulseAmount = map(cycle, 0.25, 0.5, maxAmount, 0);
-        pulseOpacity = map(cycle, 0.25, 0.5, maxOpacity, 0);
-      } else if (cycle < 0.75) {
-        pulseAmount = map(cycle, 0.5, 0.75, 0, maxAmount);
-        pulseOpacity = map(cycle, 0.5, 0.75, 0, maxOpacity);
+      if (cycle < PI / 2) {
+        pulseAmount = map(cycle, 0, PI / 2, 0, 23);
+        pulseOpacity = map(cycle, 0, PI / 2, 0, 0.6);
+      } else if (cycle < PI) {
+        pulseAmount = map(cycle, PI / 2, PI, 23, 0);
+        pulseOpacity = map(cycle, PI / 2, PI, 0.6, 0);
+      } else if (cycle < PI * 1.5) {
+        pulseAmount = map(cycle, PI, PI * 1.5, 0, 23);
+        pulseOpacity = map(cycle, PI, PI * 1.5, 0, 0.6);
       } else {
-        pulseAmount = map(cycle, 0.75, 1, maxAmount, 0);
-        pulseOpacity = map(cycle, 0.75, 1, maxOpacity, 0);
+        pulseAmount = map(cycle, PI * 1.5, TWO_PI, 23, 0);
+        pulseOpacity = map(cycle, PI * 1.5, TWO_PI, 0.6, 0);
       }
 
       drawingContext.shadowBlur = pulseAmount;
@@ -195,28 +194,28 @@ function draw() {
 
       // selectedPoint nochmals zeichnen mit Animation
       // Add fast pulsing glow effect (20 pulses per cycle)
-      const cycle = (millis() % 2000) / 2000;
+      const cycle = (frameCount * 0.2) % (TWO_PI * 2);
       let pulseAmount, pulseOpacity;
 
-      if (cycle < 0.25) {
-        pulseAmount = map(cycle, 0, 0.25, 0, maxAmount);
-        pulseOpacity = map(cycle, 0, 0.25, 0, maxOpacity);
-      } else if (cycle < 0.5) {
-        pulseAmount = map(cycle, 0.25, 0.5, maxAmount, 0);
-        pulseOpacity = map(cycle, 0.25, 0.5, maxOpacity, 0);
-      } else if (cycle < 0.75) {
-        pulseAmount = map(cycle, 0.5, 0.75, 0, maxAmount);
-        pulseOpacity = map(cycle, 0.5, 0.75, 0, maxOpacity);
+      if (cycle < PI / 2) {
+        pulseAmount = map(cycle, 0, PI / 2, 0, 15);
+        pulseOpacity = map(cycle, 0, PI / 2, 0, 0.6);
+      } else if (cycle < PI) {
+        pulseAmount = map(cycle, PI / 2, PI, 15, 0);
+        pulseOpacity = map(cycle, PI / 2, PI, 0.6, 0);
+      } else if (cycle < PI * 1.5) {
+        pulseAmount = map(cycle, PI, PI * 1.5, 0, 15);
+        pulseOpacity = map(cycle, PI, PI * 1.5, 0, 0.6);
       } else {
-        pulseAmount = map(cycle, 0.75, 1, maxAmount, 0);
-        pulseOpacity = map(cycle, 0.75, 1, maxOpacity, 0);
+        pulseAmount = map(cycle, PI * 1.5, TWO_PI, 15, 0);
+        pulseOpacity = map(cycle, PI * 1.5, TWO_PI, 0.6, 0);
       }
 
       drawingContext.shadowBlur = pulseAmount;
       drawingContext.shadowColor = `rgba(19, 138, 242, ${pulseOpacity})`;
       noStroke();
       fill(21, 138, 242);
-      ellipse(sel.x, sel.y, 17 + pulseAmount * 0.03, 17 + pulseAmount * 0.03);
+      ellipse(sel.x, sel.y, 17, 17);
       drawingContext.shadowBlur = 0;
       drawingContext.shadowColor = "transparent";
     }
@@ -227,7 +226,7 @@ function draw() {
   let offsetY = 2.5;
 
   textFont(SuisseLight);
-  textSize(17);
+  textSize(15);
   fill(lightGray);
   ellipse(legendeX, legendeY, 5, 5);
   fill(white);
@@ -247,7 +246,7 @@ function draw() {
   fill(255);
   text("Selected voice", legendeX + spacing * 5 + 17, legendeY - offsetY);
 
-  stroke(darkGray);
+  stroke(lightGray);
   strokeWeight(1.5);
   line(
     legendeX + spacing * 23,
@@ -260,9 +259,8 @@ function draw() {
   noFill();
   ellipse(legendeX + spacing * 26, legendeY, 11, 11);
   noStroke();
-  fill(lightGray);
-  ellipse(legendeX + spacing * 26, legendeY, 5, 5);
   fill(255);
+  ellipse(legendeX + spacing * 26, legendeY, 5, 5);
   text("Related voices", legendeX + spacing * 26 + 13, legendeY - offsetY);
 }
 
@@ -410,7 +408,7 @@ function getOffsetUpTo(index, spacing) {
       const rawLabel = dataArray[i]["Community"];
       const label = communityNames[rawLabel] || rawLabel;
       const w = textWidth(label);
-      offset += ceil((w * 2.4) / spacing); // same padding as dots
+      offset += ceil((w * 2.3) / spacing); // same padding as dots
     }
   }
   return offset;

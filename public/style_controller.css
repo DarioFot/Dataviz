@@ -189,9 +189,8 @@
 
 .startscreen-content {
   text-align: center;
-  max-width: 800px;
   padding: 2rem;
-  max-width: 50rem;
+  max-width: 45rem;
 }
 
 .startscreen-content h1 {
@@ -236,52 +235,17 @@ a:hover {
   margin-top: 1.5rem;
 }
 
-/* About Button — bottom center */
-#aboutBtn {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: none;
-  color: var(--black);
-  border: none;
-  font-size: 1rem;
-  font-weight: 300;
-  cursor: pointer;
-  letter-spacing: 0.03em;
-  transition: color 0.2s ease;
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
-}
-
-#aboutBtn:hover {
-  color: var(--blue);
-}
-
-.back-button {
-  background: none;
-  color: var(--black);
-  border: none;
-  font-size: 1rem;
-  font-weight: 300;
-  cursor: pointer;
-  letter-spacing: 0.03em;
-  transition: color 0.2s ease;
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
-}
-
-.back-button:hover {
-  color: var(--blue);
-}
-
 #startBtn {
   display: none;
 }
 
 #restartBtn {
-  position: absolute;
   bottom: 2rem;
+}
+
+.button {
+  position: absolute;
+  bottom: 0.5rem;
   left: 50%;
   transform: translateX(-50%);
   color: var(--black);
@@ -296,7 +260,7 @@ a:hover {
   text-underline-offset: 0.2rem;
 }
 
-#restartBtn:hover {
+.button:hover {
   color: var(--blue);
   background: none;
 }
@@ -306,7 +270,7 @@ a:hover {
 ========================= */
 html,
 body {
-  margin: 0;
+  margin: 0 !important;
   padding: 0;
   font-family: var(--ff-suisse-regular);
   background-color: var(--white);
@@ -689,6 +653,7 @@ h2 {
   text-transform: none;
   color: var(--black);
   letter-spacing: 0.01rem;
+  margin-right: 7px;
 }
 .detail-value {
   font-family: var(--ff-suisse-medium);
@@ -750,6 +715,19 @@ h2 {
    BLUE DOTS (only for selected item)
 ========================= */
 
+.line {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.ohneContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
 .right-part-wrapper {
   display: flex;
   align-items: center;
@@ -767,6 +745,7 @@ h2 {
   flex: 0 0 10px; /* verhindert Schrumpfen UND Wachsen */
   width: 10px;
   height: 10px;
+  margin-bottom: 3px;
   border-radius: 100%;
   background-color: var(--blue);
   animation: glowPulse 2s ease-in-out infinite;
@@ -822,29 +801,21 @@ h2 {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 1rem;
-  height: 1rem;
-  margin-left: 0.5rem;
-  border: 1px solid var(--black);
-  border-radius: 50%;
-  font-family: var(--ff-suisse-light);
-  font-size: 1rem;
-  color: var(--black);
-  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  margin-left: 0.3rem;
+  margin-bottom: 0.2rem;
   position: relative;
-  transition: all 0.2s ease;
-  display: none;
+  cursor: pointer;
+  vertical-align: middle;
 }
-.info-letter {
-  display: inline-block;
-  transform: translateY(var(--info-letter-offset));
-  font-family: var(--ff-suisse-light);
+
+.info-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
-/*.info-icon:hover {
-  background-color: var(--light-blue);
-  color: var(--blue);
-  border-color: var(--blue);
-}*/
 
 /* Tooltip */
 .info-icon::after {
@@ -872,4 +843,9 @@ h2 {
 
 .info-icon:hover::after {
   opacity: 1;
+}
+
+#credits {
+  font-size: 0.7rem;
+  line-height: 0.9rem;
 }
